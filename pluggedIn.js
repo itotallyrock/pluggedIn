@@ -12,7 +12,9 @@ Version 0.00.1 ALPHA
 
 */
 
-var pluggedIn = {},pluggedIn.core={},pluggedIn.settings={};
+var pluggedIn = {};
+var pluggedIn.core={};
+var pluggedIn.settings={};
 
 final pluggedIn.VERSION = "0.00.1 ALPHA";
 final pluggedIn.AUTHOR = "itotallyrock (R0CK)";
