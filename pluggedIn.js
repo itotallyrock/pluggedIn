@@ -12,12 +12,12 @@ Version 0.00.1 ALPHA
 
 */
 
-var pluggedIn = new Object;
-var pluggedIn.core = {};
-var pluggedIn.settings = {};
+var pluggedIn = {};
+pluggedIn.core = {};
+pluggedIn.settings = {};
 
-final pluggedIn.VERSION = "0.00.1 ALPHA";
-final pluggedIn.AUTHOR = "itotallyrock (R0CK)";
+pluggedIn.VERSION = "0.00.1 ALPHA";
+pluggedIn.AUTHOR = "itotallyrock (R0CK)";
 
 /*
 
