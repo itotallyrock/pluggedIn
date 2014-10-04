@@ -12,7 +12,7 @@ Version 0.00.1 ALPHA
 
 */
 
-var pluggedIn = {},pluggedIn.core={},pluggedIn.settings={autoWoot=false,autoDJ=false,spamDJ=false};
+var pluggedIn = {},pluggedIn.core={},pluggedIn.settings={};
 
 final pluggedIn.VERSION = "0.00.1 ALPHA";
 final pluggedIn.AUTHOR = "itotallyrock (R0CK)";
@@ -22,6 +22,13 @@ final pluggedIn.AUTHOR = "itotallyrock (R0CK)";
 	Core functionality
 
 */
+
+//Define settings if unknown
+if(/*Get Cookie Here*/true){
+	pluggedIn.settings.autoWoot=false;
+	pluggedIn.settings.autoDJ=false;
+	pluggedIn.settings.spamDJ=false;
+}
 
 pluggedIn.core.autoWoot = function(){
 	$("#woot").click();
