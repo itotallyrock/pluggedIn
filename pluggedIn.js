@@ -39,7 +39,7 @@ if(/*Get Cookie Here*/true){
 }
 
 pluggedIn.core.log = (function(msg){
-	if(debug)
+	if(pluggedIn.settings.debug)
 		console.log("%c"+pluggedIn.PREFIX+msg,'color: #8800ff; font-weight:700;');
 });
 
