@@ -16,6 +16,7 @@ var pluggedIn = {};
 pluggedIn.core = {};
 pluggedIn.settings = {};
 pluggedIn.keyboard = {};
+pluggedIn.colors = {};
 
 pluggedIn.VERSION = "0.00.2 ALPHA";
 pluggedIn.AUTHOR = "R0CK";
@@ -25,6 +26,10 @@ pluggedIn.PREFIX = "PluggedIn » ";
 pluggedIn.LANGS = ["en"];
 
 pluggedIn.keyboard.SPAM_DJ = 86;
+
+pluggedIn.colors.WARN = "bb0000";
+pluggedIn.colors.ALERT = "ffee00";
+pluggedIn.colors.SUCCESS = "55bb00";
 
 /*
 
