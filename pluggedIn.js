@@ -15,9 +15,14 @@ Version 0.00.1 ALPHA
 var pluggedIn = {};
 pluggedIn.core = {};
 pluggedIn.settings = {};
+pluggedIn.keyboard = {};
 
 pluggedIn.VERSION = "0.00.2 ALPHA";
 pluggedIn.AUTHOR = "R0CK";
+
+pluggedIn.PREFIX = "PluggedIn > ";
+
+pluggedIn.keyboard.SPAM_DJ = 86;
 
 /*
 
@@ -70,9 +75,29 @@ pluggedIn.core.appendChat = (function(message,color){
 			minutes='0'+minutes;
 		}
 		time=hours+':'+minutes;
-		a.append('<div class="message"><div class="timestamp" style="display: block;">'+time+'</div><span class="from you clickable">Plug.in</span><div class="text" style="color:#' + (color ? color : 'd1d1d1') + ';display:inline;">&nbsp;' + message + '</div></div>');
+		a.append('<div class="message"><div class="timestamp" style="display: block;">'+time+'</div><span class="from you clickable">pluggedIn</span><div class="text" style="font-weight:700;color:#' + (color ? color : 'd1d1d1') + ';display:inline;">&nbsp;' + message + '</div></div>');
 	}
 });
+
+
+
+/*
+
+KEYBOARD SHORTCUTS
+
+*/
+
+$(this).keydown(function (e) {
+	if(e.which == pluggedIn.keyboard.SPAM_DJ){
+		if(API.getWaitListPosition() == -1){
+			$("#dj-button").click();
+		}
+	}
+}).keyup(function(e) {
+    console.logpluggedIn.PREFIX+"Finalized Keyboard Shortcut Execution");
+});
+
+
 
 pluggedIn.core.initialize = (function(){
 	console.log("pluggedIn version "+pluggedIn.VERSION+" by "+pluggedIn.AUTHOR+" has loaded.");
@@ -89,10 +114,11 @@ pluggedIn.core.initialize = (function(){
 	}
 });
 
+
 /*
 
 	GUI and initialization
 
 */
 
-pluggedIn.core.initialize(pluggedIn.settings.autoWoot);
+pluggedIn.core.initialize();
