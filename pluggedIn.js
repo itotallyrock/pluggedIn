@@ -70,7 +70,6 @@ pluggedIn.core.spamDJ = (function(){
 });
 
 pluggedIn.core.appendChat = (function(message,color){
-	((color != undefined) ? (color) : (##ac76ff));
 	if(!message){
 		return false;
 	}else{
