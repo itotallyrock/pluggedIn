@@ -70,21 +70,15 @@ pluggedIn.core.spamDJ = (function(){
 });
 
 pluggedIn.core.appendChat = (function(message,color){
+	((color != undefined) ? (color) : (##ac76ff));
 	if(!message){
 		return false;
 	}else{
-		var a=$("#chat-messages");
-		var time;
-		d=new Date();
-		var hours=d.getHours();
-		var ampm = hours >= 12 ? 'pm' : 'am';
-		hours=hours%12;
-		var minutes=d.getMinutes();
-		if(minutes<10){
-			minutes='0'+minutes;
+		if(!color){
+			a.append('<div class="welcome"><span class="text" style="font-weight:800;">&nbsp;' + message + '</span></div>');
+		}else{
+			a.append('<div class="welcome" border-left: #'+color+' 3px solid;color: #'+color+';><span class="text" style="font-weight:800;">&nbsp;' + message + '</span></div>');
 		}
-		time=hours+':'+minutes;
-		a.append('<div class="welcome"><span class="text" style="font-weight:800;">&nbsp;' + message + '</span></div>');
 	}
 });
 
@@ -114,12 +108,12 @@ $(this).keydown(function (e) {
 
 pluggedIn.core.initialize = (function(){
 	pluggedIn.core.log("pluggedIn version "+pluggedIn.VERSION+" by "+pluggedIn.AUTHOR+" has loaded.");
-	pluggedIn.core.appendChat("pluggedIn version "+pluggedIn.VERSION+" by "+pluggedIn.AUTHOR+" has loaded.","8800ff");
+	pluggedIn.core.appendChat("pluggedIn version "+pluggedIn.VERSION+" by "+pluggedIn.AUTHOR+" has loaded.");
 	
 	if(pluggedIn.settings.autoDJ){
 		pluggedIn.core.autoDJ();
 	}
-	if(pluggedIn.settings.autWoot){
+	if(pluggedIn.settings.autoWoot){
 		pluggedIn.core.autoWoot();
 	}
 	if(pluggedIn.settings.spamDJ){
