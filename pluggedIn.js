@@ -30,6 +30,7 @@ pluggedIn.keyboard.SPAM_DJ = 86;
 pluggedIn.colors.WARN = "bb0000";
 pluggedIn.colors.ALERT = "ffee00";
 pluggedIn.colors.SUCCESS = "55bb00";
+pluggedIn.colors.INFO = "009cdd";
 
 /*
 
@@ -112,7 +113,7 @@ $(this).keydown(function (e) {
 
 pluggedIn.core.initialize = (function(){
 	pluggedIn.core.log("pluggedIn version "+pluggedIn.VERSION+" by "+pluggedIn.AUTHOR+" has loaded.");
-	pluggedIn.core.appendChat("pluggedIn version "+pluggedIn.VERSION+" by "+pluggedIn.AUTHOR+" has loaded.");
+	pluggedIn.core.appendChat("pluggedIn version "+pluggedIn.VERSION+" by "+pluggedIn.AUTHOR+" has loaded.",pluggedIn.colors.INFO);
 	
 	if(pluggedIn.settings.autoDJ){
 		pluggedIn.core.autoDJ();
