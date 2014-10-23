@@ -98,7 +98,9 @@ KEYBOARD SHORTCUTS
 $(this).keydown(function (e) {
 	if(e.which == pluggedIn.keyboard.SPAM_DJ){
 		if(API.getWaitListPosition() == -1){
-			$("#dj-button").click();
+			if(API.getWaitList().length<50){
+				$("#dj-button").click();
+			}
 		}
 	}
 }).keyup(function(e) {
