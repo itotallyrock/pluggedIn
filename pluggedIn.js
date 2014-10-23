@@ -31,6 +31,7 @@ pluggedIn.colors.WARN = "bb0000";
 pluggedIn.colors.ALERT = "ffee00";
 pluggedIn.colors.SUCCESS = "55bb00";
 pluggedIn.colors.INFO = "009cdd";
+pluggedIn.colors.DEFAULT = "ac76ff";
 
 /*
 
@@ -47,9 +48,24 @@ if(/*Get Cookie Here*/true){
 	pluggedIn.settings.lang=0;
 }
 
-pluggedIn.core.log = (function(msg){
-	if(pluggedIn.settings.debug)
-		console.log("%c"+pluggedIn.PREFIX+msg,'color: #8800ff; font-weight:700;');
+pluggedIn.core.log = (function(msg,debug){
+	if(debug){//Will only display if debug enabled
+		if(pluggedIn.settings.debug){
+			console.log("%c"+pluggedIn.PREFIX+msg,'color: #'+pluggedIn.colors.DEFAULT+'; font-weight:700;');
+		}
+	}else{
+		console.log("%c"+pluggedIn.PREFIX+msg,'color: #'+pluggedIn.colors.DEFAULT+'; font-weight:700;');
+	}
+});
+
+pluggedIn.core.warn = (function(msg,debug){
+	if(debug){//Will only display if debug enabled
+		if(pluggedIn.settings.debug){
+			console.log("%c"+pluggedIn.PREFIX+msg,'color: #'+pluggedIn.colors.WARN+'; font-weight:700;');
+		}
+	}else{
+		console.log("%c"+pluggedIn.PREFIX+msg,'color: #'+pluggedIn.colors.WARN+'; font-weight:700;');
+	}
 });
 
 pluggedIn.core.autoWoot = (function(){
@@ -75,7 +91,7 @@ pluggedIn.core.spamDJ = (function(){
 	}
 });
 
-pluggedIn.core.appendChat = (function(message,color){
+pluggedIn.gui.appendChat = (function(message,color){
 	if(!message){
 		return false;
 	}else{
@@ -84,6 +100,8 @@ pluggedIn.core.appendChat = (function(message,color){
 		}else{
 			$("#chat-messages").append('<div class="welcome" style="border-left: #'+color+' 3px solid;color: #'+color+';"><span class="text" style="font-weight:800;">&nbsp;' + message + '</span></div>');
 		}
+		
+		$('#chat-messages').scrollTop($('#chat-messages')[0].scrollHeight);
 	}
 });
 
@@ -106,7 +124,7 @@ $(this).keydown(function (e) {
 }).keyup(function(e) {
 	var r = true;
 	if(r){
-		pluggedIn.core.log("Finalized Keyboard Shortcut Execution");
+		pluggedIn.core.log("Finalized Keyboard Shortcut Execution",true);
 		r = false;
 	}
 });
@@ -115,7 +133,7 @@ $(this).keydown(function (e) {
 
 pluggedIn.core.initialize = (function(){
 	pluggedIn.core.log("pluggedIn version "+pluggedIn.VERSION+" by "+pluggedIn.AUTHOR+" has loaded.");
-	pluggedIn.core.appendChat("pluggedIn version "+pluggedIn.VERSION+" by "+pluggedIn.AUTHOR+" has loaded.",pluggedIn.colors.INFO);
+	pluggedIn.gui.appendChat("pluggedIn version "+pluggedIn.VERSION+" by "+pluggedIn.AUTHOR+" has loaded.",pluggedIn.colors.INFO);
 	
 	if(pluggedIn.settings.autoDJ){
 		pluggedIn.core.autoDJ();
