@@ -16,8 +16,8 @@ var pluggedIn = {};
 pluggedIn.core = {};
 pluggedIn.settings = {};
 
-pluggedIn.VERSION = "0.00.1 ALPHA";
-pluggedIn.AUTHOR = "itotallyrock (R0CK)";
+pluggedIn.VERSION = "0.00.2 ALPHA";
+pluggedIn.AUTHOR = "R0CK";
 
 /*
 
@@ -32,10 +32,10 @@ if(/*Get Cookie Here*/true){
 	pluggedIn.settings.spamDJ=false;
 }
 
-pluggedIn.core.autoWoot = function(){
+pluggedIn.core.autoWoot = (function(){
 	$("#woot").click();
 	API.on(API.ADVANCE,function(){$("#woot").click();});
-}
+});
 
 pluggedIn.core.autoDJ = function(){
 	if(API.getWaitListPosition() == -1){
@@ -43,7 +43,7 @@ pluggedIn.core.autoDJ = function(){
 	}
 }
 
-pluggedIn.core.spamDJ = function(){
+pluggedIn.core.spamDJ = (function(){
 	if(pluggedIn.settings.spamDJ){
 		while(API.getTimeRemaining()<5){
 			if(API.getWaitListPosition() == -1){
@@ -53,11 +53,31 @@ pluggedIn.core.spamDJ = function(){
 			}
 		}
 	}
-}
+});
 
-pluggedIn.core.initialize = function(){
+pluggedIn.core.appendchat = (function(message,color){
+	if(!message){
+		return false;
+	}else{
+		var a=$("#chat-messages");
+		var time;
+		d=new Date();
+		var hours=d.getHours();
+		var ampm = hours >= 12 ? 'pm' : 'am';
+		hours=hours%12;
+		var minutes=d.getMinutes();
+		if(minutes<10){
+			minutes='0'+minutes;
+		}
+		time=hours+':'+minutes;
+		a.append('<div class="message"><div class="timestamp" style="display: block;">'+time+'</div><span class="from you clickable">Plug.in</span><div class="text" style="color:#' + (color ? color : 'd1d1d1') + ';display:inline;">&nbsp;' + message + '</div></div>');
+	}
+});
+
+pluggedIn.core.initialize = (function(){
 	console.log("pluggedIn version "+pluggedIn.VERSION+" by "+pluggedIn.AUTHOR+" has loaded.");
-}
+	pluggedIn.core.appendChat("pluggedIn version "+pluggedIn.VERSION+" by "+pluggedIn.AUTHOR+" has loaded.","8800ff");
+});
 
 /*
 
