@@ -22,6 +22,8 @@ pluggedIn.AUTHOR = "R0CK";
 
 pluggedIn.PREFIX = "PluggedIn » ";
 
+pluggedIn.LANGS = ["en"];
+
 pluggedIn.keyboard.SPAM_DJ = 86;
 
 /*
@@ -36,6 +38,7 @@ if(/*Get Cookie Here*/true){
 	pluggedIn.settings.autoDJ=true;
 	pluggedIn.settings.spamDJ=false;
 	pluggedIn.settings.debug=true;
+	pluggedIn.settings.lang=0;
 }
 
 pluggedIn.core.log = (function(msg){
