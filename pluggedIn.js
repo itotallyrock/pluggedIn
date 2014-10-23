@@ -55,7 +55,7 @@ pluggedIn.core.spamDJ = (function(){
 	}
 });
 
-pluggedIn.core.appendchat = (function(message,color){
+pluggedIn.core.appendChat = (function(message,color){
 	if(!message){
 		return false;
 	}else{
