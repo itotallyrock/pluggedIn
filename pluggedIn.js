@@ -31,7 +31,7 @@ pluggedIn.keyboard.SPAM_DJ = 86;
 */
 
 pluggedIn.core.log = (function(msg){
-	console.log(pluggedIn.PREFIX+"%c"+msg,'background: #8800ff; color: #d1d1d1');
+	console.log("%c"+pluggedIn.PREFIX+msg,'background: #8800ff; color: #fff');
 });
 
 //Define settings if unknown
