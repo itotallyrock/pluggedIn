@@ -27,8 +27,8 @@ pluggedIn.AUTHOR = "R0CK";
 
 //Define settings if unknown
 if(/*Get Cookie Here*/true){
-	pluggedIn.settings.autoWoot=false;
-	pluggedIn.settings.autoDJ=false;
+	pluggedIn.settings.autoWoot=true;
+	pluggedIn.settings.autoDJ=true;
 	pluggedIn.settings.spamDJ=false;
 }
 
@@ -77,6 +77,10 @@ pluggedIn.core.appendchat = (function(message,color){
 pluggedIn.core.initialize = (function(){
 	console.log("pluggedIn version "+pluggedIn.VERSION+" by "+pluggedIn.AUTHOR+" has loaded.");
 	pluggedIn.core.appendChat("pluggedIn version "+pluggedIn.VERSION+" by "+pluggedIn.AUTHOR+" has loaded.","8800ff");
+	
+	(pluggedIn.settings.autoDJ ? (pluggedIn.core.autoWoot();) : (return false;));
+	(pluggedIn.settings.autoWoot ? (pluggedIn.core.autoWoot();) : (return false;));
+	(pluggedIn.settings.spamDJ ? (pluggedIn.core.autoWoot();) : (return false;));
 });
 
 /*
@@ -85,4 +89,4 @@ pluggedIn.core.initialize = (function(){
 
 */
 
-pluggedIn.core.initialize();
+pluggedIn.core.initialize(pluggedIn.settings.autoWoot);
