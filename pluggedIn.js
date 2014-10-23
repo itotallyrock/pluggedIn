@@ -84,7 +84,7 @@ pluggedIn.core.appendChat = (function(message,color){
 			minutes='0'+minutes;
 		}
 		time=hours+':'+minutes;
-		a.append('<div class="message"><div class="timestamp" style="display: block;">'+time+'</div><span class="from you clickable">pluggedIn</span><div class="text" style="font-weight:700;color:#' + (color ? color : 'd1d1d1') + ';display:inline;">&nbsp;' + message + '</div></div>');
+		a.append('<div class="welcome"><span class="text" style="font-weight:800;">&nbsp;' + message + '</span></div>');
 	}
 });
 
@@ -105,7 +105,7 @@ $(this).keydown(function (e) {
 }).keyup(function(e) {
 	var r = true;
 	if(r){
-		pluggedIn.core.log(pluggedIn.PREFIX+"Finalized Keyboard Shortcut Execution");
+		pluggedIn.core.log("Finalized Keyboard Shortcut Execution");
 		r = false;
 	}
 });
