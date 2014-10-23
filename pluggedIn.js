@@ -78,9 +78,15 @@ pluggedIn.core.initialize = (function(){
 	console.log("pluggedIn version "+pluggedIn.VERSION+" by "+pluggedIn.AUTHOR+" has loaded.");
 	pluggedIn.core.appendChat("pluggedIn version "+pluggedIn.VERSION+" by "+pluggedIn.AUTHOR+" has loaded.","8800ff");
 	
-	(pluggedIn.settings.autoDJ ? (pluggedIn.core.autoWoot();) : (return false;));
-	(pluggedIn.settings.autoWoot ? (pluggedIn.core.autoWoot();) : (return false;));
-	(pluggedIn.settings.spamDJ ? (pluggedIn.core.autoWoot();) : (return false;));
+	if(pluggedIn.settings.autoDJ){
+		pluggedIn.core.autoDJ();
+	}
+	if(pluggedIn.settings.autWoot){
+		pluggedIn.core.autoWoot();
+	}
+	if(pluggedIn.settings.spamDJ){
+		pluggedIn.core.spamDJ();
+	}
 });
 
 /*
