@@ -94,7 +94,7 @@ $(this).keydown(function (e) {
 		}
 	}
 }).keyup(function(e) {
-    console.logpluggedIn.PREFIX+"Finalized Keyboard Shortcut Execution");
+    console.log(pluggedIn.PREFIX+"Finalized Keyboard Shortcut Execution");
 });
 
 
