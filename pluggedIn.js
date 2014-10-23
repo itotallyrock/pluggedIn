@@ -30,6 +30,10 @@ pluggedIn.keyboard.SPAM_DJ = 86;
 
 */
 
+pluggedIn.core.log = (function(msg){
+	console.log(pluggedIn.PREFIX+"%c"+msg,'background: #8800ff; color: #d1d1d1');
+});
+
 //Define settings if unknown
 if(/*Get Cookie Here*/true){
 	pluggedIn.settings.autoWoot=true;
@@ -44,7 +48,7 @@ pluggedIn.core.autoWoot = (function(){
 
 pluggedIn.core.autoDJ = function(){
 	if(API.getWaitListPosition() == -1){
-		;
+		API.on(API.ADVANCE,function(){$("#dj-button").click();});
 	}
 }
 
@@ -94,13 +98,13 @@ $(this).keydown(function (e) {
 		}
 	}
 }).keyup(function(e) {
-    console.log(pluggedIn.PREFIX+"Finalized Keyboard Shortcut Execution");
+    pluggedIn.core.log(pluggedIn.PREFIX+"Finalized Keyboard Shortcut Execution");
 });
 
 
 
 pluggedIn.core.initialize = (function(){
-	console.log("pluggedIn version "+pluggedIn.VERSION+" by "+pluggedIn.AUTHOR+" has loaded.");
+	pluggedIn.core.log("pluggedIn version "+pluggedIn.VERSION+" by "+pluggedIn.AUTHOR+" has loaded.");
 	pluggedIn.core.appendChat("pluggedIn version "+pluggedIn.VERSION+" by "+pluggedIn.AUTHOR+" has loaded.","8800ff");
 	
 	if(pluggedIn.settings.autoDJ){
