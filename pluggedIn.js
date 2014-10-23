@@ -20,7 +20,7 @@ pluggedIn.keyboard = {};
 pluggedIn.VERSION = "0.00.2 ALPHA";
 pluggedIn.AUTHOR = "R0CK";
 
-pluggedIn.PREFIX = "PluggedIn > ";
+pluggedIn.PREFIX = "PluggedIn » ";
 
 pluggedIn.keyboard.SPAM_DJ = 86;
 
@@ -30,16 +30,18 @@ pluggedIn.keyboard.SPAM_DJ = 86;
 
 */
 
-pluggedIn.core.log = (function(msg){
-	console.log("%c"+pluggedIn.PREFIX+msg,'background: #8800ff; color: #fff');
-});
-
 //Define settings if unknown
 if(/*Get Cookie Here*/true){
 	pluggedIn.settings.autoWoot=true;
 	pluggedIn.settings.autoDJ=true;
 	pluggedIn.settings.spamDJ=false;
+	pluggedIn.settings.debug=true;
 }
+
+pluggedIn.core.log = (function(msg){
+	if(debug)
+		console.log("%c"+pluggedIn.PREFIX+msg,'color: #8800ff; font-weight:700;');
+});
 
 pluggedIn.core.autoWoot = (function(){
 	$("#woot").click();
@@ -98,7 +100,11 @@ $(this).keydown(function (e) {
 		}
 	}
 }).keyup(function(e) {
-    pluggedIn.core.log(pluggedIn.PREFIX+"Finalized Keyboard Shortcut Execution");
+	var r = true;
+	if(r){
+		pluggedIn.core.log(pluggedIn.PREFIX+"Finalized Keyboard Shortcut Execution");
+		r = false;
+	}
 });
 
 
