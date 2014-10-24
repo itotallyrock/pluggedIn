@@ -18,7 +18,7 @@ pluggedIn.settings = {};
 pluggedIn.keyboard = {};
 pluggedIn.colors = {};
 
-pluggedIn.VERSION = "0.00.2 ALPHA";
+pluggedIn.VERSION = "v0.00.2-A";
 pluggedIn.AUTHOR = "R0CK";
 
 pluggedIn.PREFIX = "PluggedIn » ";
@@ -132,8 +132,8 @@ $(this).keydown(function (e) {
 
 
 pluggedIn.core.initialize = (function(){
-	pluggedIn.core.log("pluggedIn version "+pluggedIn.VERSION+" by "+pluggedIn.AUTHOR+" has loaded.");
-	pluggedIn.gui.appendChat("pluggedIn version "+pluggedIn.VERSION+" by "+pluggedIn.AUTHOR+" has loaded.",pluggedIn.colors.INFO);
+	pluggedIn.core.log("pluggedIn "+pluggedIn.VERSION+" by "+pluggedIn.AUTHOR+" has loaded.");
+	pluggedIn.gui.appendChat("pluggedIn "+pluggedIn.VERSION+" by "+pluggedIn.AUTHOR+" has loaded.",pluggedIn.colors.INFO);
 	
 	if(pluggedIn.settings.autoDJ){
 		pluggedIn.core.autoDJ();
