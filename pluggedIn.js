@@ -165,14 +165,14 @@ pluggedIn.core.eraseCookie = (function(name){
 
 pluggedIn.core.getSettings = (function(){
 	if(pluggedIn.core.readCookie("pluggedIn")!=null){
-		var c = pluggedIn.core.readCookie("pluggedIn");
-		c = JSON.parse(pluggedIn.core.convertFromHex(c));
+		pluggedIn.c = pluggedIn.core.readCookie("pluggedIn");
+		pluggedIn.c = JSON.parse(pluggedIn.core.convertFromHex(c));
 		
-		pluggedIn.settings.autoWoot = c.settings.autoWoot;
-		pluggedIn.settings.autoDJ = c.settings.autoDJ;
-		pluggedIn.settings.spamDJ = c.settings.spamDJ;
-		pluggedIn.settings.debug = c.settings.debug;
-		pluggedIn.settings.lang = c.settings.land;
+		pluggedIn.settings.autoWoot = pluggedIn.c.settings.autoWoot;
+		pluggedIn.settings.autoDJ = pluggedIn.c.settings.autoDJ;
+		pluggedIn.settings.spamDJ = pluggedIn.c.settings.spamDJ;
+		pluggedIn.settings.debug = pluggedIn.c.settings.debug;
+		pluggedIn.settings.lang = pluggedIn.c.settings.land;
 		
 		pluggedIn.core.info("Loaded Settings From Cookie",true);
 	}else{
@@ -209,9 +209,9 @@ $(this).keydown(function (e) {
 		}
 	}
 }).keyup(function(e) {
-	if(r){
+	//if(r){
 		//pluggedIn.core.info("Finalized Keyboard Shortcut Execution",true);
-		r = false;
+	//	r = false;
 	}
 });
 
