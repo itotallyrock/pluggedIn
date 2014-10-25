@@ -69,10 +69,30 @@ pluggedIn.core.log = (function(msg,debug){
 pluggedIn.core.warn = (function(msg,debug){
 	if(debug){//Will only display if debug enabled
 		if(pluggedIn.settings.debug){
-			console.log("%c"+pluggedIn.PREFIX+msg,'color: #'+pluggedIn.colors.WARN+'; font-weight:700;');
+			console.warn("%c"+pluggedIn.PREFIX+msg,'color: #'+pluggedIn.colors.ALERT+'; font-weight:700;');
 		}
 	}else{
-		console.log("%c"+pluggedIn.PREFIX+msg,'color: #'+pluggedIn.colors.WARN+'; font-weight:700;');
+		console.warn("%c"+pluggedIn.PREFIX+msg,'color: #'+pluggedIn.colors.ALERT+'; font-weight:700;');
+	}
+});
+
+pluggedIn.core.error = (function(msg,debug){
+	if(debug){//Will only display if debug enabled
+		if(pluggedIn.settings.debug){
+			console.error("%c"+pluggedIn.PREFIX+msg,'color: #'+pluggedIn.colors.WARN+'; font-weight:700;');
+		}
+	}else{
+		console.error("%c"+pluggedIn.PREFIX+msg,'color: #'+pluggedIn.colors.WARN+'; font-weight:700;');
+	}
+});
+
+pluggedIn.core.info = (function(msg,debug){
+	if(debug){//Will only display if debug enabled
+		if(pluggedIn.settings.debug){
+			console.info("%c"+pluggedIn.PREFIX+msg,'color: #'+pluggedIn.colors.INFO+'; font-weight:700;');
+		}
+	}else{
+		console.info("%c"+pluggedIn.PREFIX+msg,'color: #'+pluggedIn.colors.INFO+'; font-weight:700;');
 	}
 });
 
