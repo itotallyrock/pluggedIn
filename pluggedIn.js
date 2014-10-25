@@ -177,7 +177,7 @@ pluggedIn.core.getCookies = function(){
 pluggedIn.core.getSettings = (function(){
 	if(pluggedIn.core.readCookie("pluggedIn")!=null){
 		var c = pluggedIn.core.readCookie("pluggedIn");
-		c = JSON.parse(convertFromHex(c));
+		c = JSON.parse(pluggedIn.core.convertFromHex(c));
 		
 		pluggedIn.settings.autoWoot = c.settings.autoWoot;
 		pluggedIn.settings.autoDJ = c.settings.autoDJ;
