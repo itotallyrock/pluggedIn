@@ -170,11 +170,11 @@ pluggedIn.core.getSettings = (function(){
 		c = pluggedIn.core.readCookie("pluggedIn");
 		c = JSON.parse(pluggedIn.core.convertFromHex(c));
 		
-		pluggedIn.settings.autoWoot = c.settings.autoWoot;
-		pluggedIn.settings.autoDJ = c.settings.autoDJ;
-		pluggedIn.settings.spamDJ = c.settings.spamDJ;
-		pluggedIn.settings.debug = c.settings.debug;
-		pluggedIn.settings.lang = c.settings.land;
+		pluggedIn.settings.autoWoot = c.autoWoot;
+		pluggedIn.settings.autoDJ = c.autoDJ;
+		pluggedIn.settings.spamDJ = c.spamDJ;
+		pluggedIn.settings.debug = c.debug;
+		pluggedIn.settings.lang = c.lang;
 		
 		pluggedIn.core.info("Loaded Settings From Cookie",true);
 	}else{
