@@ -180,7 +180,7 @@ pluggedIn.core.getSettings = (function(){
 		pluggedIn.settings.debug = c.settings.debug;
 		pluggedIn.settings.lang = c.settings.land;
 	}else{
-		saveSettings();
+		pluggedIn.core.saveSettings();
 	}
 });
 
