@@ -8,7 +8,7 @@ however redistributing of this product modified or not is disallowed.
 
 Some of the features you have from using this addon may be frowned upon by certain communities, use responsibly.
 
-Version 0.00.1 ALPHA
+Version 0.00.3 ALPHA
 
 */
 
@@ -18,7 +18,7 @@ pluggedIn.settings = {};
 pluggedIn.keyboard = {};
 pluggedIn.colors = {};
 
-pluggedIn.VERSION = "v0.00.2-A";
+pluggedIn.VERSION = "v0.00.3-A";
 pluggedIn.AUTHOR = "R0CK";
 
 pluggedIn.PREFIX = "PluggedIn » ";
@@ -32,6 +32,13 @@ pluggedIn.colors.ALERT = "ffee00";
 pluggedIn.colors.SUCCESS = "55bb00";
 pluggedIn.colors.INFO = "009cdd";
 pluggedIn.colors.DEFAULT = "ac76ff";
+
+
+//Import external scripts
+
+//$.getScript();
+
+
 
 /*
 
@@ -91,20 +98,94 @@ pluggedIn.core.spamDJ = (function(){
 	}
 });
 
-pluggedIn.gui.appendChat = (function(message,color){
-	if(!message){
-		return false;
+
+
+/*
+
+CUSTOM ENCODING (Simple string to hex)
+
+*/
+
+pluggedIn.core.convertToHex = (function(str){
+    var hex = '';
+    for(var i=0;i<str.length;i++) {
+        hex += ''+str.charCodeAt(i).toString(16);
+    }
+    return hex;
+});
+
+pluggedIn.core.convertFromHex = (function(hex){
+    var hex = hex.toString();//force conversion
+    var str = '';
+    for (var i = 0; i < hex.length; i += 2)
+        str += String.fromCharCode(parseInt(hex.substr(i, 2), 16));
+    return str;
+});
+
+
+
+
+
+
+pluggedIn.core.createCookie = (function(name,value,days){
+	if (days){
+		var date = new Date();
+		date.setTime(date.getTime()+(days*24*60*60*1000));
+		var expires = "; expires="+date.toGMTString();
 	}else{
-		if(!color){
-			$("#chat-messages").append('<div class="welcome"><span class="text" style="font-weight:800;">&nbsp;' + message + '</span></div>');
-		}else{
-			$("#chat-messages").append('<div class="welcome" style="border-left: #'+color+' 3px solid;color: #'+color+';"><span class="text" style="font-weight:800;">&nbsp;' + message + '</span></div>');
+		var expires = "";
+	}
+	document.cookie = name+"="+value+expires+"; path=/";
+});
+
+pluggedIn.core.readCookie = (function (name){
+	var nameEQ = name + "=";
+	var ca = document.cookie.split(';');
+	for(var i=0;i < ca.length;i++){
+		var c = ca[i];
+		while(c.charAt(0)==' '){
+			c = c.substring(1,c.length);
 		}
+		if(c.indexOf(nameEQ) == 0){
+			return c.substring(nameEQ.length,c.length);
+		}
+	}
+	return null;
+});
+
+pluggedIn.core.eraseCookie = (function(name){
+	pluggedIn.core.createCookie(name,"",-1);
+});
+
+
+pluggedIn.core.getCookies = function(){
+	var pairs = document.cookie.split(";");
+	var cookies = {};
+	for (var i=0; i<pairs.length; i++){
+		var pair = pairs[i].split("=");
+		cookies[pair[0]] = unescape(pair[1]);
+	}
+	return cookies;
+}
+
+pluggedIn.core.getSettings = (function(){
+	if(pluggedIn.core.readCookie("pluggedIn")!=null){
+		var c = pluggedIn.core.readCookie("pluggedIn");
+		c = parseJSON(convertFromHex(c));
 		
-		$('#chat-messages').scrollTop($('#chat-messages')[0].scrollHeight);
+		pluggedIn.settings.autoWoot = c.settings.autoWoot;
+		pluggedIn.settings.autoDJ = c.settings.autoDJ;
+		pluggedIn.settings.spamDJ = c.settings.spamDJ;
+		pluggedIn.settings.debug = c.settings.debug;
+		pluggedIn.settings.lang = c.settings.land;
+	}else{
+		saveSettings();
 	}
 });
 
+pluggedIn.core.saveSettings = (function(){
+	pluggedIn.core.createCookie("pluggedIn",pluggedIn.core.convertToHex(JSON.stringify(pluggedIn.settings)),365);
+});
 
 
 /*
@@ -152,5 +233,19 @@ pluggedIn.core.initialize = (function(){
 	GUI and initialization
 
 */
+
+pluggedIn.gui.appendChat = (function(message,color){
+	if(!message){
+		return false;
+	}else{
+		if(!color){
+			$("#chat-messages").append('<div class="welcome"><span class="text" style="font-weight:800;">&nbsp;' + message + '</span></div>');
+		}else{
+			$("#chat-messages").append('<div class="welcome" style="border-left: #'+color+' 3px solid;color: #'+color+';"><span class="text" style="font-weight:800;">&nbsp;' + message + '</span></div>');
+		}
+		
+		$('#chat-messages').scrollTop($('#chat-messages')[0].scrollHeight);
+	}
+});
 
 pluggedIn.core.initialize();
