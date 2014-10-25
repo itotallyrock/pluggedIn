@@ -14,6 +14,7 @@ Version 0.00.3 ALPHA
 
 var pluggedIn = {};
 pluggedIn.core = {};
+pluggedIn.gui = {};
 pluggedIn.settings = {};
 pluggedIn.keyboard = {};
 pluggedIn.colors = {};
