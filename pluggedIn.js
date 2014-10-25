@@ -209,9 +209,10 @@ $(this).keydown(function (e) {
 		}
 	}
 }).keyup(function(e) {
-	//if(r){
-		//pluggedIn.core.info("Finalized Keyboard Shortcut Execution",true);
-	//	r = false;
+	var r = true;
+	if(r){
+		pluggedIn.core.info("Finalized Keyboard Shortcut Execution",true);
+		r = false;
 	}
 });
 
