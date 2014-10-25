@@ -29,7 +29,7 @@ pluggedIn.LANGS = ["en"];
 pluggedIn.keyboard.SPAM_DJ = 86;
 
 pluggedIn.colors.WARN = "bb0000";
-pluggedIn.colors.ALERT = "ffee00";
+pluggedIn.colors.ALERT = "ddbb00";
 pluggedIn.colors.SUCCESS = "55bb00";
 pluggedIn.colors.INFO = "009cdd";
 pluggedIn.colors.DEFAULT = "ac76ff";
@@ -221,16 +221,23 @@ $(this).keydown(function (e){
 
 
 pluggedIn.core.initialize = (function(){
-	pluggedIn.core.getSettings();
 	
-	pluggedIn.core.log(pluggedIn.VERSION+" by "+pluggedIn.AUTHOR+" has loaded.");
-	pluggedIn.gui.appendChat("pluggedIn "+pluggedIn.VERSION+" by "+pluggedIn.AUTHOR+" has loaded.",pluggedIn.colors.INFO);
-	
-	if(pluggedIn.settings.autoDJ){
-		pluggedIn.core.autoDJ();
-	}
-	if(pluggedIn.settings.autoWoot){
-		pluggedIn.core.autoWoot();
+	if(pluggedIn.core.executed){
+		pluggedIn.core.warn("PluggedIn is already running, skipping initialization");
+	}else{
+		pluggedIn.core.getSettings();
+		
+		pluggedIn.core.log(pluggedIn.VERSION+" by "+pluggedIn.AUTHOR+" has loaded.");
+		pluggedIn.gui.appendChat("pluggedIn "+pluggedIn.VERSION+" by "+pluggedIn.AUTHOR+" has loaded.",pluggedIn.colors.INFO);
+		
+		if(pluggedIn.settings.autoDJ){
+			pluggedIn.core.autoDJ();
+		}
+		if(pluggedIn.settings.autoWoot){
+			pluggedIn.core.autoWoot();
+		}
+		
+		pluggedIn.core.executed = true;
 	}
 });
 
@@ -253,6 +260,15 @@ pluggedIn.gui.appendChat = (function(message,color){
 		
 		$('#chat-messages').scrollTop($('#chat-messages')[0].scrollHeight);
 	}
+});
+
+
+pluggedIn.gui.moveTopBar = (function(){
+	$("#room-bar.bar-button")[0].style.width="343px";$("#room-bar.bar-button")[0].style.left="103px";
+});
+
+pluggedIn.gui.drawTopButton = (function(){
+	$(".app-header").append('<div style="width: 50px;top: 7px;left: 60px;height: 54px;position: absolute;"><i class="icon icon-plug-dj"></i></div>');
 });
 
 pluggedIn.core.initialize();
