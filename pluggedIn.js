@@ -195,12 +195,12 @@ KEYBOARD SHORTCUTS
 
 */
 
-$(this).keydown(function (e) {
+$(this).keydown(function (e){
+	pluggedIn.core.info("Running Keyboard Shortcut (User Pressed "+String.fromCharCode(e.which)+")",true);
 	if(e.which == pluggedIn.keyboard.SPAM_DJ){
 		if(pluggedIn.settings.spamDJ){
 			var r = true;
 			if(r){
-				pluggedIn.core.info("Running Keyboard Shortcut Execution for SpamDJ",true);
 				r = false;
 			}
 			if(API.getWaitListPosition() == -1){
