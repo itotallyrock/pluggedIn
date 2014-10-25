@@ -47,14 +47,12 @@ pluggedIn.colors.DEFAULT = "ac76ff";
 
 */
 
-//Define settings if unknown
-if(/*Get Cookie Here*/true){
-	pluggedIn.settings.autoWoot=true;
-	pluggedIn.settings.autoDJ=true;
-	pluggedIn.settings.spamDJ=false;
-	pluggedIn.settings.debug=true;
-	pluggedIn.settings.lang=0;
-}
+//Default Settings
+pluggedIn.settings.autoWoot = true;
+pluggedIn.settings.autoDJ = true;
+pluggedIn.settings.spamDJ = true;
+pluggedIn.settings.debug = false;
+pluggedIn.settings.lang = 0;
 
 pluggedIn.core.log = (function(msg,debug){
 	if(debug){//Will only display if debug enabled
@@ -107,19 +105,6 @@ pluggedIn.core.autoDJ = function(){
 	}
 }
 
-pluggedIn.core.spamDJ = (function(){
-	if(pluggedIn.settings.spamDJ){
-		while(API.getTimeRemaining()<5){
-			if(API.getWaitListPosition() == -1){
-				$("#dj-button").click();
-			}else{
-				break;
-			}
-		}
-	}
-});
-
-
 
 /*
 
@@ -136,7 +121,7 @@ pluggedIn.core.convertToHex = (function(str){
 });
 
 pluggedIn.core.convertFromHex = (function(hex){
-    var hex = hex.toString();//force conversion
+    var hex = hex.toString();
     var str = '';
     for (var i = 0; i < hex.length; i += 2)
         str += String.fromCharCode(parseInt(hex.substr(i, 2), 16));
@@ -199,13 +184,17 @@ pluggedIn.core.getSettings = (function(){
 		pluggedIn.settings.spamDJ = c.settings.spamDJ;
 		pluggedIn.settings.debug = c.settings.debug;
 		pluggedIn.settings.lang = c.settings.land;
+		
+		pluggedIn.core.info("Loaded Settings From Cookie",true);
 	}else{
+		pluggedIn.core.warn("Settings Cookie did not exist.",true);
 		pluggedIn.core.saveSettings();
 	}
 });
 
 pluggedIn.core.saveSettings = (function(){
 	pluggedIn.core.createCookie("pluggedIn",pluggedIn.core.convertToHex(JSON.stringify(pluggedIn.settings)),365);
+	pluggedIn.core.info("Created Settings Cookie",true);
 });
 
 
@@ -217,16 +206,22 @@ KEYBOARD SHORTCUTS
 
 $(this).keydown(function (e) {
 	if(e.which == pluggedIn.keyboard.SPAM_DJ){
-		if(API.getWaitListPosition() == -1){
-			if(API.getWaitList().length<50){
-				$("#dj-button").click();
+		if(pluggedIn.settings.spamDJ){
+			var r = true;
+			if(r){
+				pluggedIn.core.info("Running Keyboard Shortcut Execution for SpamDJ",true);
+				r = false;
+			}
+			if(API.getWaitListPosition() == -1){
+				if(API.getWaitList().length<50){
+					$("#dj-button").click();
+				}
 			}
 		}
 	}
 }).keyup(function(e) {
-	var r = true;
 	if(r){
-		pluggedIn.core.log("Finalized Keyboard Shortcut Execution",true);
+		//pluggedIn.core.info("Finalized Keyboard Shortcut Execution",true);
 		r = false;
 	}
 });
@@ -234,7 +229,9 @@ $(this).keydown(function (e) {
 
 
 pluggedIn.core.initialize = (function(){
-	pluggedIn.core.log("pluggedIn "+pluggedIn.VERSION+" by "+pluggedIn.AUTHOR+" has loaded.");
+	pluggedIn.core.getSettings();
+	
+	pluggedIn.core.log(pluggedIn.VERSION+" by "+pluggedIn.AUTHOR+" has loaded.");
 	pluggedIn.gui.appendChat("pluggedIn "+pluggedIn.VERSION+" by "+pluggedIn.AUTHOR+" has loaded.",pluggedIn.colors.INFO);
 	
 	if(pluggedIn.settings.autoDJ){
@@ -242,9 +239,6 @@ pluggedIn.core.initialize = (function(){
 	}
 	if(pluggedIn.settings.autoWoot){
 		pluggedIn.core.autoWoot();
-	}
-	if(pluggedIn.settings.spamDJ){
-		pluggedIn.core.spamDJ();
 	}
 });
 
