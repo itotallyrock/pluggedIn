@@ -53,6 +53,7 @@ pluggedIn.settings.autoDJ = true;
 pluggedIn.settings.spamDJ = true;
 pluggedIn.settings.debug = false;
 pluggedIn.settings.lang = 0;
+pluggedIn.settings.bg = "http://blog.napc.com/Portals/10319/images/clouds.jpg";//URL
 
 pluggedIn.core.log = (function(msg,debug){
 	if(debug){//Will only display if debug enabled
@@ -269,6 +270,12 @@ pluggedIn.gui.moveTopBar = (function(){
 
 pluggedIn.gui.drawTopButton = (function(){
 	$(".app-header").append('<div style="width: 50px;top: 7px;left: 60px;height: 54px;position: absolute;"><i class="icon icon-plug-dj"></i></div>');
+});
+
+
+pluggedIn.gui.changeBackground = (function(url){
+	$("i.room-background")[0].style.backgroundSize="100%";
+	$("i.room-background")[0].style.background = "url('"+url+"') no-repeat";
 });
 
 pluggedIn.core.initialize();
