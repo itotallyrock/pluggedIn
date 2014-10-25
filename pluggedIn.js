@@ -211,7 +211,7 @@ $(this).keydown(function (e) {
 		}
 	}
 }).keyup(function(e) {
-	var r = true;  Redundant
+	var r = true;  //Redundant
 	if(r){
 		pluggedIn.core.info("Finalized Keyboard Shortcut Execution",true);
 		r = false;
