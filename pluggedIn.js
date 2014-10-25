@@ -163,17 +163,6 @@ pluggedIn.core.eraseCookie = (function(name){
 	pluggedIn.core.createCookie(name,"",-1);
 });
 
-
-pluggedIn.core.getCookies = function(){
-	var pairs = document.cookie.split(";");
-	var cookies = {};
-	for (var i=0; i<pairs.length; i++){
-		var pair = pairs[i].split("=");
-		cookies[pair[0]] = unescape(pair[1]);
-	}
-	return cookies;
-}
-
 pluggedIn.core.getSettings = (function(){
 	if(pluggedIn.core.readCookie("pluggedIn")!=null){
 		var c = pluggedIn.core.readCookie("pluggedIn");
