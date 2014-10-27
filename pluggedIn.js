@@ -97,13 +97,18 @@ pluggedIn.core.info = (function(msg,debug){
 
 pluggedIn.core.autoWoot = (function(){
 	$("#woot").click();
-	API.on(API.ADVANCE,function(){$("#woot").click();});
+	API.on(API.ADVANCE,function(){
+		pluggedIn.core.info("Ran autoWoot",true);
+		$("#woot").click();});
 });
 
 pluggedIn.core.autoDJ = function(){
-	if(API.getWaitListPosition() == -1){
-		API.on(API.ADVANCE,function(){$("#dj-button").click();});
-	}
+	API.on(API.ADVANCE,function(){
+		if(API.getWaitListPosition() == -1){
+			pluggedIn.core.info("Ran autoDJ",true);
+			$("#dj-button").click();
+		}
+	});
 }
 
 
