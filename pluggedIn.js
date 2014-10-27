@@ -234,7 +234,8 @@ pluggedIn.core.initialize = (function(){
 		pluggedIn.core.getSettings();
 		
 		pluggedIn.core.log(pluggedIn.VERSION+" by "+pluggedIn.AUTHOR+" has loaded.");
-		pluggedIn.gui.appendChat("pluggedIn "+pluggedIn.VERSION+" by "+pluggedIn.AUTHOR+" has loaded.",pluggedIn.colors.INFO);
+		pluggedIn.core.info("Visit https://github.com/itotallyrock/pluggedIn/wiki/Console-Usage for usage.");
+		pluggedIn.gui.appendChat("pluggedIn "+pluggedIn.VERSION+" by "+pluggedIn.AUTHOR+" has loaded.<br/>Visit <a href='https://github.com/itotallyrock/pluggedIn/wiki/Console-Usage'>The Wiki</a> for usage",pluggedIn.colors.INFO);
 		
 		if(pluggedIn.settings.autoDJ){
 			pluggedIn.core.autoDJ();
