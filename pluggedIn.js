@@ -116,9 +116,16 @@ pluggedIn.core.autoDJ = function(){
 pluggedIn.core.replaceChatImg = (function(){
 	API.on(API.CHAT,(function(msg){
 		if(pluggedIn.core.isChatImg(msg)){
-			$(".message."+msg.type.match(/ from-([\d]{3,}) /g).trim()+">.text").innerHTML = '<img src="'+msg.message.match(/^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?(.png|.jpeg|.jpg|.gif)$/g)+'" style="display: block; max-width: 100%; height: auto; margin: 0px auto;">';
+			//$(".message."+msg.type.match(/ from-([\d]{3,}) /g).trim()+">.text").innerHTML = '<img src="'+msg.message.match(/^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?(.png|.jpeg|.jpg|.gif)$/g)+'" style="display: block; max-width: 100%; height: auto; margin: 0px auto;">';
+			var inner = $(".message").last().children().last().children()[0].toString();
+			$(".message").last().children().last().children()[0].innerHTML = "<a href=\""+inner+"\"><img src=\""+inner+"\" alt=\""+inner+"\" style=\"display: block; max-width: 100%; height: auto; margin: 0px auto;\"></a>";
 		}
 	}));
+});
+
+
+pluggedIn.core.isChatImg = (function(msg){
+	return $(".message").last().children().last().children()[0].toString().search(/^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)(.png|.jpg|.gif|.jpeg)$/g) > -1 ? true : false;
 });
 
 
@@ -234,10 +241,6 @@ $(this).keydown(function (e){
 	}
 });
 
-pluggedIn.core.isChatImg = (function(msg){
-	return msg.message.match(/^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?(.png|.jpeg|.jpg|.gif)$/g) > 0 ? true : false;
-});
-
 pluggedIn.core.initialize = (function(){
 	
 	if(pluggedIn.core.executed){
@@ -262,6 +265,10 @@ pluggedIn.core.initialize = (function(){
 		
 		pluggedIn.core.executed = true;
 	}
+});
+
+pluggedIn.core.update = (function(){
+	API.off(API.WAIT_LIST_UPDATE);
 });
 
 
