@@ -106,7 +106,7 @@ pluggedIn.core.autoWoot = (function(){
 
 pluggedIn.core.autoDJ = function(){
 	API.on(API.ADVANCE,(function(){
-		if(API.getWaitListPosition() == -1){
+		if(API.getWaitListPosition() == -1 && API.getDJ().id != API.getUser().id){
 			pluggedIn.core.info("Ran autoDJ",true);
 			$("#dj-button").click();
 		}
