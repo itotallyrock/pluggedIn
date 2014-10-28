@@ -115,17 +115,13 @@ pluggedIn.core.autoDJ = function(){
 
 pluggedIn.core.replaceChatImg = (function(){
 	API.on(API.CHAT,(function(msg){
-		if(pluggedIn.core.isChatImg(msg)){
+		if($(".message").last().children().last().children()[0].toString().search(/^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)(.png|.jpg|.gif|.jpeg)$/g) > -1 ? true : false){
 			//$(".message."+msg.type.match(/ from-([\d]{3,}) /g).trim()+">.text").innerHTML = '<img src="'+msg.message.match(/^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?(.png|.jpeg|.jpg|.gif)$/g)+'" style="display: block; max-width: 100%; height: auto; margin: 0px auto;">';
 			var inner = $(".message").last().children().last().children()[0].toString();
 			$(".message").last().children().last().children()[0].innerHTML = "<a href=\""+inner+"\"><img src=\""+inner+"\" alt=\""+inner+"\" style=\"display: block; max-width: 100%; height: auto; margin: 0px auto;\"></a>";
+			$('#chat-messages').scrollTop($('#chat-messages')[0].scrollHeight);
 		}
 	}));
-});
-
-
-pluggedIn.core.isChatImg = (function(msg){
-	return $(".message").last().children().last().children()[0].toString().search(/^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)(.png|.jpg|.gif|.jpeg)$/g) > -1 ? true : false;
 });
 
 
@@ -190,14 +186,11 @@ pluggedIn.core.getSettings = (function(){
 	var c;
 	
 	if(pluggedIn.core.readCookie("pluggedIn")!=null){
-		c = pluggedIn.core.readCookie("pluggedIn");
-		c = JSON.parse(pluggedIn.core.convertFromHex(c));
+		c = JSON.parse(pluggedIn.core.convertFromHex(pluggedIn.core.readCookie("pluggedIn"));
 		
-		pluggedIn.settings.autoWoot = c.autoWoot;
-		pluggedIn.settings.autoDJ = c.autoDJ;
-		pluggedIn.settings.spamDJ = c.spamDJ;
-		pluggedIn.settings.debug = c.debug;
-		pluggedIn.settings.lang = c.lang;
+		for(var s in c){
+			pluggedIn.settings.s =  c.s;
+		}
 		
 		pluggedIn.core.info("Loaded Settings From Cookie",true);
 	}else{
@@ -268,7 +261,22 @@ pluggedIn.core.initialize = (function(){
 });
 
 pluggedIn.core.update = (function(){
+	pluggedIn.core.saveSettings();
+	
 	API.off(API.WAIT_LIST_UPDATE);
+	API.off(CHAT);
+	pluggedIn.core.getSettings();
+	
+	if(pluggedIn.settings.autoDJ){
+		pluggedIn.core.autoDJ();
+	}
+	if(pluggedIn.settings.autoWoot){
+		pluggedIn.core.autoWoot();
+	}
+		
+	if(pluggedIn.settings.chatimg){
+		pluggedIn.core.replaceChatImg();
+	}
 });
 
 
