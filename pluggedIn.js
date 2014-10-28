@@ -45,7 +45,7 @@ pluggedIn.commands.kill = {
 pluggedIn.commands.status = {
 	name:		"status",
 	alias:		[],
-	args:		"[avail,gaming,working]"
+	args:		"[avail,gaming,working]",
 	callback:	(function(e){pluggedIn.core.stop();})//Will pass an array for e
 };
 
