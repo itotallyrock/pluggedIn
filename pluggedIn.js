@@ -62,6 +62,10 @@ pluggedIn.commands.help = {
 //$.getScript();
 
 
+//Import external css
+
+//$("head").append("<link rel=\"stylesheet\" type=\"text/css\" href=\"https://someurl.com/folder/style.css\">");
+
 
 /*
 
