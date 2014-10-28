@@ -186,7 +186,7 @@ pluggedIn.core.getSettings = (function(){
 	var c;
 	
 	if(pluggedIn.core.readCookie("pluggedIn")!=null){
-		c = JSON.parse(pluggedIn.core.convertFromHex(pluggedIn.core.readCookie("pluggedIn"));
+		c = JSON.parse(pluggedIn.core.convertFromHex(pluggedIn.core.readCookie("pluggedIn")));
 		
 		for(var s in c){
 			pluggedIn.settings.s =  c.s;
