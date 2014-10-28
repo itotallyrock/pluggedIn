@@ -114,7 +114,7 @@ pluggedIn.core.autoDJ = function(){
 }
 
 pluggedIn.core.replaceChatImg = (function(){
-	API.on(API.CHAT,(function(){
+	API.on(API.CHAT,(function(msg){
 		if(pluggedIn.core.isChatImg(msg)){
 			$(".message."+msg.type.match(/ from-([\d]{3,}) /g).trim()+">.text").innerHTML = '<img src="'+msg.message.match(/^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?(.png|.jpeg|.jpg|.gif)$/g)+'" style="display: block; max-width: 100%; height: auto; margin: 0px auto;">';
 		}
