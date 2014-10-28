@@ -279,6 +279,21 @@ pluggedIn.core.update = (function(){
 	}
 });
 
+pluggedIn.core.stop = (function(callback){
+	API.off(API.WAIT_LIST_UPDATE);
+	API.off(CHAT);
+	
+	if(!callback){
+		pluggedIn.gui.appendChat("PluggedIn has been sucessfully stopped",pluggedIn.colors.SUCCESS);
+		pluggedIn.core.info("PluggedIn has been sucessfully stopped");
+	}else{
+		pluggedIn.gui.appendChat("PluggedIn has been sucessfully stopped",pluggedIn.colors.ALERT);
+		pluggedIn.core.alert("PluggedIn has stopped unexpectedly with crash code "+callback);
+	}
+	
+	pluggedIn = undefined;
+});
+
 
 /*
 
