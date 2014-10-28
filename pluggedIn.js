@@ -18,6 +18,7 @@ pluggedIn.gui = {};
 pluggedIn.settings = {};
 pluggedIn.keyboard = {};
 pluggedIn.colors = {};
+pluggedIn.commands = {};
 
 pluggedIn.VERSION = "v0.00.3-A";
 pluggedIn.AUTHOR = "R0CK";
@@ -33,6 +34,27 @@ pluggedIn.colors.ALERT = "ddbb00";
 pluggedIn.colors.SUCCESS = "55bb00";
 pluggedIn.colors.INFO = "009cdd";
 pluggedIn.colors.DEFAULT = "ac76ff";
+
+pluggedIn.commands.kill = {
+	name:		"kill",
+	alias:		["stop","halt"],
+	args:		"",
+	callback:	(function(){pluggedIn.core.stop();})
+};
+
+pluggedIn.commands.status = {
+	name:		"status",
+	alias:		[],
+	args:		"[avail,gaming,working]"
+	callback:	(function(e){pluggedIn.core.stop();})//Will pass an array for e
+};
+
+pluggedIn.commands.help = {
+	name:		"help",
+	alias:		["commands","command","?"],
+	args:		"",
+	callback:	(function(){pluggedIn.core.stop();})
+};
 
 
 //Import external scripts
@@ -255,6 +277,25 @@ pluggedIn.core.initialize = (function(){
 		if(pluggedIn.settings.chatimg){
 			pluggedIn.core.replaceChatImg();
 		}
+		
+		API.on(API.CHAT_COMMAND,function(e){
+			var c = e.substring(1).split(" ")[0];
+			var args = e.substring(1).split(" ").slice(1);
+			pluggedIn.core.info("User typed command /"+c+" ["+args.toString()+"]");
+			for(var i in pluggedIn.commands){
+				if(c == i.name){
+					i.callback(args);
+				}else{
+					for(var o = 0;o<pluggedIn.commands.i.alias.length;o++){
+						if(c == pluggedIn.commands.i.alias[o]){
+							i.callback(args);
+						}else{
+							//No command or alias matched
+						}
+					}
+				}
+			}
+		});
 		
 		pluggedIn.core.executed = true;
 	}
