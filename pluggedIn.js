@@ -98,19 +98,28 @@ pluggedIn.core.info = (function(msg,debug){
 
 pluggedIn.core.autoWoot = (function(){
 	$("#woot").click();
-	API.on(API.ADVANCE,function(){
+	API.on(API.ADVANCE,(function(){
 		pluggedIn.core.info("Ran autoWoot",true);
-		$("#woot").click();});
+		$("#woot").click();
+	}));
 });
 
 pluggedIn.core.autoDJ = function(){
-	API.on(API.ADVANCE,function(){
+	API.on(API.ADVANCE,(function(){
 		if(API.getWaitListPosition() == -1){
 			pluggedIn.core.info("Ran autoDJ",true);
 			$("#dj-button").click();
 		}
-	});
+	}));
 }
+
+pluggedIn.core.replaceChatImg = (function(){
+	API.on(API.CHAT,(function(){
+		if(pluggedIn.core.isChatImg(msg)){
+			$(".message."+msg.type.match(/ from-([\d]{3,}) /g).trim()+">.text").innerHTML = '<img src="'+msg.message.match(/^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?(.png|.jpeg|.jpg|.gif)$/g)+'" style="display: block; max-width: 100%; height: auto; margin: 0px auto;">';
+		}
+	}));
+});
 
 
 /*
@@ -238,13 +247,17 @@ pluggedIn.core.initialize = (function(){
 		
 		pluggedIn.core.log(pluggedIn.VERSION+" by "+pluggedIn.AUTHOR+" has loaded.");
 		pluggedIn.core.info("Visit https://github.com/itotallyrock/pluggedIn/wiki/Console-Usage for usage.");
-		pluggedIn.gui.appendChat("pluggedIn "+pluggedIn.VERSION+" by "+pluggedIn.AUTHOR+" has loaded.<br/>Visit <a href='https://github.com/itotallyrock/pluggedIn/wiki/Console-Usage'>The Wiki</a> for usage",pluggedIn.colors.INFO);
+		pluggedIn.gui.appendChat("pluggedIn "+pluggedIn.VERSION+" by "+pluggedIn.AUTHOR+" has loaded.<br/>&nbsp;Visit <a href='https://github.com/itotallyrock/pluggedIn/wiki/Console-Usage'>https://github.com/itotallyrock/pluggedIn/wiki/Console-Usage</a> for usage",pluggedIn.colors.INFO);
 		
 		if(pluggedIn.settings.autoDJ){
 			pluggedIn.core.autoDJ();
 		}
 		if(pluggedIn.settings.autoWoot){
 			pluggedIn.core.autoWoot();
+		}
+		
+		if(pluggedIn.settings.chatimg){
+			pluggedIn.core.replaceChatImg();
 		}
 		
 		pluggedIn.core.executed = true;
@@ -285,12 +298,6 @@ pluggedIn.gui.drawTopButton = (function(){
 pluggedIn.gui.changeBackground = (function(url){
 	$("i.room-background")[0].style.backgroundSize="100%";
 	$("i.room-background")[0].style.background = "url('"+url+"') no-repeat";
-});
-
-pluggedIn.gui.replaceChatImg = (function(msg){
-	if(pluggedIn.core.isChatImg(msg)){
-		$(".message."+msg.type.match(/ from-([\d]{3,}) /g).trim()+">.text").innerHTML = '<img src="'+msg.message.match(/^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?(.png|.jpeg|.jpg|.gif)$/g)+'">';
-	}
 });
 
 pluggedIn.core.initialize();
