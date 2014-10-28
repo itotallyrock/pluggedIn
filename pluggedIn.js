@@ -52,6 +52,7 @@ pluggedIn.settings.autoWoot = true;
 pluggedIn.settings.autoDJ = true;
 pluggedIn.settings.spamDJ = true;
 pluggedIn.settings.debug = false;
+pluggedIn.settings.chatimg = true;
 pluggedIn.settings.lang = 0;
 pluggedIn.settings.bg = "http://blog.napc.com/Portals/10319/images/clouds.jpg";//URL
 
@@ -224,7 +225,9 @@ $(this).keydown(function (e){
 	}
 });
 
-
+pluggedIn.core.isChatImg = (function(msg){
+	return msg.message.match(/^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?(.png|.jpeg|.jpg|.gif)$/g) > 0 ? true : false;
+});
 
 pluggedIn.core.initialize = (function(){
 	
@@ -282,6 +285,12 @@ pluggedIn.gui.drawTopButton = (function(){
 pluggedIn.gui.changeBackground = (function(url){
 	$("i.room-background")[0].style.backgroundSize="100%";
 	$("i.room-background")[0].style.background = "url('"+url+"') no-repeat";
+});
+
+pluggedIn.gui.replaceChatImg = (function(msg){
+	if(pluggedIn.core.isChatImg(msg)){
+		$(".message."+msg.type.match(/ from-([\d]{3,}) /g).trim()+">.text").innerHTML = '<img src="'+msg.message.match(/^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?(.png|.jpeg|.jpg|.gif)$/g)+'">';
+	}
 });
 
 pluggedIn.core.initialize();
