@@ -46,7 +46,13 @@ pluggedIn.commands.status = {
 	name:		"status",
 	alias:		[],
 	args:		"[avail,away,gaming,working]",
-	callback:	(function(e){API.setStatus(eval("API.STATUS."+e[0].toUpperCase()));})//Will pass an array for e
+	callback:	(function(e){
+					try{
+						API.setStatus(eval("API.STATUS."+e[0].toUpperCase()));
+					}catch(err){
+						pluggedIn.appendChat("Usage:<br/> /status [avail,away,gaming,working]",pluggedIn.colors.WARN);
+					}
+				})
 };
 
 pluggedIn.commands.help = {
@@ -239,7 +245,7 @@ KEYBOARD SHORTCUTS
 
 */
 
-$(this).keydown(function (e){
+pluggedIn.keyboard.main = $(this).keydown(function (e){
 	pluggedIn.core.info("Running Keyboard Shortcut (User Pressed "+String.fromCharCode(e.which)+")",true);
 	if(e.which == pluggedIn.keyboard.SPAM_DJ){
 		if(pluggedIn.settings.spamDJ){
