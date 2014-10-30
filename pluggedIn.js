@@ -287,14 +287,15 @@ pluggedIn.core.initialize = (function(){
 			var args = e.substring(1).split(" ").slice(1);
 			pluggedIn.core.info("User typed command /"+c+" ["+args.toString()+"]");
 			for(var i in pluggedIn.commands){
-				if(c == i.name){
-					i.callback(args);
+				if(c == i){
+					eval("pluggedIn.commands."+i).callback(args);
 				}else{
 					for(var o = 0;o<eval("pluggedIn.commands."+i).alias.length;o++){
 						if(c == eval("pluggedIn.commands."+i).alias[o]){
-							i.callback(args);
+							eval("pluggedIn.commands."+i).callback(args);
 						}else{
 							//No command or alias matched
+							pluggedIn.warn("No command or alias matched "+c,true);
 						}
 					}
 				}
