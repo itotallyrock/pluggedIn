@@ -290,8 +290,8 @@ pluggedIn.core.initialize = (function(){
 				if(c == i.name){
 					i.callback(args);
 				}else{
-					for(var o = 0;o<pluggedIn.commands.i.alias.length;o++){
-						if(c == pluggedIn.commands.i.alias[o]){
+					for(var o = 0;o<eval("pluggedIn.commands."+i).alias.length;o++){
+						if(c == eval("pluggedIn.commands."+i).alias[o]){
 							i.callback(args);
 						}else{
 							//No command or alias matched
