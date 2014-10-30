@@ -45,8 +45,8 @@ pluggedIn.commands.kill = {
 pluggedIn.commands.status = {
 	name:		"status",
 	alias:		[],
-	args:		"[avail,gaming,working]",
-	callback:	(function(e){pluggedIn.core.stop();})//Will pass an array for e
+	args:		"[avail,away,gaming,working]",
+	callback:	(function(e){API.setStatus(eval("API.STATUS."+e[0].toUpperCase()));})//Will pass an array for e
 };
 
 pluggedIn.commands.help = {
@@ -295,7 +295,7 @@ pluggedIn.core.initialize = (function(){
 							eval("pluggedIn.commands."+i).callback(args);
 						}else{
 							//No command or alias matched
-							pluggedIn.warn("No command or alias matched "+c,true);
+							pluggedIn.core.warn("No command or alias matched "+c,true);
 						}
 					}
 				}
