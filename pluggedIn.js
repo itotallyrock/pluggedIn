@@ -20,7 +20,7 @@ pluggedIn.keyboard = {};
 pluggedIn.colors = {};
 pluggedIn.commands = {};
 
-pluggedIn.VERSION = "v0.00.3-A";
+pluggedIn.VERSION = "v0.00.7-A";
 pluggedIn.AUTHOR = "R0CK";
 
 pluggedIn.PREFIX = "PluggedIn » ";
