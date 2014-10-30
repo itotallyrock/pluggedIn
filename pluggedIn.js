@@ -310,7 +310,9 @@ pluggedIn.core.update = (function(){
 	pluggedIn.core.saveSettings();
 	
 	API.off(API.WAIT_LIST_UPDATE);
-	API.off(CHAT);
+	API.off(API.CHAT_COMMAND);
+	API.off(API.CHAT);
+	
 	pluggedIn.core.getSettings();
 	
 	if(pluggedIn.settings.autoDJ){
@@ -328,7 +330,7 @@ pluggedIn.core.update = (function(){
 pluggedIn.core.stop = (function(callback){
 	API.off(API.WAIT_LIST_UPDATE);
 	API.off(API.CHAT_COMMAND);
-	API.off(API.CHAT)
+	API.off(API.CHAT);
 	
 	if(!callback){
 		pluggedIn.gui.appendChat("PluggedIn has been sucessfully stopped",pluggedIn.colors.SUCCESS);
