@@ -8,7 +8,7 @@ however redistributing of this product modified or not is disallowed.
 
 Some of the features you have from using this addon may be frowned upon by certain communities, use responsibly.
 
-Version 0.00.3 ALPHA
+Version 0.00.8 ALPHA
 
 */
 
@@ -21,7 +21,7 @@ pluggedIn.keyboard = {};
 pluggedIn.colors = {};
 pluggedIn.commands = {};
 
-pluggedIn.VERSION = "v0.00.7-A";
+pluggedIn.VERSION = "v0.00.8-A";
 pluggedIn.AUTHOR = "R0CK";
 
 pluggedIn.PREFIX = "PluggedIn » ";
@@ -238,7 +238,7 @@ pluggedIn.core.eraseCookie = (function(name){
 pluggedIn.core.getSettings = (function(){
 	var c;
 	
-	if(pluggedIn.core.readCookie("pluggedIn")!=null){
+	if($(document).cookie.indexOf("pluggedIn")>0){
 		c = JSON.parse(pluggedIn.core.convertFromHex(pluggedIn.core.readCookie("pluggedIn")));
 		for(var s in c){
 			pluggedIn.core.log("set pluggedIn.settings."+s+" = "+eval("c."+s),true);
@@ -253,6 +253,7 @@ pluggedIn.core.getSettings = (function(){
 });
 
 pluggedIn.core.saveSettings = (function(){
+	pluggedIn.core.eraseCookie("pluggedIn");
 	pluggedIn.core.createCookie("pluggedIn",pluggedIn.core.convertToHex(JSON.stringify(pluggedIn.settings)),365);
 	pluggedIn.core.info("Created Settings Cookie",true);
 });
