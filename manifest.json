@@ -1,0 +1,6 @@
+{
+	"name": "PluggedIn Chrome Addon",
+	"manifest_version": 2,
+	"version": "1",
+	"web_accessible_resources": ["pluggedIn.js"]
+}
