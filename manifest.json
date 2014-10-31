@@ -18,7 +18,7 @@
 		{
 			"run_at": "document_idle",
 			"matches": ["*://*.plug.dj/*"],
-			"js": ["pluggedIn.js"]
+			"js": ["jquery.min.js","pluggedIn.js"]
 		}
 	]
 }
