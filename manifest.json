@@ -4,6 +4,12 @@
 	"version": "1",
 	"web_accessible_resources": ["pluggedIn.js"],
 	"description": "Adds Extra Features to Plug.dj",
+	"page_action" :
+	{
+		"default_icon" : "img/logo.png",
+		"default_title" : "PluggedIn",
+		"default_popup": "popup.html"
+	},
 	"content_scripts": [
 		{
 			"run_at": "document_idle",
