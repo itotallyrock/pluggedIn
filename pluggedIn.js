@@ -17,6 +17,7 @@ pluggedIn.core = {};
 pluggedIn.gui = {};
 pluggedIn.settings = {};
 pluggedIn.settings.keyboard = {};
+pluggedIn.keyboard = {};
 pluggedIn.colors = {};
 pluggedIn.commands = {};
 
