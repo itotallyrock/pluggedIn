@@ -252,7 +252,7 @@ KEYBOARD SHORTCUTS
 
 pluggedIn.keyboard.main = $(this).keydown(function (e){
 	pluggedIn.core.info("Running Keyboard Shortcut (User Pressed "+String.fromCharCode(e.which)+")",true);
-	if(e.which == pluggedIn.settings.settings.keyboard.SPAM_DJ){
+	if(e.which == pluggedIn.settings.keyboard.SPAM_DJ){
 		if(pluggedIn.settings.spamDJ){
 			var r = true;
 			if(r){
