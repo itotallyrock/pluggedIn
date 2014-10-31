@@ -16,7 +16,7 @@ var pluggedIn = {};
 pluggedIn.core = {};
 pluggedIn.gui = {};
 pluggedIn.settings = {};
-pluggedIn.keyboard = {};
+pluggedIn.settings.keyboard = {};
 pluggedIn.colors = {};
 pluggedIn.commands = {};
 
@@ -27,7 +27,7 @@ pluggedIn.PREFIX = "PluggedIn » ";
 
 pluggedIn.LANGS = ["en"];
 
-pluggedIn.keyboard.SPAM_DJ = 86;
+pluggedIn.settings.keyboard.SPAM_DJ = 86;
 
 pluggedIn.colors.WARN = "bb0000";
 pluggedIn.colors.ALERT = "ddbb00";
@@ -55,11 +55,16 @@ pluggedIn.commands.status = {
 				})
 };
 
-pluggedIn.commands.help = {
-	name:		"help",
-	alias:		["commands","command","?"],
+pluggedIn.commands.commands = {
+	name:		"commands",
+	alias:		["command","?"],
 	args:		"",
-	callback:	(function(){pluggedIn.core.stop();})
+	callback:	(function(){
+					for(var c in pluggedIn.commands){
+						c = eval("pluggedIn.commands."+c);
+						pluggedIn.gui.appendChat(c.name+" "+c.args,pluggedIn.colors.DEFAULT);
+					}
+				})
 };
 
 
@@ -238,7 +243,6 @@ pluggedIn.core.saveSettings = (function(){
 	pluggedIn.core.info("Created Settings Cookie",true);
 });
 
-
 /*
 
 KEYBOARD SHORTCUTS
@@ -247,7 +251,7 @@ KEYBOARD SHORTCUTS
 
 pluggedIn.keyboard.main = $(this).keydown(function (e){
 	pluggedIn.core.info("Running Keyboard Shortcut (User Pressed "+String.fromCharCode(e.which)+")",true);
-	if(e.which == pluggedIn.keyboard.SPAM_DJ){
+	if(e.which == pluggedIn.settings.keyboard.SPAM_DJ){
 		if(pluggedIn.settings.spamDJ){
 			var r = true;
 			if(r){
