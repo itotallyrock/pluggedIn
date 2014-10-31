@@ -93,6 +93,8 @@ pluggedIn.settings.debug = false;
 pluggedIn.settings.chatimg = true;
 pluggedIn.settings.lang = 0;
 pluggedIn.settings.bg = "http://blog.napc.com/Portals/10319/images/clouds.jpg";//URL
+pluggedIn.settings.afk = false;
+pluggedIn.settings.afkMsg = "I'm currently AFK.";
 
 pluggedIn.core.log = (function(msg,debug){
 	if(debug){//Will only display if debug enabled
@@ -159,6 +161,17 @@ pluggedIn.core.replaceChatImg = (function(){
 				var inner = $(".message").last().children().last().children()[0].toString();
 				$(".message").last().children().last().children()[0].innerHTML = "<a href=\""+inner+"\"><img src=\""+inner+"\" alt=\""+inner+"\" style=\"display: block; max-width: 100%; height: auto; margin: 0px auto;\"></a>";
 				$('#chat-messages').scrollTop($('#chat-messages')[0].scrollHeight);
+			}
+		}
+	}));
+});
+
+pluggedIn.core.afkMessage = (function(){
+	var mentionBy = "^@("+API.getUser().username.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, "\\$&")+")";
+	API.on(API.CHAT,(function(e){
+		if(e.message.search(new Regexp(mentionBy))>-1){
+			if(pluggedIn.settings.afk){
+				API.sendChat("@"+e.un+" "+pluggedIn.settings.afkMsg);
 			}
 		}
 	}));
@@ -291,6 +304,10 @@ pluggedIn.core.initialize = (function(){
 		
 		if(pluggedIn.settings.chatimg){
 			pluggedIn.core.replaceChatImg();
+		}
+		
+		if(pluggedIn.settings.afk){
+			pluggedIn.core.afkMessage();
 		}
 		
 		API.on(API.CHAT_COMMAND,function(e){
