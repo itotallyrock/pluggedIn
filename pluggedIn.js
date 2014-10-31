@@ -185,19 +185,19 @@ CUSTOM ENCODING (Simple string to hex)
 */
 
 pluggedIn.core.convertToHex = (function(str){
-    var hex = '';
-    for(var i=0;i<str.length;i++) {
-        hex += ''+str.charCodeAt(i).toString(16);
-    }
-    return hex;
+	var hex = '';
+	for(var i=0;i<str.length;i++) {
+		hex += ''+str.charCodeAt(i).toString(16);
+	}
+	return hex;
 });
 
 pluggedIn.core.convertFromHex = (function(hex){
-    var hex = hex.toString();
-    var str = '';
-    for (var i = 0; i < hex.length; i += 2)
-        str += String.fromCharCode(parseInt(hex.substr(i, 2), 16));
-    return str;
+	var hex = hex.toString();
+	var str = '';
+	for (var i = 0; i < hex.length; i += 2)
+		str += String.fromCharCode(parseInt(hex.substr(i, 2), 16));
+	return str;
 });
 
 
@@ -240,9 +240,9 @@ pluggedIn.core.getSettings = (function(){
 	
 	if(pluggedIn.core.readCookie("pluggedIn")!=null){
 		c = JSON.parse(pluggedIn.core.convertFromHex(pluggedIn.core.readCookie("pluggedIn")));
-		
 		for(var s in c){
-			pluggedIn.settings.s =  c.s;
+			pluggedIn.core.log("set pluggedIn.settings."+s+" = "+eval("c."+s),true);
+			pluggedIn.settings.s =  s;
 		}
 		
 		pluggedIn.core.info("Loaded Settings From Cookie",true);
