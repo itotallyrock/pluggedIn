@@ -416,4 +416,4 @@ pluggedIn.gui.changeBackground = (function(url){
 	$("i.room-background")[0].style.background = "url('"+url+"') no-repeat";
 });
 
-pluggedIn.core.initialize();
+window.addEventListener("load", pluggedIn.core.initialize, false);
