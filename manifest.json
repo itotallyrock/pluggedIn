@@ -16,9 +16,9 @@
 	},
 	"content_scripts": [
 		{
-			"run_at": "document_idle",
+			"run_at": "document_end",
 			"matches": ["*://*.plug.dj/*"],
-			"js": ["jquery.min.js","pluggedIn.js"]
+			"js": ["js/jquery.min.js","pluggedIn.js"]
 		}
 	]
 }

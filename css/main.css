@@ -6,4 +6,57 @@
 body{
 	border:1px solid #ac76ff;
 	min-width:250px;
+	background:#282c35;
+	color:#fff;
+}
+
+a{
+	color:#ac76ff;
+}
+
+section{
+	color:#fff;
+	padding:10px 20px;
+}
+
+section > div{
+	padding-left:10px;
+}
+
+section:nth-child(even){
+	background-color:#111317;
+}
+
+section:nth-child(odd){
+	background-color:#0a0a0a;
+}
+
+.btn-whole{
+	width:100%;
+	background-color:#282c35;
+	color:#fff;
+	border:0px;
+	padding:20px 10px;
+}
+
+.btn-whole:hover{
+	background-color:#060a13;
+}
+
+label{
+	font-weight:500;
+	cursor:pointer;
+}
+
+/*label:hover{
+	background-color:rgba(0,0,0,0.3);
+}*/
+
+.small-input{
+	width:50px;
+	display:inline;
+}
+
+input[type="text"]{
+	color:#000;
 }

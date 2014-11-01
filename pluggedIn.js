@@ -287,6 +287,12 @@ pluggedIn.keyboard.main = $(this).keydown(function (e){
 
 pluggedIn.core.initialize = (function(){
 	
+	var jq = document.createElement("script");
+	jq.src = 'https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js';
+	jq.type = "text/javascript";
+	
+	document.getElementsByTagName("head")[0].appendChild(jq);
+	
 	if(pluggedIn.core.executed){
 		pluggedIn.core.warn("PluggedIn is already running, skipping initialization");
 	}else{
@@ -356,21 +362,23 @@ pluggedIn.core.update = (function(){
 	}
 });
 
-pluggedIn.core.stop = (function(callback){
-	API.off(API.WAIT_LIST_UPDATE);
-	API.off(API.CHAT_COMMAND);
-	API.off(API.CHAT);
-	
-	if(!callback){
-		pluggedIn.gui.appendChat("PluggedIn has been sucessfully stopped",pluggedIn.colors.SUCCESS);
-		pluggedIn.core.info("PluggedIn has been sucessfully stopped");
-	}else{
-		pluggedIn.gui.appendChat("PluggedIn has been sucessfully stopped",pluggedIn.colors.ALERT);
-		pluggedIn.core.alert("PluggedIn has stopped unexpectedly with crash code "+callback);
-	}
-	
-	pluggedIn = undefined;
-});
+window.onload = (
+	pluggedIn.core.stop = (function(callback){
+		API.off(API.WAIT_LIST_UPDATE);
+		API.off(API.CHAT_COMMAND);
+		API.off(API.CHAT);
+		
+		if(!callback){
+			pluggedIn.gui.appendChat("PluggedIn has been sucessfully stopped",pluggedIn.colors.SUCCESS);
+			pluggedIn.core.info("PluggedIn has been sucessfully stopped");
+		}else{
+			pluggedIn.gui.appendChat("PluggedIn has been sucessfully stopped",pluggedIn.colors.ALERT);
+			pluggedIn.core.alert("PluggedIn has stopped unexpectedly with crash code "+callback);
+		}
+		
+		pluggedIn = undefined;
+	})
+);
 
 
 /*
