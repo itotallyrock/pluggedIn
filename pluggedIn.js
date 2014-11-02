@@ -238,7 +238,7 @@ pluggedIn.core.eraseCookie = (function(name){
 pluggedIn.core.getSettings = (function(){
 	var c;
 	
-	if($(document).cookie.indexOf("pluggedIn")>0){
+	if(document.cookie.indexOf("pluggedIn")>0){
 		c = JSON.parse(pluggedIn.core.convertFromHex(pluggedIn.core.readCookie("pluggedIn")));
 		for(var s in c){
 			pluggedIn.core.log("set pluggedIn.settings."+s+" = "+eval("c."+s),true);
