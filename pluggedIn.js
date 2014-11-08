@@ -402,7 +402,7 @@ pluggedIn.gui.appendChat = (function(message,color){
 		if(!color){
 			$("#chat-messages").append('<div class="welcome"><span class="text" style="font-weight:800;">' + message + '</span></div>');
 		}else{
-			$("#chat-messages").append('<div class="welcome" style="border-left: #'+color+' 3px solid;color: #'+color+';"><span class="text" style="font-weight:800;">&nbsp;' + message + '</span></div>');
+			$("#chat-messages").append('<div class="welcome" style="border-left: #'+color+' 3px solid;color: #'+color+';"><span class="text" style="font-weight:800;">' + message + '</span></div>');
 		}
 		
 		$('#chat-messages').scrollTop($('#chat-messages')[0].scrollHeight);
