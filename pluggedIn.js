@@ -82,15 +82,7 @@ pluggedIn.commands.afk = {
 	alias:		["away"],
 	args:		"",
 	callback:	(function(){
-					if(pluggedIn.settings.afk){
-						pluggedIn.settings.afk = false;
-						pluggedIn.core.update();
-						pluggedIn.core.afkMessage();
-					}else{
-						pluggedIn.settings.afk = true;
-						pluggedIn.core.update();
-						pluggedIn.core.afkMessage();
-					}
+					pluggedIn.core.toggleAfk();
 				})
 };
 
@@ -163,28 +155,20 @@ pluggedIn.core.info = (function(msg,debug){
 });
 
 pluggedIn.core.autoWoot = (function(){
-	if($(".description.panel>.value")[0].innerText.toLowerCase().search(pluggedIn.rooms.rules.autoWoot.toLowerCase()) == -1){
+	$("#woot").click();
+	API.on(API.ADVANCE,(function(){
+		pluggedIn.core.info("Ran autoWoot",true);
 		$("#woot").click();
-		API.on(API.ADVANCE,(function(){
-			pluggedIn.core.info("Ran autoWoot",true);
-			$("#woot").click();
-		}));
-	}else{
-		pluggedIn.gui.appendChat("This room has autoWoot disabled",pluggedIn.colors.ALERT);
-	}
+	}));
 });
 
 pluggedIn.core.autoDJ = function(){
-	if($(".description.panel>.value")[0].innerText.toLowerCase().search(pluggedIn.rooms.rules.autoDJ.toLowerCase()) == -1){
-		API.on(API.ADVANCE,(function(){
-			if(API.getWaitListPosition() == -1 && API.getDJ().id != API.getUser().id){
-				pluggedIn.core.info("Ran autoDJ",true);
-				$("#dj-button").click();
-			}
-		}));
-	}else{
-		pluggedIn.gui.appendChat("This room has autoDJ disabled",pluggedIn.colors.ALERT);
-	}
+	API.on(API.ADVANCE,(function(){
+		if(API.getWaitListPosition() == -1 && API.getDJ().id != API.getUser().id){
+			pluggedIn.core.info("Ran autoDJ",true);
+			$("#dj-button").click();
+		}
+	}));
 }
 
 pluggedIn.core.replaceChatImg = (function(){
@@ -202,18 +186,14 @@ pluggedIn.core.replaceChatImg = (function(){
 
 pluggedIn.core.afkMessage = (function(){
 	pluggedIn.gui.appendChat(pluggedIn.settings.afk ? "You are no longer AFK" : "You are now AFK",pluggedIn.colors.SUCCESS);
-	if($(".description.panel>.value")[0].innerText.toLowerCase().search(pluggedIn.rooms.rules.afk.toLowerCase()) == -1){
-		var mentionBy = "^@("+API.getUser().username.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, "\\$&")+")";
-		API.on(API.CHAT,(function(e){
-			if(e.message.search(new Regexp(mentionBy))>-1){
-				if(pluggedIn.settings.afk){
-					API.sendChat("@"+e.un+" "+pluggedIn.settings.afkMsg);
-				}
+	var mentionBy = "^@("+API.getUser().username.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, "\\$&")+")";
+	API.on(API.CHAT,(function(e){
+		if(e.message.search(new Regexp(mentionBy))>-1){
+			if(pluggedIn.settings.afk){
+				API.sendChat("@"+e.un+" "+pluggedIn.settings.afkMsg);
 			}
-		}));
-	}else{
-		pluggedIn.gui.appendChat("This room has AFK disabled",pluggedIn.colors.ALERT);
-	}
+		}
+	}));
 });
 
 
@@ -284,6 +264,8 @@ pluggedIn.core.getSettings = (function(){
 		pluggedIn.core.warn("Settings Cookie did not exist.",true);
 		pluggedIn.core.saveSettings();
 	}
+	
+	pluggedIn.settings.afk = false; //A Little Messy but it gets rid of AFK on load (Doesn't save it.)
 });
 
 pluggedIn.core.saveSettings = (function(){
@@ -334,7 +316,7 @@ pluggedIn.core.initialize = (function(){
 		}
 		
 		if(pluggedIn.settings.afk){
-			pluggedIn.core.afkMessage();
+			pluggedIn.core.toggleAfk();
 		}
 		
 		API.on(API.CHAT_COMMAND,function(e){
@@ -345,10 +327,12 @@ pluggedIn.core.initialize = (function(){
 				if(c == i){
 					$("#chat-input-field").val("");
 					eval("pluggedIn.commands."+i).callback(args);
+					break;
 				}else{
 					for(var o = 0;o<eval("pluggedIn.commands."+i).alias.length;o++){
 						if(c == eval("pluggedIn.commands."+i).alias[o]){
 							eval("pluggedIn.commands."+i).callback(args);
+							break;
 						}else{
 							//No command or alias matched
 							pluggedIn.core.warn("No command or alias matched "+c,true);
@@ -362,6 +346,20 @@ pluggedIn.core.initialize = (function(){
 	}
 });
 
+pluggedIn.core.toggleAfk = (function(){
+	API.off(API.CHAT);
+	if($(".description.panel>.value")[0].innerText.toLowerCase().search(pluggedIn.rooms.rules.afk.toLowerCase()) == -1){
+		if(pluggedIn.settings.afk){
+			pluggedIn.settings.afk = false;
+		}else{
+			pluggedIn.settings.afk = true;
+			pluggedIn.core.afkMessage();
+		}
+	}else{
+		pluggedIn.gui.appendChat("This room has AFK disabled",pluggedIn.colors.ALERT);
+	}
+});
+
 pluggedIn.core.update = (function(){
 	pluggedIn.core.saveSettings();
 	
@@ -372,15 +370,49 @@ pluggedIn.core.update = (function(){
 	pluggedIn.core.getSettings();
 	
 	if(pluggedIn.settings.autoDJ){
-		pluggedIn.core.autoDJ();
+		if($(".description.panel>.value")[0].innerText.toLowerCase().search(pluggedIn.rooms.rules.autoDJ.toLowerCase()) == -1){
+			pluggedIn.core.autoDJ();
+		}else{
+			pluggedIn.gui.appendChat("This room has AutoDJ disabled",pluggedIn.colors.ALERT);
+		}
 	}
 	if(pluggedIn.settings.autoWoot){
 		pluggedIn.core.autoWoot();
+		if($(".description.panel>.value")[0].innerText.toLowerCase().search(pluggedIn.rooms.rules.autoWoot.toLowerCase()) == -1){
+			pluggedIn.core.afkMessage();
+		}else{
+			pluggedIn.gui.appendChat("This room has AutoWoot disabled",pluggedIn.colors.ALERT);
+		}
 	}
 		
 	if(pluggedIn.settings.chatimg){
 		pluggedIn.core.replaceChatImg();
 	}
+	
+	if(pluggedIn.settings.afk){
+		pluggedIn.core.toggleAfk();
+	}
+	
+	API.on(API.CHAT_COMMAND,function(e){
+		var c = e.substring(1).split(" ")[0];
+		var args = e.substring(1).split(" ").slice(1);
+		pluggedIn.core.info("User typed command /"+c+" ["+args.toString()+"]");
+		for(var i in pluggedIn.commands){
+			if(c == i){
+				$("#chat-input-field").val("");
+				eval("pluggedIn.commands."+i).callback(args);
+			}else{
+				for(var o = 0;o<eval("pluggedIn.commands."+i).alias.length;o++){
+					if(c == eval("pluggedIn.commands."+i).alias[o]){
+						eval("pluggedIn.commands."+i).callback(args);
+					}else{
+						//No command or alias matched
+						pluggedIn.core.warn("No command or alias matched "+c,true);
+					}
+				}
+			}
+		}
+	});
 });
 
 pluggedIn.core.stop = (function(callback){
@@ -420,6 +452,13 @@ pluggedIn.gui.appendChat = (function(message,color){
 	}
 });
 
+pluggedIn.gui.notify = (function(i,m){
+	require("b20d6/f1e58/e027b").trigger("notify",i,m);
+});
+
+pluggedIn.gui.confirm = (function(t,b){
+	require(["b20d6/f1e58/e027b", "b20d6/ea5ff/bb81d"], function(n,s){n.dispatch(new s(s.CONFIRM, t, b));});
+});
 
 pluggedIn.gui.moveTopBar = (function(){
 	$("#room-bar.bar-button")[0].style.width="343px";$("#room-bar.bar-button")[0].style.left="103px";
