@@ -32,7 +32,7 @@ pluggedIn.settings.keyboard.SPAM_DJ = 86;
 
 pluggedIn.colors.WARN = "bb0000";
 pluggedIn.colors.ALERT = "ddbb00";
-pluggedIn.colors.SUCCESS = "3dc000";
+pluggedIn.colors.SUCCESS = "6ff01a";
 pluggedIn.colors.INFO = "009cdd";
 pluggedIn.colors.DEFAULT = "ac76ff";
 
@@ -185,7 +185,6 @@ pluggedIn.core.replaceChatImg = (function(){
 });
 
 pluggedIn.core.afkMessage = (function(){
-	pluggedIn.gui.appendChat(pluggedIn.settings.afk ? "You are no longer AFK" : "You are now AFK",pluggedIn.colors.SUCCESS);
 	var mentionBy = "^@("+API.getUser().username.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, "\\$&")+")";
 	API.on(API.CHAT,(function(e){
 		if(e.message.search(new Regexp(mentionBy))>-1){
@@ -315,10 +314,6 @@ pluggedIn.core.initialize = (function(){
 			pluggedIn.core.replaceChatImg();
 		}
 		
-		if(pluggedIn.settings.afk){
-			pluggedIn.core.toggleAfk();
-		}
-		
 		API.on(API.CHAT_COMMAND,function(e){
 			var c = e.substring(1).split(" ")[0];
 			var args = e.substring(1).split(" ").slice(1);
@@ -351,8 +346,10 @@ pluggedIn.core.toggleAfk = (function(){
 	if($(".description.panel>.value")[0].innerText.toLowerCase().search(pluggedIn.rooms.rules.afk.toLowerCase()) == -1){
 		if(pluggedIn.settings.afk){
 			pluggedIn.settings.afk = false;
+			pluggedIn.gui.appendChat("You are no longer AFK",pluggedIn.colors.SUCCESS);
 		}else{
 			pluggedIn.settings.afk = true;
+			pluggedIn.gui.appendChat("You are now AFK",pluggedIn.colors.SUCCESS);
 			pluggedIn.core.afkMessage();
 		}
 	}else{
