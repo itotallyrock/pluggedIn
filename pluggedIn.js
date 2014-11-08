@@ -32,7 +32,7 @@ pluggedIn.settings.keyboard.SPAM_DJ = 86;
 
 pluggedIn.colors.WARN = "bb0000";
 pluggedIn.colors.ALERT = "ddbb00";
-pluggedIn.colors.SUCCESS = "55bb00";
+pluggedIn.colors.SUCCESS = "90ad2f";
 pluggedIn.colors.INFO = "009cdd";
 pluggedIn.colors.DEFAULT = "ac76ff";
 
@@ -64,6 +64,21 @@ pluggedIn.commands.commands = {
 					for(var c in pluggedIn.commands){
 						c = eval("pluggedIn.commands."+c);
 						pluggedIn.gui.appendChat(c.name+" "+c.args,pluggedIn.colors.DEFAULT);
+					}
+				})
+};
+
+pluggedIn.commands.afk = {
+	name:		"commands",
+	alias:		["command","?"],
+	args:		"",
+	callback:	(function(){
+					if(pluggedIn.settings.afk){
+						pluggedIn.gui.appendChat("You are no longer AFK",pluggedIn.colors.WARN);
+						pluggedIn.core.afk = false;
+					}else{
+						pluggedIn.gui.appendChat("You are now AFK",pluggedIn.colors.SUCCESS);
+						pluggedIn.core.afk = true;
 					}
 				})
 };
