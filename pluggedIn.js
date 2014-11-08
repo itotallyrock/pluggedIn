@@ -83,11 +83,13 @@ pluggedIn.commands.afk = {
 	args:		"",
 	callback:	(function(){
 					if(pluggedIn.settings.afk){
-						pluggedIn.gui.appendChat("You are no longer AFK",pluggedIn.colors.WARN);
-						pluggedIn.core.afk = false;
+						pluggedIn.settings.afk = false;
+						pluggedIn.core.update();
+						pluggedIn.core.afkMessage();
 					}else{
-						pluggedIn.gui.appendChat("You are now AFK",pluggedIn.colors.SUCCESS);
-						pluggedIn.core.afk = true;
+						pluggedIn.settings.afk = true;
+						pluggedIn.core.update();
+						pluggedIn.core.afkMessage();
 					}
 				})
 };
@@ -161,23 +163,30 @@ pluggedIn.core.info = (function(msg,debug){
 });
 
 pluggedIn.core.autoWoot = (function(){
-	if($(".description.panel>.value")[0].innerText.toLowerCase().search(pluggedIn.rooms.rules.autoWoot.toLowerCase())>-1){
+	if($(".description.panel>.value")[0].innerText.toLowerCase().search(pluggedIn.rooms.rules.autoWoot.toLowerCase()) == -1){
 		$("#woot").click();
 		API.on(API.ADVANCE,(function(){
 			pluggedIn.core.info("Ran autoWoot",true);
 			$("#woot").click();
 		}));
+	}else{
+		pluggedIn.gui.appendChat("This room has autoWoot disabled",pluggedIn.colors.ALERT);
 	}
 });
 
 pluggedIn.core.autoDJ = function(){
-	if($(".description.panel>.value")[0].innerText.toLowerCase().search(pluggedIn.rooms.rules.autoDJ.toLowerCase())>-1){
+	if($(".description.panel>.value")[0].innerText.toLowerCase().search(pluggedIn.rooms.rules.autoDJ.toLowerCase()) == -1){
 		API.on(API.ADVANCE,(function(){
 			if(API.getWaitListPosition() == -1 && API.getDJ().id != API.getUser().id){
 				pluggedIn.core.info("Ran autoDJ",true);
 				$("#dj-button").click();
 			}
 		}));
+<<<<<<< HEAD
+=======
+	}else{
+		pluggedIn.gui.appendChat("This room has autoDJ disabled",pluggedIn.colors.ALERT);
+>>>>>>> origin/master
 	}
 }
 
@@ -195,7 +204,8 @@ pluggedIn.core.replaceChatImg = (function(){
 });
 
 pluggedIn.core.afkMessage = (function(){
-	if($(".description.panel>.value")[0].innerText.toLowerCase().search(pluggedIn.rooms.rules.afk.toLowerCase())>-1){
+	pluggedIn.gui.appendChat(pluggedIn.settings.afk ? "You are no longer AFK" : "You are now AFK",pluggedIn.colors.SUCCESS);
+	if($(".description.panel>.value")[0].innerText.toLowerCase().search(pluggedIn.rooms.rules.afk.toLowerCase()) == -1){
 		var mentionBy = "^@("+API.getUser().username.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, "\\$&")+")";
 		API.on(API.CHAT,(function(e){
 			if(e.message.search(new Regexp(mentionBy))>-1){
@@ -204,6 +214,8 @@ pluggedIn.core.afkMessage = (function(){
 				}
 			}
 		}));
+	}else{
+		pluggedIn.gui.appendChat("This room has AFK disabled",pluggedIn.colors.ALERT);
 	}
 });
 
