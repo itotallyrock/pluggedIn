@@ -317,6 +317,7 @@ pluggedIn.core.initialize = (function(){
 			pluggedIn.core.info("User typed command /"+c+" ["+args.toString()+"]");
 			for(var i in pluggedIn.commands){
 				if(c == i){
+					$("#chat-input-field").val("");
 					eval("pluggedIn.commands."+i).callback(args);
 				}else{
 					for(var o = 0;o<eval("pluggedIn.commands."+i).alias.length;o++){
