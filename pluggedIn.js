@@ -12,16 +12,6 @@ Version 0.00.8 ALPHA
 
 */
 
-$(window).load(function(){
-	var i = setInterval(function(){
-		console.log("Waiting for API to load");
-		if(typeof API !== 'undefined'){
-			clearInterval(i);
-			pluggedIn.core.initialize()
-		}
-	}, 100);
-});
-
 var pluggedIn = {};
 pluggedIn.core = {};
 pluggedIn.gui = {};
@@ -214,6 +204,7 @@ pluggedIn.core.afkMessage = (function(){
 	}
 });
 
+
 /*
 
 CUSTOM ENCODING (Simple string to hex)
@@ -235,6 +226,11 @@ pluggedIn.core.convertFromHex = (function(hex){
 		str += String.fromCharCode(parseInt(hex.substr(i, 2), 16));
 	return str;
 });
+
+
+
+
+
 
 pluggedIn.core.createCookie = (function(name,value,days){
 	if (days){
@@ -269,7 +265,7 @@ pluggedIn.core.eraseCookie = (function(name){
 pluggedIn.core.getSettings = (function(){
 	var c;
 	
-	if(document.cookie.indexOf("pluggedIn")>-1){
+	if(document.cookie.indexOf("pluggedIn")>0){
 		c = JSON.parse(pluggedIn.core.convertFromHex(pluggedIn.core.readCookie("pluggedIn")));
 		for(var s in c){
 			pluggedIn.core.log("set pluggedIn.settings."+s+" = "+eval("c."+s),true);
@@ -295,17 +291,10 @@ KEYBOARD SHORTCUTS
 
 */
 
-<<<<<<< HEAD
-pluggedIn.keyboard.main = window.addEventListener("load", 
-	(function(){$(this).keydown(function (e){
-		pluggedIn.core.info("Running Keyboard Shortcut (User Pressed "+String.fromCharCode(e.which)+")",true);
-		if(e.which == pluggedIn.settings.keyboard.SPAM_DJ){
-=======
 pluggedIn.keyboard.main = $(this).keydown(function (e){
 	pluggedIn.core.info("Running Keyboard Shortcut (User Pressed "+String.fromCharCode(e.which)+")",true);
 	if(e.which == pluggedIn.settings.keyboard.SPAM_DJ){
 		if($(".description.panel>.value")[0].innerText.toLowerCase().search(pluggedIn.rooms.rules.spamDJ.toLowerCase())>-1){
->>>>>>> origin/master
 			if(pluggedIn.settings.spamDJ){
 				var r = true;
 				if(r){
@@ -316,20 +305,10 @@ pluggedIn.keyboard.main = $(this).keydown(function (e){
 				}
 			}
 		}
-<<<<<<< HEAD
-	})}),false);
-=======
 	}
 });
->>>>>>> origin/master
 
 pluggedIn.core.initialize = (function(){
-	
-	var jq = document.createElement("script");
-	jq.src = 'https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js';
-	jq.type = "text/javascript";
-	
-	document.getElementsByTagName("head")[0].appendChild(jq);
 	
 	if(pluggedIn.core.executed){
 		pluggedIn.core.warn("PluggedIn is already running, skipping initialization");
@@ -366,7 +345,6 @@ pluggedIn.core.initialize = (function(){
 				}else{
 					for(var o = 0;o<eval("pluggedIn.commands."+i).alias.length;o++){
 						if(c == eval("pluggedIn.commands."+i).alias[o]){
-							$("#chat-input-field").val("");
 							eval("pluggedIn.commands."+i).callback(args);
 						}else{
 							//No command or alias matched
@@ -406,7 +384,7 @@ pluggedIn.core.stop = (function(callback){
 	API.off(API.WAIT_LIST_UPDATE);
 	API.off(API.CHAT_COMMAND);
 	API.off(API.CHAT);
-		
+	
 	if(!callback){
 		pluggedIn.gui.appendChat("PluggedIn has been sucessfully stopped",pluggedIn.colors.SUCCESS);
 		pluggedIn.core.info("PluggedIn has been sucessfully stopped");
@@ -414,9 +392,9 @@ pluggedIn.core.stop = (function(callback){
 		pluggedIn.gui.appendChat("PluggedIn has been sucessfully stopped",pluggedIn.colors.ALERT);
 		pluggedIn.core.alert("PluggedIn has stopped unexpectedly with crash code "+callback);
 	}
-		
+	
 	pluggedIn = undefined;
-})
+});
 
 
 /*
@@ -454,4 +432,4 @@ pluggedIn.gui.changeBackground = (function(url){
 	$("i.room-background")[0].style.background = "url('"+url+"') no-repeat";
 });
 
-//window.addEventListener("load", pluggedIn.core.initialize, false);
+pluggedIn.core.initialize();
