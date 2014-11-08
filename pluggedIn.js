@@ -36,6 +36,13 @@ pluggedIn.colors.SUCCESS = "3dc000";
 pluggedIn.colors.INFO = "009cdd";
 pluggedIn.colors.DEFAULT = "ac76ff";
 
+pluggedIn.rooms.rules = {
+	autoWoot:"pluggedin-rules-autowoot-block",
+	autoDJ:"pluggedin-rules-autoDJ-block",
+	spamDJ:"pluggedin-rules-spamDJ-block",
+	afk:"pluggedin-rules-afk-block"
+}
+
 pluggedIn.commands.kill = {
 	name:		"kill",
 	alias:		["stop","halt"],
@@ -69,8 +76,8 @@ pluggedIn.commands.commands = {
 };
 
 pluggedIn.commands.afk = {
-	name:		"commands",
-	alias:		["command","?"],
+	name:		"afk",
+	alias:		["away"],
 	args:		"",
 	callback:	(function(){
 					if(pluggedIn.settings.afk){
@@ -152,20 +159,23 @@ pluggedIn.core.info = (function(msg,debug){
 });
 
 pluggedIn.core.autoWoot = (function(){
-	$("#woot").click();
-	API.on(API.ADVANCE,(function(){
-		pluggedIn.core.info("Ran autoWoot",true);
+	if($(".description.panel>.value")[0].innerText.toLowerCase().search(pluggedIn.rooms.rules.autoWoot.toLowerCase())>-1){
 		$("#woot").click();
-	}));
+		API.on(API.ADVANCE,(function(){
+			pluggedIn.core.info("Ran autoWoot",true);
+			$("#woot").click();
+		}));
+	}
 });
 
 pluggedIn.core.autoDJ = function(){
-	API.on(API.ADVANCE,(function(){
-		if(API.getWaitListPosition() == -1 && API.getDJ().id != API.getUser().id){
-			pluggedIn.core.info("Ran autoDJ",true);
-			$("#dj-button").click();
-		}
-	}));
+	if($(".description.panel>.value")[0].innerText.toLowerCase().search(pluggedIn.rooms.rules.autoDJ.toLowerCase())>-1){
+		API.on(API.ADVANCE,(function(){
+			if(API.getWaitListPosition() == -1 && API.getDJ().id != API.getUser().id){
+				pluggedIn.core.info("Ran autoDJ",true);
+				$("#dj-button").click();
+			}
+		}));
 }
 
 pluggedIn.core.replaceChatImg = (function(){
@@ -182,14 +192,16 @@ pluggedIn.core.replaceChatImg = (function(){
 });
 
 pluggedIn.core.afkMessage = (function(){
-	var mentionBy = "^@("+API.getUser().username.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, "\\$&")+")";
-	API.on(API.CHAT,(function(e){
-		if(e.message.search(new Regexp(mentionBy))>-1){
-			if(pluggedIn.settings.afk){
-				API.sendChat("@"+e.un+" "+pluggedIn.settings.afkMsg);
+	if($(".description.panel>.value")[0].innerText.toLowerCase().search(pluggedIn.rooms.rules.afk.toLowerCase())>-1){
+		var mentionBy = "^@("+API.getUser().username.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, "\\$&")+")";
+		API.on(API.CHAT,(function(e){
+			if(e.message.search(new Regexp(mentionBy))>-1){
+				if(pluggedIn.settings.afk){
+					API.sendChat("@"+e.un+" "+pluggedIn.settings.afkMsg);
+				}
 			}
-		}
-	}));
+		}));
+	}
 });
 
 
@@ -282,21 +294,17 @@ KEYBOARD SHORTCUTS
 pluggedIn.keyboard.main = $(this).keydown(function (e){
 	pluggedIn.core.info("Running Keyboard Shortcut (User Pressed "+String.fromCharCode(e.which)+")",true);
 	if(e.which == pluggedIn.settings.keyboard.SPAM_DJ){
-		if(pluggedIn.settings.spamDJ){
-			var r = true;
-			if(r){
-				r = false;
-			}
-			if(API.getWaitListPosition() == -1 && API.getDJ().id != API.getUser().id && API.getWaitList().length<50){
-				$("#dj-button").click();
+		if($(".description.panel>.value")[0].innerText.toLowerCase().search(pluggedIn.rooms.rules.spamDJ.toLowerCase())>-1){
+			if(pluggedIn.settings.spamDJ){
+				var r = true;
+				if(r){
+					r = false;
+				}
+				if(API.getWaitListPosition() == -1 && API.getDJ().id != API.getUser().id && API.getWaitList().length<50){
+					$("#dj-button").click();
+				}
 			}
 		}
-	}
-}).keyup(function(e) {
-	var r = true;  //Redundant
-	if(r){
-		pluggedIn.core.info("Finalized Keyboard Shortcut Execution",true);
-		r = false;
 	}
 });
 
