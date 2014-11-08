@@ -32,7 +32,7 @@ pluggedIn.settings.keyboard.SPAM_DJ = 86;
 
 pluggedIn.colors.WARN = "bb0000";
 pluggedIn.colors.ALERT = "ddbb00";
-pluggedIn.colors.SUCCESS = "90ad2f";
+pluggedIn.colors.SUCCESS = "3dc000";
 pluggedIn.colors.INFO = "009cdd";
 pluggedIn.colors.DEFAULT = "ac76ff";
 
