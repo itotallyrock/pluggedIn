@@ -36,11 +36,13 @@ pluggedIn.colors.SUCCESS = "3dc000";
 pluggedIn.colors.INFO = "009cdd";
 pluggedIn.colors.DEFAULT = "ac76ff";
 
-pluggedIn.rooms.rules = {
-	autoWoot:"pluggedin-rules-autowoot-block",
-	autoDJ:"pluggedin-rules-autoDJ-block",
-	spamDJ:"pluggedin-rules-spamDJ-block",
-	afk:"pluggedin-rules-afk-block"
+pluggedIn.rooms = {
+	rules:{
+		autoWoot:"pluggedin-rules-autowoot-block",
+		autoDJ:"pluggedin-rules-autoDJ-block",
+		spamDJ:"pluggedin-rules-spamDJ-block",
+		afk:"pluggedin-rules-afk-block"
+	}
 }
 
 pluggedIn.commands.kill = {
@@ -176,6 +178,7 @@ pluggedIn.core.autoDJ = function(){
 				$("#dj-button").click();
 			}
 		}));
+	}
 }
 
 pluggedIn.core.replaceChatImg = (function(){
@@ -226,11 +229,6 @@ pluggedIn.core.convertFromHex = (function(hex){
 		str += String.fromCharCode(parseInt(hex.substr(i, 2), 16));
 	return str;
 });
-
-
-
-
-
 
 pluggedIn.core.createCookie = (function(name,value,days){
 	if (days){
@@ -296,10 +294,6 @@ pluggedIn.keyboard.main = $(this).keydown(function (e){
 	if(e.which == pluggedIn.settings.keyboard.SPAM_DJ){
 		if($(".description.panel>.value")[0].innerText.toLowerCase().search(pluggedIn.rooms.rules.spamDJ.toLowerCase())>-1){
 			if(pluggedIn.settings.spamDJ){
-				var r = true;
-				if(r){
-					r = false;
-				}
 				if(API.getWaitListPosition() == -1 && API.getDJ().id != API.getUser().id && API.getWaitList().length<50){
 					$("#dj-button").click();
 				}
