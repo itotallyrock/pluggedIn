@@ -42,7 +42,7 @@ pluggedIn.settings.keyboard.SPAM_DJ = 86;
 
 pluggedIn.colors.WARN = "bb0000";
 pluggedIn.colors.ALERT = "ddbb00";
-pluggedIn.colors.SUCCESS = "90ad2f";
+pluggedIn.colors.SUCCESS = "3dc000";
 pluggedIn.colors.INFO = "009cdd";
 pluggedIn.colors.DEFAULT = "ac76ff";
 
@@ -61,7 +61,7 @@ pluggedIn.commands.status = {
 					try{
 						API.setStatus(eval("API.STATUS."+e[0].toUpperCase()));
 					}catch(err){
-						pluggedIn.appendChat("Usage:<br/> /status [avail,away,gaming,working]",pluggedIn.colors.WARN);
+						pluggedIn.appendChat("Usage:<br/>/status [avail,away,gaming,working]",pluggedIn.colors.WARN);
 					}
 				})
 };
@@ -314,7 +314,7 @@ pluggedIn.core.initialize = (function(){
 		
 		pluggedIn.core.log(pluggedIn.VERSION+" by "+pluggedIn.AUTHOR+" has loaded.");
 		pluggedIn.core.info("Visit https://github.com/itotallyrock/pluggedIn/wiki/Console-Usage for usage.");
-		pluggedIn.gui.appendChat("pluggedIn "+pluggedIn.VERSION+" by "+pluggedIn.AUTHOR+" has loaded.<br/>&nbsp;Visit <a href='https://github.com/itotallyrock/pluggedIn/wiki/Console-Usage'>https://github.com/itotallyrock/pluggedIn/wiki/Console-Usage</a> for usage",pluggedIn.colors.INFO);
+		pluggedIn.gui.appendChat("pluggedIn "+pluggedIn.VERSION+" by "+pluggedIn.AUTHOR+" has loaded.<br/>Visit <a href='https://github.com/itotallyrock/pluggedIn/wiki/Console-Usage'>the wiki</a> for usage",pluggedIn.colors.INFO);
 		
 		if(pluggedIn.settings.autoDJ){
 			pluggedIn.core.autoDJ();
@@ -406,9 +406,9 @@ pluggedIn.gui.appendChat = (function(message,color){
 		return false;
 	}else{
 		if(!color){
-			$("#chat-messages").append('<div class="welcome"><span class="text" style="font-weight:800;">&nbsp;' + message + '</span></div>');
+			$("#chat-messages").append('<div class="welcome"><span class="text" style="font-weight:800;">' + message + '</span></div>');
 		}else{
-			$("#chat-messages").append('<div class="welcome" style="border-left: #'+color+' 3px solid;color: #'+color+';"><span class="text" style="font-weight:800;">&nbsp;' + message + '</span></div>');
+			$("#chat-messages").append('<div class="welcome" style="border-left: #'+color+' 3px solid;color: #'+color+';"><span class="text" style="font-weight:800;">' + message + '</span></div>');
 		}
 		
 		$('#chat-messages').scrollTop($('#chat-messages')[0].scrollHeight);
