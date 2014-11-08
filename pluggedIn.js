@@ -326,6 +326,7 @@ pluggedIn.core.initialize = (function(){
 				}else{
 					for(var o = 0;o<eval("pluggedIn.commands."+i).alias.length;o++){
 						if(c == eval("pluggedIn.commands."+i).alias[o]){
+							$("#chat-input-field").val("");
 							eval("pluggedIn.commands."+i).callback(args);
 						}else{
 							//No command or alias matched
