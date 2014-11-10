@@ -12,34 +12,38 @@ Version 0.00.9 ALPHA
 
 */
 
-var pluggedIn = {};
+var pluggedIn = {
+	VERSION = "v0.00.9-A",
+	AUTHOR = "R0CK",
+	PREFIX = "PluggedIn » ",
+	LANGS = ["en"],
+	core:{},
+	gui:{},
+	keyboard:{},
+	colors:{
+		WARN = "bb0000",
+		ALERT = "ddbb00",
+		SUCCESS = "6ff01a",
+		INFO = "009cdd",
+		DEFAULT = "ac76ff"
+	},
+	
+	rooms = {
+		rules:{
+			autoWoot:"pluggedin-rules-autowoot-block",
+			autoDJ:"pluggedin-rules-autoDJ-block",
+			spamDJ:"pluggedin-rules-spamDJ-block",
+			afk:"pluggedin-rules-afk-block"
+		}
+	}
+	
+	commands:{},
+};
 pluggedIn.core = {};
 pluggedIn.gui = {};
 pluggedIn.keyboard = {};
 pluggedIn.colors = {};
 pluggedIn.commands = {};
-
-pluggedIn.VERSION = "v0.00.9-A";
-pluggedIn.AUTHOR = "R0CK";
-
-pluggedIn.PREFIX = "PluggedIn » ";
-
-pluggedIn.LANGS = ["en"];
-
-pluggedIn.colors.WARN = "bb0000";
-pluggedIn.colors.ALERT = "ddbb00";
-pluggedIn.colors.SUCCESS = "6ff01a";
-pluggedIn.colors.INFO = "009cdd";
-pluggedIn.colors.DEFAULT = "ac76ff";
-
-pluggedIn.rooms = {
-	rules:{
-		autoWoot:"pluggedin-rules-autowoot-block",
-		autoDJ:"pluggedin-rules-autoDJ-block",
-		spamDJ:"pluggedin-rules-spamDJ-block",
-		afk:"pluggedin-rules-afk-block"
-	}
-}
 
 pluggedIn.commands.kill = {
 	name:		"kill",
