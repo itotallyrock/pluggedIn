@@ -15,8 +15,6 @@ Version 0.00.9 ALPHA
 var pluggedIn = {};
 pluggedIn.core = {};
 pluggedIn.gui = {};
-pluggedIn.settings = {};
-pluggedIn.settings.keyboard = {};
 pluggedIn.keyboard = {};
 pluggedIn.colors = {};
 pluggedIn.commands = {};
@@ -27,8 +25,6 @@ pluggedIn.AUTHOR = "R0CK";
 pluggedIn.PREFIX = "PluggedIn » ";
 
 pluggedIn.LANGS = ["en"];
-
-pluggedIn.settings.keyboard.SPAM_DJ = 86;
 
 pluggedIn.colors.WARN = "bb0000";
 pluggedIn.colors.ALERT = "ddbb00";
@@ -86,6 +82,21 @@ pluggedIn.commands.afk = {
 				})
 };
 
+//Default Settings
+pluggedIn.settings = {
+	autoWoot: true,
+	autoDJ: true,
+	spamDJ: true,
+	debug = false,
+	chatimg = true,
+	lang = 0,
+	bg = "http://blog.napc.com/Portals/10319/images/clouds.jpg",//URL
+	afk = false,
+	afkMsg = "I'm currently AFK.",
+	keyboard:{
+		SPAM_DJ = 86//V
+	}
+}
 
 //Import external scripts
 
@@ -102,17 +113,6 @@ pluggedIn.commands.afk = {
 	Core functionality
 
 */
-
-//Default Settings
-pluggedIn.settings.autoWoot = true;
-pluggedIn.settings.autoDJ = true;
-pluggedIn.settings.spamDJ = true;
-pluggedIn.settings.debug = false;
-pluggedIn.settings.chatimg = true;
-pluggedIn.settings.lang = 0;
-pluggedIn.settings.bg = "http://blog.napc.com/Portals/10319/images/clouds.jpg";//URL
-pluggedIn.settings.afk = false;
-pluggedIn.settings.afkMsg = "I'm currently AFK.";
 
 pluggedIn.core.log = (function(msg,debug){
 	if(debug){//Will only display if debug enabled
