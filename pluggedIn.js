@@ -255,10 +255,11 @@ pluggedIn.core.getSettings = (function(){
 		c = JSON.parse(pluggedIn.core.convertFromHex(pluggedIn.core.readCookie("pluggedIn")));
 		for(var s in c){
 			pluggedIn.core.log("set pluggedIn.settings."+s+" = "+eval("c."+s),true);
-			pluggedIn.settings.s =  s;
+			pluggedIn.settings[s] = c[s];
 		}
 		
 		pluggedIn.core.info("Loaded Settings From Cookie",true);
+		pluggedIn.core.saveSettings();
 	}else{
 		pluggedIn.core.warn("Settings Cookie did not exist.",true);
 		pluggedIn.core.saveSettings();
