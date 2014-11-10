@@ -8,7 +8,7 @@ however redistributing of this product modified or not is disallowed.
 
 Some of the features you have from using this addon may be frowned upon by certain communities, use responsibly.
 
-Version 0.00.8 ALPHA
+Version 0.00.9 ALPHA
 
 */
 
@@ -21,7 +21,7 @@ pluggedIn.keyboard = {};
 pluggedIn.colors = {};
 pluggedIn.commands = {};
 
-pluggedIn.VERSION = "v0.00.8-A";
+pluggedIn.VERSION = "v0.00.9-A";
 pluggedIn.AUTHOR = "R0CK";
 
 pluggedIn.PREFIX = "PluggedIn » ";
