@@ -81,7 +81,7 @@ var pluggedIn = {
 	},
 	
 	//Default Settings
-	settings = {
+	settings: {
 		autoWoot: true,
 		autoDJ: true,
 		spamDJ: true,
