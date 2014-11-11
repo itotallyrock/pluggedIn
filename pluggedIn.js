@@ -162,28 +162,12 @@ pluggedIn.core.autoWoot = (function(){
 });
 
 pluggedIn.core.autoDJ = function(){
-<<<<<<< HEAD
-	if($(".description.panel>.value")[0].innerText.toLowerCase().search(pluggedIn.rooms.rules.autoDJ.toLowerCase()) == -1){
-		API.on(API.ADVANCE,(function(){
-			if(API.getWaitListPosition() == -1 && API.getDJ().id != API.getUser().id){
-				pluggedIn.core.info("Ran autoDJ",true);
-				$("#dj-button").click();
-			}
-		}));
-<<<<<<< HEAD
-=======
-	}else{
-		pluggedIn.gui.appendChat("This room has autoDJ disabled",pluggedIn.colors.ALERT);
->>>>>>> origin/master
-	}
-=======
 	API.on(API.ADVANCE,(function(){
 		if(API.getWaitListPosition() == -1 && API.getDJ().id != API.getUser().id){
 			pluggedIn.core.info("Ran autoDJ",true);
 			$("#dj-button").click();
 		}
 	}));
->>>>>>> origin/master
 }
 
 pluggedIn.core.replaceChatImg = (function(){
