@@ -16,7 +16,7 @@ var pluggedIn = {
 	VERSION: "v0.00.9-A",
 	AUTHOR: "R0CK",
 	PREFIX: "PluggedIn » ",
-	LANGS: ["en","pt"],
+	LANGS: ["en","pt","de"],
 	core:{
 		log: (function(msg,debug){
 			if(debug){//Will only display if debug enabled
@@ -182,7 +182,7 @@ var pluggedIn = {
 			spamDJ:"pluggedin-rules-spamDJ-block",
 			afk:"pluggedin-rules-afk-block"
 		}
-	}
+	},
 	
 	commands:{
 		kill: {
@@ -190,7 +190,7 @@ var pluggedIn = {
 			alias:		["stop","halt"],
 			args:		"",
 			callback:	(function(){pluggedIn.core.stop();})
-		};
+		},
 
 		status: {
 			name:		"status",
@@ -203,7 +203,7 @@ var pluggedIn = {
 								pluggedIn.appendChat("Usage:<br/>/status [avail,away,gaming,working]",pluggedIn.colors.WARN);
 							}
 						})
-		};
+		},
 
 		commands: {
 			name:		"commands",
@@ -215,7 +215,7 @@ var pluggedIn = {
 								pluggedIn.gui.appendChat(c.name+" "+c.args,pluggedIn.colors.DEFAULT);
 							}
 						})
-		};
+		},
 
 		afk: {
 			name:		"afk",
