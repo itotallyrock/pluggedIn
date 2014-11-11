@@ -37,70 +37,65 @@ var pluggedIn = {
 		}
 	}
 	
-	commands:{},
-};
-pluggedIn.core = {};
-pluggedIn.gui = {};
-pluggedIn.keyboard = {};
-pluggedIn.colors = {};
-pluggedIn.commands = {};
+	commands:{
+		kill = {
+			name:		"kill",
+			alias:		["stop","halt"],
+			args:		"",
+			callback:	(function(){pluggedIn.core.stop();})
+		};
 
-pluggedIn.commands.kill = {
-	name:		"kill",
-	alias:		["stop","halt"],
-	args:		"",
-	callback:	(function(){pluggedIn.core.stop();})
-};
+		status: {
+			name:		"status",
+			alias:		[],
+			args:		"[avail,away,gaming,working]",
+			callback:	(function(e){
+							try{
+								API.setStatus(eval("API.STATUS."+e[0].toUpperCase()));
+							}catch(err){
+								pluggedIn.appendChat("Usage:<br/>/status [avail,away,gaming,working]",pluggedIn.colors.WARN);
+							}
+						})
+		};
 
-pluggedIn.commands.status = {
-	name:		"status",
-	alias:		[],
-	args:		"[avail,away,gaming,working]",
-	callback:	(function(e){
-					try{
-						API.setStatus(eval("API.STATUS."+e[0].toUpperCase()));
-					}catch(err){
-						pluggedIn.appendChat("Usage:<br/>/status [avail,away,gaming,working]",pluggedIn.colors.WARN);
-					}
-				})
-};
+		commands: {
+			name:		"commands",
+			alias:		["command","?"],
+			args:		"",
+			callback:	(function(){
+							for(var c in pluggedIn.commands){
+								c = eval("pluggedIn.commands."+c);
+								pluggedIn.gui.appendChat(c.name+" "+c.args,pluggedIn.colors.DEFAULT);
+							}
+						})
+		};
 
-pluggedIn.commands.commands = {
-	name:		"commands",
-	alias:		["command","?"],
-	args:		"",
-	callback:	(function(){
-					for(var c in pluggedIn.commands){
-						c = eval("pluggedIn.commands."+c);
-						pluggedIn.gui.appendChat(c.name+" "+c.args,pluggedIn.colors.DEFAULT);
-					}
-				})
-};
-
-pluggedIn.commands.afk = {
-	name:		"afk",
-	alias:		["away"],
-	args:		"",
-	callback:	(function(){
-					pluggedIn.core.toggleAfk();
-				})
-};
-
-//Default Settings
-pluggedIn.settings = {
-	autoWoot: true,
-	autoDJ: true,
-	spamDJ: true,
-	debug = false,
-	chatimg = true,
-	lang = 0,
-	bg = "http://blog.napc.com/Portals/10319/images/clouds.jpg",//URL
-	afk = false,
-	afkMsg = "I'm currently AFK.",
-	keyboard:{
-		SPAM_DJ = 86//V
+		afk: {
+			name:		"afk",
+			alias:		["away"],
+			args:		"",
+			callback:	(function(){
+							pluggedIn.core.toggleAfk();
+						})
+		},
+	},
+	
+	//Default Settings
+	settings = {
+		autoWoot: true,
+		autoDJ: true,
+		spamDJ: true,
+		debug = false,
+		chatimg = true,
+		lang = 0,
+		bg = "http://blog.napc.com/Portals/10319/images/clouds.jpg",//URL
+		afk = false,
+		afkMsg = "I'm currently AFK.",
+		keyboard:{
+			SPAM_DJ = 86//V
+		}
 	}
-}
+};
 
 //Import external scripts
 
