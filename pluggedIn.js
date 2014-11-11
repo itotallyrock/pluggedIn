@@ -13,37 +13,184 @@ Version 0.00.9 ALPHA
 */
 
 var pluggedIn = {
-	VERSION = "v0.00.9-A",
-	AUTHOR = "R0CK",
-	PREFIX = "PluggedIn » ",
-	LANGS = ["en"],
-	core:{},
-	gui:{},
+	VERSION: "v0.00.9-A",
+	AUTHOR: "R0CK",
+	PREFIX: "PluggedIn » ",
+	LANGS: ["en","pt","de"],
+	core:{
+		log: (function(msg,debug){
+			if(debug){//Will only display if debug enabled
+				if(pluggedIn.settings.debug){
+					console.log("%c"+pluggedIn.PREFIX+msg,'color: #'+pluggedIn.colors.DEFAULT+'; font-weight:700;');
+				}
+			}else{
+				console.log("%c"+pluggedIn.PREFIX+msg,'color: #'+pluggedIn.colors.DEFAULT+'; font-weight:700;');
+			}
+		}),
+
+		warn: (function(msg,debug){
+			if(debug){//Will only display if debug enabled
+				if(pluggedIn.settings.debug){
+					console.warn("%c"+pluggedIn.PREFIX+msg,'color: #'+pluggedIn.colors.ALERT+'; font-weight:700;');
+				}
+			}else{
+				console.warn("%c"+pluggedIn.PREFIX+msg,'color: #'+pluggedIn.colors.ALERT+'; font-weight:700;');
+			}
+		}),
+
+		error: (function(msg,debug){
+			if(debug){//Will only display if debug enabled
+				if(pluggedIn.settings.debug){
+					console.error("%c"+pluggedIn.PREFIX+msg,'color: #'+pluggedIn.colors.WARN+'; font-weight:700;');
+				}
+			}else{
+				console.error("%c"+pluggedIn.PREFIX+msg,'color: #'+pluggedIn.colors.WARN+'; font-weight:700;');
+			}
+		}),
+
+		info: (function(msg,debug){
+			if(debug){//Will only display if debug enabled
+				if(pluggedIn.settings.debug){
+					console.info("%c"+pluggedIn.PREFIX+msg,'color: #'+pluggedIn.colors.INFO+'; font-weight:700;');
+				}
+			}else{
+				console.info("%c"+pluggedIn.PREFIX+msg,'color: #'+pluggedIn.colors.INFO+'; font-weight:700;');
+			}
+		}),
+		
+		convertToHex: (function(str){
+			var hex = '';
+			for(var i=0;i<str.length;i++) {
+				hex += ''+str.charCodeAt(i).toString(16);
+			}
+			return hex;
+		}),
+
+		convertFromHex: (function(hex){
+			var hex = hex.toString();
+			var str = '';
+			for (var i = 0; i < hex.length; i += 2)
+				str += String.fromCharCode(parseInt(hex.substr(i, 2), 16));
+			return str;
+		}),
+
+		createCookie: (function(name,value,days){
+			if (days){
+				var date = new Date();
+				date.setTime(date.getTime()+(days*24*60*60*1000));
+				var expires = "; expires="+date.toGMTString();
+			}else{
+				var expires = "";
+			}
+			document.cookie = name+"="+value+expires+"; path=/";
+		}),
+
+		readCookie: (function (name){
+			var nameEQ = name + "=";
+			var ca = document.cookie.split(';');
+			for(var i=0;i < ca.length;i++){
+				var c = ca[i];
+				while(c.charAt(0)==' '){
+					c = c.substring(1,c.length);
+				}
+				if(c.indexOf(nameEQ) == 0){
+					return c.substring(nameEQ.length,c.length);
+				}
+			}
+			return null;
+		}),
+
+		eraseCookie: (function(name){
+			pluggedIn.core.createCookie(name,"",-1);
+		}),
+
+		getSettings: (function(){
+			var c;
+			
+			if(document.cookie.indexOf("pluggedIn")>0){
+				c = JSON.parse(pluggedIn.core.convertFromHex(pluggedIn.core.readCookie("pluggedIn")));
+				for(var s in c){
+					pluggedIn.core.log("set pluggedIn.settings."+s+" = "+eval("c."+s),true);
+					pluggedIn.settings[s] = c[s];
+				}
+				
+				pluggedIn.core.info("Loaded Settings From Cookie",true);
+				pluggedIn.core.saveSettings();
+			}else{
+				pluggedIn.core.warn("Settings Cookie did not exist.",true);
+				pluggedIn.core.saveSettings();
+			}
+			
+			pluggedIn.settings.afk = false; //A Little Messy but it gets rid of AFK on load (Doesn't save it.)
+		}),
+
+		saveSettings: (function(){
+			pluggedIn.core.eraseCookie("pluggedIn");
+			pluggedIn.core.createCookie("pluggedIn",pluggedIn.core.convertToHex(JSON.stringify(pluggedIn.settings)),365);
+			pluggedIn.core.info("Created Settings Cookie",true);
+		})
+	},
+	gui:{
+		appendChat: (function(message,color){
+			if(!message){
+				return false;
+			}else{
+				if(!color){
+					$("#chat-messages").append('<div class="welcome"><span class="text" style="font-weight:800;">' + message + '</span></div>');
+				}else{
+					$("#chat-messages").append('<div class="welcome" style="border-left: #'+color+' 3px solid;color: #'+color+';"><span class="text" style="font-weight:800;">' + message + '</span></div>');
+				}
+				
+				$('#chat-messages').scrollTop($('#chat-messages')[0].scrollHeight);
+			}
+		}),
+
+		notify: (function(i,m){
+			require("b20d6/f1e58/e027b").trigger("notify",i,m);
+		}),
+
+		confirm: (function(t,b){
+			require(["b20d6/f1e58/e027b", "b20d6/ea5ff/bb81d"], function(n,s){n.dispatch(new s(s.CONFIRM, t, b));});
+		}),
+
+		moveTopBar: (function(){
+			$("#room-bar.bar-button")[0].style.width="343px";$("#room-bar.bar-button")[0].style.left="103px";
+		}),
+
+		drawTopButton: (function(){
+			$(".app-header").append('<div style="width: 50px;top: 7px;left: 60px;height: 54px;position: absolute;"><i class="icon icon-plug-dj"></i></div>');
+		}),
+
+		changeBackground: (function(url){
+			$("i.room-background")[0].style.backgroundSize="100%";
+			$("i.room-background")[0].style.background = "url('"+url+"') no-repeat";
+		})
+	},
 	keyboard:{},
 	colors:{
-		WARN = "bb0000",
-		ALERT = "ddbb00",
-		SUCCESS = "6ff01a",
-		INFO = "009cdd",
-		DEFAULT = "ac76ff"
+		WARN: "bb0000",
+		ALERT: "ddbb00",
+		SUCCESS: "6ff01a",
+		INFO: "009cdd",
+		DEFAULT: "ac76ff"
 	},
 	
-	rooms = {
+	rooms: {
 		rules:{
 			autoWoot:"pluggedin-rules-autowoot-block",
 			autoDJ:"pluggedin-rules-autoDJ-block",
 			spamDJ:"pluggedin-rules-spamDJ-block",
 			afk:"pluggedin-rules-afk-block"
 		}
-	}
+	},
 	
 	commands:{
-		kill = {
+		kill: {
 			name:		"kill",
 			alias:		["stop","halt"],
 			args:		"",
 			callback:	(function(){pluggedIn.core.stop();})
-		};
+		},
 
 		status: {
 			name:		"status",
@@ -56,7 +203,7 @@ var pluggedIn = {
 								pluggedIn.appendChat("Usage:<br/>/status [avail,away,gaming,working]",pluggedIn.colors.WARN);
 							}
 						})
-		};
+		},
 
 		commands: {
 			name:		"commands",
@@ -68,7 +215,7 @@ var pluggedIn = {
 								pluggedIn.gui.appendChat(c.name+" "+c.args,pluggedIn.colors.DEFAULT);
 							}
 						})
-		};
+		},
 
 		afk: {
 			name:		"afk",
@@ -81,18 +228,18 @@ var pluggedIn = {
 	},
 	
 	//Default Settings
-	settings = {
+	settings: {
 		autoWoot: true,
 		autoDJ: true,
 		spamDJ: true,
-		debug = false,
-		chatimg = true,
-		lang = 0,
-		bg = "http://blog.napc.com/Portals/10319/images/clouds.jpg",//URL
-		afk = false,
-		afkMsg = "I'm currently AFK.",
+		debug: false,
+		chatimg: true,
+		lang: 0,
+		bg: "http://blog.napc.com/Portals/10319/images/clouds.jpg",//URL
+		afk: false,
+		afkMsg: "I'm currently AFK.",
 		keyboard:{
-			SPAM_DJ = 86//V
+			SPAM_DJ: 86//V
 		}
 	}
 };
@@ -112,46 +259,6 @@ var pluggedIn = {
 	Core functionality
 
 */
-
-pluggedIn.core.log = (function(msg,debug){
-	if(debug){//Will only display if debug enabled
-		if(pluggedIn.settings.debug){
-			console.log("%c"+pluggedIn.PREFIX+msg,'color: #'+pluggedIn.colors.DEFAULT+'; font-weight:700;');
-		}
-	}else{
-		console.log("%c"+pluggedIn.PREFIX+msg,'color: #'+pluggedIn.colors.DEFAULT+'; font-weight:700;');
-	}
-});
-
-pluggedIn.core.warn = (function(msg,debug){
-	if(debug){//Will only display if debug enabled
-		if(pluggedIn.settings.debug){
-			console.warn("%c"+pluggedIn.PREFIX+msg,'color: #'+pluggedIn.colors.ALERT+'; font-weight:700;');
-		}
-	}else{
-		console.warn("%c"+pluggedIn.PREFIX+msg,'color: #'+pluggedIn.colors.ALERT+'; font-weight:700;');
-	}
-});
-
-pluggedIn.core.error = (function(msg,debug){
-	if(debug){//Will only display if debug enabled
-		if(pluggedIn.settings.debug){
-			console.error("%c"+pluggedIn.PREFIX+msg,'color: #'+pluggedIn.colors.WARN+'; font-weight:700;');
-		}
-	}else{
-		console.error("%c"+pluggedIn.PREFIX+msg,'color: #'+pluggedIn.colors.WARN+'; font-weight:700;');
-	}
-});
-
-pluggedIn.core.info = (function(msg,debug){
-	if(debug){//Will only display if debug enabled
-		if(pluggedIn.settings.debug){
-			console.info("%c"+pluggedIn.PREFIX+msg,'color: #'+pluggedIn.colors.INFO+'; font-weight:700;');
-		}
-	}else{
-		console.info("%c"+pluggedIn.PREFIX+msg,'color: #'+pluggedIn.colors.INFO+'; font-weight:700;');
-	}
-});
 
 pluggedIn.core.autoWoot = (function(){
 	$("#woot").click();
@@ -200,78 +307,6 @@ pluggedIn.core.afkMessage = (function(){
 CUSTOM ENCODING (Simple string to hex)
 
 */
-
-pluggedIn.core.convertToHex = (function(str){
-	var hex = '';
-	for(var i=0;i<str.length;i++) {
-		hex += ''+str.charCodeAt(i).toString(16);
-	}
-	return hex;
-});
-
-pluggedIn.core.convertFromHex = (function(hex){
-	var hex = hex.toString();
-	var str = '';
-	for (var i = 0; i < hex.length; i += 2)
-		str += String.fromCharCode(parseInt(hex.substr(i, 2), 16));
-	return str;
-});
-
-pluggedIn.core.createCookie = (function(name,value,days){
-	if (days){
-		var date = new Date();
-		date.setTime(date.getTime()+(days*24*60*60*1000));
-		var expires = "; expires="+date.toGMTString();
-	}else{
-		var expires = "";
-	}
-	document.cookie = name+"="+value+expires+"; path=/";
-});
-
-pluggedIn.core.readCookie = (function (name){
-	var nameEQ = name + "=";
-	var ca = document.cookie.split(';');
-	for(var i=0;i < ca.length;i++){
-		var c = ca[i];
-		while(c.charAt(0)==' '){
-			c = c.substring(1,c.length);
-		}
-		if(c.indexOf(nameEQ) == 0){
-			return c.substring(nameEQ.length,c.length);
-		}
-	}
-	return null;
-});
-
-pluggedIn.core.eraseCookie = (function(name){
-	pluggedIn.core.createCookie(name,"",-1);
-});
-
-pluggedIn.core.getSettings = (function(){
-	var c;
-	
-	if(document.cookie.indexOf("pluggedIn")>0){
-		c = JSON.parse(pluggedIn.core.convertFromHex(pluggedIn.core.readCookie("pluggedIn")));
-		for(var s in c){
-			pluggedIn.core.log("set pluggedIn.settings."+s+" = "+eval("c."+s),true);
-			pluggedIn.settings[s] = c[s];
-		}
-		
-		pluggedIn.core.info("Loaded Settings From Cookie",true);
-		pluggedIn.core.saveSettings();
-	}else{
-		pluggedIn.core.warn("Settings Cookie did not exist.",true);
-		pluggedIn.core.saveSettings();
-	}
-	
-	pluggedIn.settings.afk = false; //A Little Messy but it gets rid of AFK on load (Doesn't save it.)
-});
-
-pluggedIn.core.saveSettings = (function(){
-	pluggedIn.core.eraseCookie("pluggedIn");
-	pluggedIn.core.createCookie("pluggedIn",pluggedIn.core.convertToHex(JSON.stringify(pluggedIn.settings)),365);
-	pluggedIn.core.info("Created Settings Cookie",true);
-});
 
 /*
 
@@ -434,41 +469,5 @@ pluggedIn.core.stop = (function(callback){
 	GUI and initialization
 
 */
-
-pluggedIn.gui.appendChat = (function(message,color){
-	if(!message){
-		return false;
-	}else{
-		if(!color){
-			$("#chat-messages").append('<div class="welcome"><span class="text" style="font-weight:800;">' + message + '</span></div>');
-		}else{
-			$("#chat-messages").append('<div class="welcome" style="border-left: #'+color+' 3px solid;color: #'+color+';"><span class="text" style="font-weight:800;">' + message + '</span></div>');
-		}
-		
-		$('#chat-messages').scrollTop($('#chat-messages')[0].scrollHeight);
-	}
-});
-
-pluggedIn.gui.notify = (function(i,m){
-	require("b20d6/f1e58/e027b").trigger("notify",i,m);
-});
-
-pluggedIn.gui.confirm = (function(t,b){
-	require(["b20d6/f1e58/e027b", "b20d6/ea5ff/bb81d"], function(n,s){n.dispatch(new s(s.CONFIRM, t, b));});
-});
-
-pluggedIn.gui.moveTopBar = (function(){
-	$("#room-bar.bar-button")[0].style.width="343px";$("#room-bar.bar-button")[0].style.left="103px";
-});
-
-pluggedIn.gui.drawTopButton = (function(){
-	$(".app-header").append('<div style="width: 50px;top: 7px;left: 60px;height: 54px;position: absolute;"><i class="icon icon-plug-dj"></i></div>');
-});
-
-
-pluggedIn.gui.changeBackground = (function(url){
-	$("i.room-background")[0].style.backgroundSize="100%";
-	$("i.room-background")[0].style.background = "url('"+url+"') no-repeat";
-});
 
 pluggedIn.core.initialize();
