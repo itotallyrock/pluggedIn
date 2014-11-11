@@ -17,6 +17,51 @@ var pluggedIn = {
 	AUTHOR: "R0CK",
 	PREFIX: "PluggedIn » ",
 	LANGS: ["en","pt","de"],
+	
+	commands:{
+		kill: {
+			name:		"kill",
+			alias:		["stop","halt"],
+			args:		"",
+			callback:	function(){pluggedIn.core.stop();}
+		},
+
+		status: {
+			name:		"status",
+			alias:		[],
+			args:		"[avail,away,gaming,working]",
+			callback:	function(e){
+							try{
+								API.setStatus(API.STATUS[e[0].toUpperCase()]);
+							}catch(err){
+								pluggedIn.appendChat("Usage:<br/>/status [avail,away,gaming,working]",pluggedIn.colors.WARN);
+							}
+						}
+		},
+
+		commands: {
+			name:		"commands",
+			alias:		["command","?"],
+			args:		"",
+			callback:	function(){
+							var c;
+							for(c in pluggedIn.commands){
+								c = pluggedIn.commands[c];
+								pluggedIn.gui.appendChat(c.name+" "+c.args,pluggedIn.colors.DEFAULT);
+							}
+						}
+		},
+
+		afk: {
+			name:		"afk",
+			alias:		["away"],
+			args:		"",
+			callback:	function(){
+							pluggedIn.core.toggleAfk();
+						}
+		}
+	},
+	
 	core:{
 		log: function(msg,debug){
 			if(debug){//Will only display if debug enabled
@@ -107,7 +152,7 @@ var pluggedIn = {
 			if(document.cookie.indexOf("pluggedIn")>0){
 				c = JSON.parse(pluggedIn.core.convertFromHex(pluggedIn.core.readCookie("pluggedIn")));
 				for(s in c){
-					pluggedIn.core.log("set pluggedIn.settings."+s+" = "+eval("c."+s),true);
+					pluggedIn.core.log("set pluggedIn.settings."+s+" = "+c[s],true);
 					pluggedIn.settings[s] = c[s];
 				}
 				
@@ -194,13 +239,13 @@ var pluggedIn = {
 					for(i in pluggedIn.commands){
 						if(c === i){
 							$("#chat-input-field").val("");
-							eval("pluggedIn.commands."+i).callback(args);
-							break;
+							pluggedIn.commands[i].callback(args);
+							//break;
 						}else{
-							for(o = 0;o<eval("pluggedIn.commands."+i).alias.length;o++){
-								if(c === eval("pluggedIn.commands."+i).alias[o]){
-									eval("pluggedIn.commands."+i).callback(args);
-									break;
+							for(o = 0;o<pluggedIn.commands[i].alias.length;o++){
+								if(c === pluggedIn.commands[i].alias[o]){
+									pluggedIn.commands[i].callback(args);
+									//break;
 								}else{
 									//No command or alias matched
 									pluggedIn.core.warn("No command or alias matched "+c,true);
@@ -269,13 +314,12 @@ var pluggedIn = {
 				for(i in pluggedIn.commands){
 					if(c === i){
 						$("#chat-input-field").val("");
-						eval("pluggedIn.commands."+i).callback(args);
+						pluggedIn.commands[i].callback(args);
 					}else{
-						for(o = 0;o<eval("pluggedIn.commands."+i).alias.length;o++){
-							if(c === eval("pluggedIn.commands."+i).alias[o]){
-								eval("pluggedIn.commands."+i).callback(args);
+						for(o = 0;o<pluggedIn.commands[i].alias.length;o++){
+							if(c === pluggedIn.commands[i].alias[o]){
+								pluggedIn.commands[i].callback(args);
 							}else{
-								//No command or alias matched
 								pluggedIn.core.warn("No command or alias matched "+c,true);
 							}
 						}
@@ -340,14 +384,17 @@ var pluggedIn = {
 	keyboard:{
 		main: $(this).keydown(function (e){
 			pluggedIn.core.info("Running Keyboard Shortcut (User Pressed "+String.fromCharCode(e.which)+")",true);
-			if(e.which === pluggedIn.settings.keyboard.SPAM_DJ){
-				if($(".description.panel>.value")[0].innerText.toLowerCase().search(pluggedIn.rooms.rules.spamDJ.toLowerCase()) > -1){
-					if(pluggedIn.settings.spamDJ){
-						if(API.getWaitListPosition() === -1 && API.getDJ().id !== API.getUser().id && API.getWaitList().length<50){
-							$("#dj-button").click();
+			switch(e.which){
+				case pluggedIn.settings.keyboard.SPAM_DJ:
+					if($(".description.panel>.value")[0].innerText.toLowerCase().search(pluggedIn.rooms.rules.spamDJ.toLowerCase()) > -1){
+						if(pluggedIn.settings.spamDJ){
+							if(API.getWaitListPosition() === -1 && API.getDJ().id !== API.getUser().id && API.getWaitList().length<50){
+								$("#dj-button").click();
+							}
 						}
 					}
-				}
+					break;
+				//case pluggedIn.settings.keyboard.DERP:
 			}
 		})
 	},
@@ -369,50 +416,6 @@ var pluggedIn = {
 		}
 	},
 	
-	commands:{
-		kill: {
-			name:		"kill",
-			alias:		["stop","halt"],
-			args:		"",
-			callback:	function(){pluggedIn.core.stop();}
-		},
-
-		status: {
-			name:		"status",
-			alias:		[],
-			args:		"[avail,away,gaming,working]",
-			callback:	function(e){
-							try{
-								API.setStatus(eval("API.STATUS."+e[0].toUpperCase()));
-							}catch(err){
-								pluggedIn.appendChat("Usage:<br/>/status [avail,away,gaming,working]",pluggedIn.colors.WARN);
-							}
-						}
-		},
-
-		commands: {
-			name:		"commands",
-			alias:		["command","?"],
-			args:		"",
-			callback:	function(){
-							var c;
-							for(c in pluggedIn.commands){
-								c = eval("pluggedIn.commands."+c);
-								pluggedIn.gui.appendChat(c.name+" "+c.args,pluggedIn.colors.DEFAULT);
-							}
-						}
-		},
-
-		afk: {
-			name:		"afk",
-			alias:		["away"],
-			args:		"",
-			callback:	function(){
-							pluggedIn.core.toggleAfk();
-						}
-		}
-	},
-	
 	//Default Settings
 	settings: {
 		autoWoot: true,
@@ -426,6 +429,7 @@ var pluggedIn = {
 		afkMsg: "I'm currently AFK.",
 		keyboard:{
 			SPAM_DJ: 86//V
+			//SOMETHING_ELSE: 106//L
 		}
 	}
 };
