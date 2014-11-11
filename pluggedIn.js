@@ -125,8 +125,183 @@ var pluggedIn = {
 			pluggedIn.core.eraseCookie("pluggedIn");
 			pluggedIn.core.createCookie("pluggedIn",pluggedIn.core.convertToHex(JSON.stringify(pluggedIn.settings)),365);
 			pluggedIn.core.info("Created Settings Cookie",true);
+		},
+		
+		autoWoot: function(){
+			$("#woot").click();
+			API.on(API.ADVANCE,function(){
+				pluggedIn.core.info("Ran autoWoot",true);
+				$("#woot").click();
+			});
+		},
+
+		autoDJ: function(){
+			API.on(API.ADVANCE,function(){
+				if(API.getWaitListPosition() === -1 && API.getDJ().id !== API.getUser().id){
+					pluggedIn.core.info("Ran autoDJ",true);
+					$("#dj-button").click();
+				}
+			});
+		},
+
+		replaceChatImg: function(){
+			API.on(API.CHAT,function(){
+				if($(".message").last().children().last().children().length > 0){
+					if($(".message").last().children().last().children()[0].toString().search(/^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)(.png|.jpg|.gif|.jpeg)$/g) > -1){
+						var inner = $(".message").last().children().last().children()[0].toString();
+						$(".message").last().children().last().children()[0].innerHTML = "<a href=\""+inner+"\"><img src=\""+inner+"\" alt=\""+inner+"\" style=\"display: block; max-width: 100%; height: auto; margin: 0px auto;\"></a>";
+						$('#chat-messages').scrollTop($('#chat-messages')[0].scrollHeight);
+					}
+				}
+			});
+		},
+
+		afkMessage: function(){
+			var mentionBy = "^@("+API.getUser().username.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, "\\$&")+")";
+			API.on(API.CHAT,function(e){
+				if(e.message.search(new Regexp(mentionBy)) > -1){
+					if(pluggedIn.settings.afk){
+						API.sendChat("@"+e.un+" "+pluggedIn.settings.afkMsg);
+					}
+				}
+			});
+		},
+		
+		initialize: function(){
+			if(pluggedIn.core.executed){
+				pluggedIn.core.warn("PluggedIn is already running, skipping initialization");
+			}else{
+				pluggedIn.core.getSettings();
+				
+				pluggedIn.core.log(pluggedIn.VERSION+" by "+pluggedIn.AUTHOR+" has loaded.");
+				pluggedIn.core.info("Visit https://github.com/itotallyrock/pluggedIn/wiki/Console-Usage for usage.");
+				pluggedIn.gui.appendChat("pluggedIn "+pluggedIn.VERSION+" by "+pluggedIn.AUTHOR+" has loaded.<br/>Visit <a href='https://github.com/itotallyrock/pluggedIn/wiki/Console-Usage'>the wiki</a> for usage",pluggedIn.colors.INFO);
+				
+				if(pluggedIn.settings.autoDJ){
+					pluggedIn.core.autoDJ();
+				}
+				if(pluggedIn.settings.autoWoot){
+					pluggedIn.core.autoWoot();
+				}
+				
+				if(pluggedIn.settings.chatimg){
+					pluggedIn.core.replaceChatImg();
+				}
+				
+				API.on(API.CHAT_COMMAND,function(e){
+					var c = e.substring(1).split(" ")[0],args = e.substring(1).split(" ").slice(1),o,i;
+					pluggedIn.core.info("User typed command /"+c+" ["+args.toString()+"]");
+					for(i in pluggedIn.commands){
+						if(c === i){
+							$("#chat-input-field").val("");
+							eval("pluggedIn.commands."+i).callback(args);
+							break;
+						}else{
+							for(o = 0;o<eval("pluggedIn.commands."+i).alias.length;o++){
+								if(c === eval("pluggedIn.commands."+i).alias[o]){
+									eval("pluggedIn.commands."+i).callback(args);
+									break;
+								}else{
+									//No command or alias matched
+									pluggedIn.core.warn("No command or alias matched "+c,true);
+								}
+							}
+						}
+					}
+				});
+				
+				pluggedIn.core.executed = true;
+			}
+		},
+		
+		toggleAfk: function(){
+			API.off(API.CHAT);
+			if($(".description.panel>.value")[0].innerText.toLowerCase().search(pluggedIn.rooms.rules.afk.toLowerCase()) === -1){
+				if(pluggedIn.settings.afk){
+					pluggedIn.settings.afk = false;
+					pluggedIn.gui.appendChat("You are no longer AFK",pluggedIn.colors.SUCCESS);
+				}else{
+					pluggedIn.settings.afk = true;
+					pluggedIn.gui.appendChat("You are now AFK",pluggedIn.colors.SUCCESS);
+					pluggedIn.core.afkMessage();
+				}
+			}else{
+				pluggedIn.gui.appendChat("This room has AFK disabled",pluggedIn.colors.ALERT);
+			}
+		},
+		
+		update: function(){
+			pluggedIn.core.saveSettings();
+			
+			API.off(API.WAIT_LIST_UPDATE);
+			API.off(API.CHAT_COMMAND);
+			API.off(API.CHAT);
+			
+			pluggedIn.core.getSettings();
+			
+			if(pluggedIn.settings.autoDJ){
+				if($(".description.panel>.value")[0].innerText.toLowerCase().search(pluggedIn.rooms.rules.autoDJ.toLowerCase()) === -1){
+					pluggedIn.core.autoDJ();
+				}else{
+					pluggedIn.gui.appendChat("This room has AutoDJ disabled",pluggedIn.colors.ALERT);
+				}
+			}
+			if(pluggedIn.settings.autoWoot){
+				pluggedIn.core.autoWoot();
+				if($(".description.panel>.value")[0].innerText.toLowerCase().search(pluggedIn.rooms.rules.autoWoot.toLowerCase()) === -1){
+					pluggedIn.core.afkMessage();
+				}else{
+					pluggedIn.gui.appendChat("This room has AutoWoot disabled",pluggedIn.colors.ALERT);
+				}
+			}
+				
+			if(pluggedIn.settings.chatimg){
+				pluggedIn.core.replaceChatImg();
+			}
+			
+			if(pluggedIn.settings.afk){
+				pluggedIn.core.toggleAfk();
+			}
+			
+			API.on(API.CHAT_COMMAND,function(e){
+				var c = e.substring(1).split(" ")[0],args = e.substring(1).split(" ").slice(1),i,o;
+				pluggedIn.core.info("User typed command /"+c+" ["+args.toString()+"]");
+				for(i in pluggedIn.commands){
+					if(c === i){
+						$("#chat-input-field").val("");
+						eval("pluggedIn.commands."+i).callback(args);
+					}else{
+						for(o = 0;o<eval("pluggedIn.commands."+i).alias.length;o++){
+							if(c === eval("pluggedIn.commands."+i).alias[o]){
+								eval("pluggedIn.commands."+i).callback(args);
+							}else{
+								//No command or alias matched
+								pluggedIn.core.warn("No command or alias matched "+c,true);
+							}
+						}
+					}
+				}
+			});
+		},
+				
+		stop: function(callback){
+			API.off(API.WAIT_LIST_UPDATE);
+			API.off(API.CHAT_COMMAND);
+			API.off(API.CHAT);
+			
+			if(!callback){
+				pluggedIn.gui.appendChat("PluggedIn has been sucessfully stopped",pluggedIn.colors.SUCCESS);
+				pluggedIn.core.info("PluggedIn has been sucessfully stopped");
+			}else{
+				pluggedIn.gui.appendChat("PluggedIn has been sucessfully stopped",pluggedIn.colors.ALERT);
+				pluggedIn.core.alert("PluggedIn has stopped unexpectedly with crash code "+callback);
+			}
+			
+			pluggedIn = undefined;
 		}
+
 	},
+	
 	gui:{
 		appendChat: function(message,color){
 			if(message){
@@ -161,7 +336,22 @@ var pluggedIn = {
 			$("i.room-background")[0].style.background = "url('"+url+"') no-repeat";
 		}
 	},
-	keyboard:{},
+	
+	keyboard:{
+		main: $(this).keydown(function (e){
+			pluggedIn.core.info("Running Keyboard Shortcut (User Pressed "+String.fromCharCode(e.which)+")",true);
+			if(e.which === pluggedIn.settings.keyboard.SPAM_DJ){
+				if($(".description.panel>.value")[0].innerText.toLowerCase().search(pluggedIn.rooms.rules.spamDJ.toLowerCase()) > -1){
+					if(pluggedIn.settings.spamDJ){
+						if(API.getWaitListPosition() === -1 && API.getDJ().id !== API.getUser().id && API.getWaitList().length<50){
+							$("#dj-button").click();
+						}
+					}
+				}
+			}
+		})
+	},
+	
 	colors:{
 		WARN: "bb0000",
 		ALERT: "ddbb00",
@@ -241,219 +431,7 @@ var pluggedIn = {
 };
 
 //Import external scripts
-
 //$.getScript();
-
-
-//Import external css
-
 //$("head").append("<link rel=\"stylesheet\" type=\"text/css\" href=\"https://someurl.com/folder/style.css\">");
-
-
-/*
-
-	Core functionality
-
-*/
-
-pluggedIn.core.autoWoot = function(){
-	$("#woot").click();
-	API.on(API.ADVANCE,function(){
-		pluggedIn.core.info("Ran autoWoot",true);
-		$("#woot").click();
-	});
-};
-
-pluggedIn.core.autoDJ = function(){
-	API.on(API.ADVANCE,function(){
-		if(API.getWaitListPosition() === -1 && API.getDJ().id !== API.getUser().id){
-			pluggedIn.core.info("Ran autoDJ",true);
-			$("#dj-button").click();
-		}
-	});
-};
-
-pluggedIn.core.replaceChatImg = function(){
-	API.on(API.CHAT,function(){
-		if($(".message").last().children().last().children().length > 0){
-			if($(".message").last().children().last().children()[0].toString().search(/^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)(.png|.jpg|.gif|.jpeg)$/g) > -1){
-				var inner = $(".message").last().children().last().children()[0].toString();
-				$(".message").last().children().last().children()[0].innerHTML = "<a href=\""+inner+"\"><img src=\""+inner+"\" alt=\""+inner+"\" style=\"display: block; max-width: 100%; height: auto; margin: 0px auto;\"></a>";
-				$('#chat-messages').scrollTop($('#chat-messages')[0].scrollHeight);
-			}
-		}
-	});
-};
-
-pluggedIn.core.afkMessage = function(){
-	var mentionBy = "^@("+API.getUser().username.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, "\\$&")+")";
-	API.on(API.CHAT,function(e){
-		if(e.message.search(new Regexp(mentionBy)) > -1){
-			if(pluggedIn.settings.afk){
-				API.sendChat("@"+e.un+" "+pluggedIn.settings.afkMsg);
-			}
-		}
-	});
-};
-
-/*
-
-KEYBOARD SHORTCUTS
-
-*/
-
-pluggedIn.keyboard.main = $(this).keydown(function (e){
-	pluggedIn.core.info("Running Keyboard Shortcut (User Pressed "+String.fromCharCode(e.which)+")",true);
-	if(e.which === pluggedIn.settings.keyboard.SPAM_DJ){
-		if($(".description.panel>.value")[0].innerText.toLowerCase().search(pluggedIn.rooms.rules.spamDJ.toLowerCase()) > -1){
-			if(pluggedIn.settings.spamDJ){
-				if(API.getWaitListPosition() === -1 && API.getDJ().id !== API.getUser().id && API.getWaitList().length<50){
-					$("#dj-button").click();
-				}
-			}
-		}
-	}
-});
-
-pluggedIn.core.initialize = function(){
-	
-	if(pluggedIn.core.executed){
-		pluggedIn.core.warn("PluggedIn is already running, skipping initialization");
-	}else{
-		pluggedIn.core.getSettings();
-		
-		pluggedIn.core.log(pluggedIn.VERSION+" by "+pluggedIn.AUTHOR+" has loaded.");
-		pluggedIn.core.info("Visit https://github.com/itotallyrock/pluggedIn/wiki/Console-Usage for usage.");
-		pluggedIn.gui.appendChat("pluggedIn "+pluggedIn.VERSION+" by "+pluggedIn.AUTHOR+" has loaded.<br/>Visit <a href='https://github.com/itotallyrock/pluggedIn/wiki/Console-Usage'>the wiki</a> for usage",pluggedIn.colors.INFO);
-		
-		if(pluggedIn.settings.autoDJ){
-			pluggedIn.core.autoDJ();
-		}
-		if(pluggedIn.settings.autoWoot){
-			pluggedIn.core.autoWoot();
-		}
-		
-		if(pluggedIn.settings.chatimg){
-			pluggedIn.core.replaceChatImg();
-		}
-		
-		API.on(API.CHAT_COMMAND,function(e){
-			var c = e.substring(1).split(" ")[0],args = e.substring(1).split(" ").slice(1),o,i;
-			pluggedIn.core.info("User typed command /"+c+" ["+args.toString()+"]");
-			for(i in pluggedIn.commands){
-				if(c === i){
-					$("#chat-input-field").val("");
-					eval("pluggedIn.commands."+i).callback(args);
-					break;
-				}else{
-					for(o = 0;o<eval("pluggedIn.commands."+i).alias.length;o++){
-						if(c === eval("pluggedIn.commands."+i).alias[o]){
-							eval("pluggedIn.commands."+i).callback(args);
-							break;
-						}else{
-							//No command or alias matched
-							pluggedIn.core.warn("No command or alias matched "+c,true);
-						}
-					}
-				}
-			}
-		});
-		
-		pluggedIn.core.executed = true;
-	}
-};
-
-pluggedIn.core.toggleAfk = function(){
-	API.off(API.CHAT);
-	if($(".description.panel>.value")[0].innerText.toLowerCase().search(pluggedIn.rooms.rules.afk.toLowerCase()) === -1){
-		if(pluggedIn.settings.afk){
-			pluggedIn.settings.afk = false;
-			pluggedIn.gui.appendChat("You are no longer AFK",pluggedIn.colors.SUCCESS);
-		}else{
-			pluggedIn.settings.afk = true;
-			pluggedIn.gui.appendChat("You are now AFK",pluggedIn.colors.SUCCESS);
-			pluggedIn.core.afkMessage();
-		}
-	}else{
-		pluggedIn.gui.appendChat("This room has AFK disabled",pluggedIn.colors.ALERT);
-	}
-};
-
-pluggedIn.core.update = function(){
-	pluggedIn.core.saveSettings();
-	
-	API.off(API.WAIT_LIST_UPDATE);
-	API.off(API.CHAT_COMMAND);
-	API.off(API.CHAT);
-	
-	pluggedIn.core.getSettings();
-	
-	if(pluggedIn.settings.autoDJ){
-		if($(".description.panel>.value")[0].innerText.toLowerCase().search(pluggedIn.rooms.rules.autoDJ.toLowerCase()) === -1){
-			pluggedIn.core.autoDJ();
-		}else{
-			pluggedIn.gui.appendChat("This room has AutoDJ disabled",pluggedIn.colors.ALERT);
-		}
-	}
-	if(pluggedIn.settings.autoWoot){
-		pluggedIn.core.autoWoot();
-		if($(".description.panel>.value")[0].innerText.toLowerCase().search(pluggedIn.rooms.rules.autoWoot.toLowerCase()) === -1){
-			pluggedIn.core.afkMessage();
-		}else{
-			pluggedIn.gui.appendChat("This room has AutoWoot disabled",pluggedIn.colors.ALERT);
-		}
-	}
-		
-	if(pluggedIn.settings.chatimg){
-		pluggedIn.core.replaceChatImg();
-	}
-	
-	if(pluggedIn.settings.afk){
-		pluggedIn.core.toggleAfk();
-	}
-	
-	API.on(API.CHAT_COMMAND,function(e){
-		var c = e.substring(1).split(" ")[0],args = e.substring(1).split(" ").slice(1),i,o;
-		pluggedIn.core.info("User typed command /"+c+" ["+args.toString()+"]");
-		for(i in pluggedIn.commands){
-			if(c === i){
-				$("#chat-input-field").val("");
-				eval("pluggedIn.commands."+i).callback(args);
-			}else{
-				for(o = 0;o<eval("pluggedIn.commands."+i).alias.length;o++){
-					if(c === eval("pluggedIn.commands."+i).alias[o]){
-						eval("pluggedIn.commands."+i).callback(args);
-					}else{
-						//No command or alias matched
-						pluggedIn.core.warn("No command or alias matched "+c,true);
-					}
-				}
-			}
-		}
-	});
-};
-
-pluggedIn.core.stop = function(callback){
-	API.off(API.WAIT_LIST_UPDATE);
-	API.off(API.CHAT_COMMAND);
-	API.off(API.CHAT);
-	
-	if(!callback){
-		pluggedIn.gui.appendChat("PluggedIn has been sucessfully stopped",pluggedIn.colors.SUCCESS);
-		pluggedIn.core.info("PluggedIn has been sucessfully stopped");
-	}else{
-		pluggedIn.gui.appendChat("PluggedIn has been sucessfully stopped",pluggedIn.colors.ALERT);
-		pluggedIn.core.alert("PluggedIn has stopped unexpectedly with crash code "+callback);
-	}
-	
-	pluggedIn = undefined;
-};
-
-
-/*
-
-	GUI and initialization
-
-*/
 
 pluggedIn.core.initialize();
