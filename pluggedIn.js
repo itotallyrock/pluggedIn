@@ -281,6 +281,8 @@ var pluggedIn = {
 			API.off(API.WAIT_LIST_UPDATE);
 			API.off(API.CHAT_COMMAND);
 			API.off(API.CHAT);
+			API.off(API.USER_JOIN);
+			API.off(API.USER_LEAVE);
 			
 			pluggedIn.core.getSettings();
 			
@@ -306,6 +308,11 @@ var pluggedIn = {
 			
 			if(pluggedIn.settings.afk){
 				pluggedIn.core.toggleAfk();
+			}
+			
+			if(pluggedIn.settings.notifications.userUpdate){
+				API.on(API.USER_LEAVE,function(e){pluggedIn.gui.appendChat(e.slug+" has left the room.","2fcf56")})
+				API.on(API.USER_JOIN,function(e){pluggedIn.gui.appendChat(e.slug+" has joined the room.","2fcf56")})
 			}
 			
 			API.on(API.CHAT_COMMAND,function(e){
@@ -437,6 +444,7 @@ var pluggedIn = {
 		},
 		notifications:{
 			songStats: false,
+			userUpdate: true
 		}
 	}
 };
