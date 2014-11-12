@@ -434,6 +434,9 @@ var pluggedIn = {
 		keyboard:{
 			SPAM_DJ: 86//V
 			//SOMETHING_ELSE: 106//L
+		},
+		notifications:{
+			songStats: false,
 		}
 	}
 };

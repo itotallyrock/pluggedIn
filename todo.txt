@@ -1,0 +1,5 @@
+============= TODO LIST ============
+
+GUI
+ - Get a Menu button to toggle a nav menu of settings and options
+ - Have the option of chat notifications of user leave/join (Want to get a profile toggle on click of username (This part will be tough))
