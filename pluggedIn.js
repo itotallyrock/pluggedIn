@@ -233,6 +233,11 @@ var pluggedIn = {
 					pluggedIn.core.replaceChatImg();
 				}
 				
+				if(pluggedIn.settings.notifications.userUpdate){
+					API.on(API.USER_LEAVE,function(e){pluggedIn.gui.appendChat(e.username+" has left the room.","2fcf56")})
+					API.on(API.USER_JOIN,function(e){pluggedIn.gui.appendChat(e.username+" has joined the room.","2fcf56")})
+				}
+				
 				API.on(API.CHAT_COMMAND,function(e){
 					var c = e.substring(1).split(" ")[0],args = e.substring(1).split(" ").slice(1),o,i;
 					pluggedIn.core.info("User typed command /"+c+" ["+args.toString()+"]");
@@ -311,8 +316,8 @@ var pluggedIn = {
 			}
 			
 			if(pluggedIn.settings.notifications.userUpdate){
-				API.on(API.USER_LEAVE,function(e){pluggedIn.gui.appendChat(e.slug+" has left the room.","2fcf56")})
-				API.on(API.USER_JOIN,function(e){pluggedIn.gui.appendChat(e.slug+" has joined the room.","2fcf56")})
+				API.on(API.USER_LEAVE,function(e){pluggedIn.gui.appendChat(e.username+" has left the room.","2fcf56")})
+				API.on(API.USER_JOIN,function(e){pluggedIn.gui.appendChat(e.username+" has joined the room.","2fcf56")})
 			}
 			
 			API.on(API.CHAT_COMMAND,function(e){
