@@ -370,7 +370,13 @@ var pluggedIn = {
 				$('#chat-messages').scrollTop($('#chat-messages')[0].scrollHeight);
 			}
 		},
-
+		
+		showSongPopup: function(){
+			//$(".bar-value")[1].id = "pi-title";
+			//$("#pi-title").hover(function(e){console.log(e);});
+			$(".bar-value")[1].title = API.getMedia().author + " - " + API.getMedia().title;
+		},
+		
 		notify: function(i,m){
 			require("b20d6/f1e58/e027b").trigger("notify",i,m);
 		},
