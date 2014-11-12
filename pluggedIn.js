@@ -366,6 +366,10 @@ var pluggedIn = {
 		confirm: function(t,b){
 			require(["b20d6/f1e58/e027b", "b20d6/ea5ff/bb81d"], function(n,s){n.dispatch(new s(s.CONFIRM, t, b));});
 		},
+		
+		alert: function(t,b){
+			require(["b20d6/f1e58/e027b","b20d6/ea5ff/bb81d"],function(r,s){r.dispatch(new s(s.ALERT, t, b));});
+		},
 
 		moveTopBar: function(){
 			$("#room-bar.bar-button")[0].style.width="343px";$("#room-bar.bar-button")[0].style.left="103px";
