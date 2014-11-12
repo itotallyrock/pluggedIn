@@ -8,12 +8,12 @@ however redistributing of this product modified or not is disallowed.
 
 Some of the features you have from using this addon may be frowned upon by certain communities, use responsibly.
 
-Version 0.00.9 ALPHA
+Version 0.01.1 ALPHA
 
 */
 
 var pluggedIn = {
-	VERSION: "v0.00.9-A",
+	VERSION: "v0.01.1-A",
 	AUTHOR: "R0CK",
 	PREFIX: "PluggedIn » ",
 	LANGS: ["en","pt","de"],
