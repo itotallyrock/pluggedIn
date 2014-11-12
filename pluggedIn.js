@@ -393,7 +393,7 @@ var pluggedIn = {
 		
 		toggleVideo: function(){
 			$("#playback").toggle();
-		}
+		},
 		
 		changeBackground: function(url){
 			$("i.room-background")[0].style.backgroundSize="100%";
