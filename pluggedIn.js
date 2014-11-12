@@ -390,7 +390,11 @@ var pluggedIn = {
 		drawTopButton: function(){
 			$(".app-header").append('<div style="width: 50px;top: 7px;left: 60px;height: 54px;position: absolute;"><i class="icon icon-plug-dj"></i></div>');
 		},
-
+		
+		toggleVideo: function(){
+			$("#playback").toggle();
+		}
+		
 		changeBackground: function(url){
 			$("i.room-background")[0].style.backgroundSize="100%";
 			$("i.room-background")[0].style.background = "url('"+url+"') no-repeat";
