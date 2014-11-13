@@ -213,7 +213,7 @@ var pluggedIn = {
 		},
 		
 		initialize: function(){
-			if(pluggedIn.core.executed){
+			if(spqe){
 				pluggedIn.core.warn("PluggedIn is already running, skipping initialization");
 			}else{
 				pluggedIn.core.getSettings();
@@ -238,6 +238,10 @@ var pluggedIn = {
 					API.on(API.USER_JOIN,function(e){pluggedIn.gui.appendChat(e.username+" has joined the room.","2fcf56")})
 				}
 				
+				API.on(API.WAIT_LIST_UPDATE,function(e){
+					pluggedIn.gui.showSongPopup();
+				});
+				
 				API.on(API.CHAT_COMMAND,function(e){
 					var c = e.substring(1).split(" ")[0],args = e.substring(1).split(" ").slice(1),o,i;
 					pluggedIn.core.info("User typed command /"+c+" ["+args.toString()+"]");
@@ -245,14 +249,11 @@ var pluggedIn = {
 						if(c === i){
 							$("#chat-input-field").val("");
 							pluggedIn.commands[i].callback(args);
-							//break;
 						}else{
 							for(o = 0;o<pluggedIn.commands[i].alias.length;o++){
 								if(c === pluggedIn.commands[i].alias[o]){
 									pluggedIn.commands[i].callback(args);
-									//break;
 								}else{
-									//No command or alias matched
 									pluggedIn.core.warn("No command or alias matched "+c,true);
 								}
 							}
@@ -260,7 +261,7 @@ var pluggedIn = {
 					}
 				});
 				
-				pluggedIn.core.executed = true;
+				var spqe = true;
 			}
 		},
 		
@@ -319,6 +320,10 @@ var pluggedIn = {
 				API.on(API.USER_LEAVE,function(e){pluggedIn.gui.appendChat(e.username+" has left the room.","2fcf56")})
 				API.on(API.USER_JOIN,function(e){pluggedIn.gui.appendChat(e.username+" has joined the room.","2fcf56")})
 			}
+			
+			API.on(API.WAIT_LIST_UPDATE,function(e){
+				pluggedIn.gui.showSongPopup();
+			});
 			
 			API.on(API.CHAT_COMMAND,function(e){
 				var c = e.substring(1).split(" ")[0],args = e.substring(1).split(" ").slice(1),i,o;
