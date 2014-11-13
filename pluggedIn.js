@@ -465,11 +465,13 @@ var pluggedIn = {
 	}
 };
 
-//Import external scripts
-//$.getScript();
-//$("head").append("<link rel=\"stylesheet\" type=\"text/css\" href=\"https://someurl.com/folder/style.css\">");
-
-pluggedIn.core.initialize();
+$(window).bind("load", function(){
+	//Import external scripts
+	//$.getScript();
+	//$("head").append("<link rel=\"stylesheet\" type=\"text/css\" href=\"https://someurl.com/folder/style.css\">");
+	
+	pluggedIn.core.initialize();
+});
 
 }else{
 	pluggedIn.gui.appendChat("PluggedIn is already running, skipping initialization",pluggedIn.colors.WARN);
