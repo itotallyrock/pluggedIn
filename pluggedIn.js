@@ -234,7 +234,7 @@ var pluggedIn = {
 				}
 				
 				if(pluggedIn.settings.notifications.userUpdate){
-					API.on(API.USER_LEAVE,function(e){pluggedIn.gui.appendChat(e.username+" has left the room.","2fcf56")})
+					API.on(API.USER_LEAVE,function(e){pluggedIn.gui.appendChat("<a href=\"#"+e.username+"\">"+e.username+"</a> has left the room.","2fcf56")})
 					API.on(API.USER_JOIN,function(e){pluggedIn.gui.appendChat(e.username+" has joined the room.","2fcf56")})
 				}
 				
