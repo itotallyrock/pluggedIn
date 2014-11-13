@@ -11,7 +11,7 @@ Some of the features you have from using this addon may be frowned upon by certa
 Version 0.01.1 ALPHA
 
 */
-if(typeof spqe == "undefined")
+if(typeof window.spqe == "undefined"){
 var pluggedIn = {
 	VERSION: "v0.01.1-A",
 	AUTHOR: "R0CK",
@@ -213,7 +213,7 @@ var pluggedIn = {
 		},
 		
 		initialize: function(){
-			var spqe = true;
+			window.spqe = true;
 			
 			pluggedIn.core.getSettings();
 				
@@ -465,10 +465,12 @@ var pluggedIn = {
 	}
 };
 
-else pluggedIn.gui.appendChat("PluggedIn is already running, skipping initialization",pluggedIn.colors.WARN);
-
 //Import external scripts
 //$.getScript();
 //$("head").append("<link rel=\"stylesheet\" type=\"text/css\" href=\"https://someurl.com/folder/style.css\">");
 
 pluggedIn.core.initialize();
+
+}else{
+	pluggedIn.gui.appendChat("PluggedIn is already running, skipping initialization",pluggedIn.colors.WARN);
+}
