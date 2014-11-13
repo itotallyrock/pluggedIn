@@ -225,28 +225,8 @@ var pluggedIn = {
 			if(pluggedIn.settings.autoDJ){
 				pluggedIn.core.autoDJ();
 			}
-<<<<<<< HEAD
-		}));
-<<<<<<< HEAD
-=======
-	}else{
-		pluggedIn.gui.appendChat("This room has autoDJ disabled",pluggedIn.colors.ALERT);
->>>>>>> origin/master
-	}
-}
-
-pluggedIn.core.replaceChatImg = (function(){
-	API.on(API.CHAT,(function(msg){
-		if($(".message").last().children().last().children().length>0){
-			if($(".message").last().children().last().children()[0].toString().search(/^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)(.png|.jpg|.gif|.jpeg)$/g) > -1 ? true : false){
-				//$(".message."+msg.type.match(/ from-([\d]{3,}) /g).trim()+">.text").innerHTML = '<img src="'+msg.message.match(/^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?(.png|.jpeg|.jpg|.gif)$/g)+'" style="display: block; max-width: 100%; height: auto; margin: 0px auto;">';
-				var inner = $(".message").last().children().last().children()[0].toString();
-				$(".message").last().children().last().children()[0].innerHTML = "<a href=\""+inner+"\"><img src=\""+inner+"\" alt=\""+inner+"\" style=\"display: block; max-width: 100%; height: auto; margin: 0px auto;\"></a>";
-				$('#chat-messages').scrollTop($('#chat-messages')[0].scrollHeight);
-=======
 			if(pluggedIn.settings.autoWoot){
 				pluggedIn.core.autoWoot();
->>>>>>> origin/master
 			}
 				
 			if(pluggedIn.settings.chatimg){
