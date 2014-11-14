@@ -236,7 +236,7 @@ var pluggedIn = {
 				
 			if(pluggedIn.settings.notifications.userUpdate){
 				API.on(API.USER_LEAVE,function(e){pluggedIn.gui.appendChat("<a style=\"color: inherit;\" href=\"#"+e.username+"\">"+e.username+"</a> has left the room.","2fcf56")})
-				API.on(API.USER_JOIN,function(e){pluggedIn.gui.appendChat("<a href=\"#"+e.username+"\">"+e.username+"</a> has joined the room.","2fcf56")})
+				API.on(API.USER_JOIN,function(e){pluggedIn.gui.appendChat("<a style=\"color: inherit;\" href=\"#"+e.username+"\">"+e.username+"</a> has joined the room.","2fcf56")})
 			}
 				
 			API.on(API.WAIT_LIST_UPDATE,function(e){
@@ -318,7 +318,7 @@ var pluggedIn = {
 			
 			if(pluggedIn.settings.notifications.userUpdate){
 				API.on(API.USER_LEAVE,function(e){pluggedIn.gui.appendChat("<a style=\"color: inherit;\" href=\"#"+e.username+"\">"+e.username+"</a> has left the room.","2fcf56")})
-				API.on(API.USER_JOIN,function(e){pluggedIn.gui.appendChat("<a href=\"#"+e.username+"\">"+e.username+"</a> has joined the room.","2fcf56")})
+				API.on(API.USER_JOIN,function(e){pluggedIn.gui.appendChat("<a style=\"color: inherit;\" href=\"#"+e.username+"\">"+e.username+"</a> has joined the room.","2fcf56")})
 			}
 			
 			API.on(API.WAIT_LIST_UPDATE,function(e){
