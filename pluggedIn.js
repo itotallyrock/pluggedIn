@@ -235,8 +235,8 @@ var pluggedIn = {
 			}
 				
 			if(pluggedIn.settings.notifications.userUpdate){
-				API.on(API.USER_LEAVE,function(e){$("#chat-messages").append('<div style="color: #2fcf56;"><span class="text" style="font-weight:800;"><a style="color: inherit;" href="#'+e.username+'">'+e.username+'</a> has left the room.</span></div>');})
-				API.on(API.USER_JOIN,function(e){$("#chat-messages").append('<div style="color: #2fcf56;"><span class="text" style="font-weight:800;"><a style="color: inherit;" href="#'+e.username+'">'+e.username+'</a> has joined the room.</span></div>');})
+				API.on(API.USER_LEAVE,function(e){$("#chat-messages").append('<div style="color: #2fcf56;" class="message"><span class="text" style="font-weight:800;"><a style="color: inherit;" href="#'+e.username+'">'+e.username+'</a> has left the room.</span></div>');})
+				API.on(API.USER_JOIN,function(e){$("#chat-messages").append('<div style="color: #2fcf56;" class="message"><span class="text" style="font-weight:800;"><a style="color: inherit;" href="#'+e.username+'">'+e.username+'</a> has joined the room.</span></div>');})
 			}
 				
 			API.on(API.WAIT_LIST_UPDATE,function(e){
@@ -317,8 +317,8 @@ var pluggedIn = {
 			}
 			
 			if(pluggedIn.settings.notifications.userUpdate){
-				API.on(API.USER_LEAVE,function(e){$("#chat-messages").append('<div style="color: #2fcf56;"><span class="text" style="font-weight:800;"><a style="color: inherit;" href="#'+e.username+'">'+e.username+'</a> has left the room.</span></div>');})
-				API.on(API.USER_JOIN,function(e){$("#chat-messages").append('<div style="color: #2fcf56;"><span class="text" style="font-weight:800;"><a style="color: inherit;" href="#'+e.username+'">'+e.username+'</a> has joined the room.</span></div>');})
+				API.on(API.USER_LEAVE,function(e){$("#chat-messages").append('<div style="color: #2fcf56;" class="message"><span class="text" style="font-weight:800;"><a style="color: inherit;" href="#'+e.username+'">'+e.username+'</a> has left the room.</span></div>');})
+				API.on(API.USER_JOIN,function(e){$("#chat-messages").append('<div style="color: #2fcf56;" class="message"><span class="text" style="font-weight:800;"><a style="color: inherit;" href="#'+e.username+'">'+e.username+'</a> has joined the room.</span></div>');})
 			}
 			
 			API.on(API.WAIT_LIST_UPDATE,function(e){
