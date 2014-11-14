@@ -221,6 +221,8 @@ var pluggedIn = {
 			pluggedIn.core.info("Visit https://github.com/itotallyrock/pluggedIn/wiki/Console-Usage for usage.");
 			pluggedIn.gui.appendChat("pluggedIn "+pluggedIn.VERSION+" by "+pluggedIn.AUTHOR+" has loaded.<br/>Visit <a href='https://github.com/itotallyrock/pluggedIn/wiki/Console-Usage'>the wiki</a> for usage",pluggedIn.colors.INFO);
 				
+			pluggedIn.gui.showSongPopup();
+			
 			if(pluggedIn.settings.autoDJ){
 				pluggedIn.core.autoDJ();
 			}
@@ -233,7 +235,7 @@ var pluggedIn = {
 			}
 				
 			if(pluggedIn.settings.notifications.userUpdate){
-				API.on(API.USER_LEAVE,function(e){pluggedIn.gui.appendChat("<a href=\"#"+e.username+"\">"+e.username+"</a> has left the room.","2fcf56")})
+				API.on(API.USER_LEAVE,function(e){pluggedIn.gui.appendChat("<a style=\"color: inherit;\" href=\"#"+e.username+"\">"+e.username+"</a> has left the room.","2fcf56")})
 				API.on(API.USER_JOIN,function(e){pluggedIn.gui.appendChat("<a href=\"#"+e.username+"\">"+e.username+"</a> has joined the room.","2fcf56")})
 			}
 				
@@ -288,6 +290,8 @@ var pluggedIn = {
 			
 			pluggedIn.core.getSettings();
 			
+			pluggedIn.gui.showSongPopup();
+			
 			if(pluggedIn.settings.autoDJ){
 				if($(".description.panel>.value")[0].innerText.toLowerCase().search(pluggedIn.rooms.rules.autoDJ.toLowerCase()) === -1){
 					pluggedIn.core.autoDJ();
@@ -313,8 +317,8 @@ var pluggedIn = {
 			}
 			
 			if(pluggedIn.settings.notifications.userUpdate){
-				API.on(API.USER_LEAVE,function(e){pluggedIn.gui.appendChat(e.username+" has left the room.","2fcf56")})
-				API.on(API.USER_JOIN,function(e){pluggedIn.gui.appendChat(e.username+" has joined the room.","2fcf56")})
+				API.on(API.USER_LEAVE,function(e){pluggedIn.gui.appendChat("<a style=\"color: inherit;\" href=\"#"+e.username+"\">"+e.username+"</a> has left the room.","2fcf56")})
+				API.on(API.USER_JOIN,function(e){pluggedIn.gui.appendChat("<a href=\"#"+e.username+"\">"+e.username+"</a> has joined the room.","2fcf56")})
 			}
 			
 			API.on(API.WAIT_LIST_UPDATE,function(e){
