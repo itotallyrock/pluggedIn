@@ -204,7 +204,7 @@ var pluggedIn = {
 		afkMessage: function(){
 			var mentionBy = "^@("+API.getUser().username.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, "\\$&")+")";
 			API.on(API.CHAT,function(e){
-				if(e.message.search(new Regexp(mentionBy)) > -1){
+				if(e.message.search(new RegExp(mentionBy)) > -1){
 					if(pluggedIn.settings.afk){
 						API.sendChat("@"+e.un+" "+pluggedIn.settings.afkMsg);
 					}
