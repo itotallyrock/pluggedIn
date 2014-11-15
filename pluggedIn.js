@@ -272,6 +272,7 @@ var pluggedIn = {
 		toggleAfk: function(){
 			API.off(API.CHAT);
 			if($(".description.panel>.value")[0].innerText.toLowerCase().search(pluggedIn.rooms.rules.afk.toLowerCase()) === -1){
+				pluggedIn.settings.afk = false;
 				if(pluggedIn.settings.afk){
 					pluggedIn.settings.afk = false;
 					pluggedIn.gui.appendChat("You are no longer AFK",pluggedIn.colors.SUCCESS);
