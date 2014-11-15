@@ -12,9 +12,9 @@ Version 0.01.1 ALPHA
 
 */
 if(typeof window.spqe == "undefined"){
-while(typeof API == "undefined"){
-	console.log("Very spammy. Waiting for API to load");
-}
+//while(typeof API == "undefined"){
+//	console.log("Very spammy. Waiting for API to load");
+//}
 var pluggedIn = {
 	VERSION: "v0.01.1-A",
 	AUTHOR: "R0CK",
