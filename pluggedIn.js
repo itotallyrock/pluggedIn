@@ -194,7 +194,7 @@ var pluggedIn = {
 				if($(".message").last().children().last().children().length > 0){
 					if($(".message").last().children().last().children()[0].toString().search(/^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)(.png|.jpg|.gif|.jpeg)$/g) > -1){
 						var inner = $(".message").last().children().last().children()[0].toString();
-						$(".message").last().children().last().children()[0].innerHTML = "<a href=\""+inner+"\"><img src=\""+inner+"\" alt=\""+inner+"\" style=\"display: block; max-width: 100%; height: auto; margin: 0px auto;\"></a>";
+						$(".message").last().children().last().children()[0].innerHTML = "<a href=\""+inner+"\" target=\"_blank\"><img src=\""+inner+"\" alt=\""+inner+"\" style=\"display: block; max-width: 100%; height: auto; margin: 0px auto;\"></a>";
 						$('#chat-messages').scrollTop($('#chat-messages')[0].scrollHeight);
 					}
 				}
