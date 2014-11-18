@@ -498,7 +498,7 @@ var pluggedIn = {
 };
 
 //Import external scripts
-//$.getScript();
+$.getScript("https://code.jquery.com/ui/1.11.2/jquery-ui.js");
 //$("head").append("<link rel=\"stylesheet\" type=\"text/css\" href=\"https://someurl.com/folder/style.css\">");
 
 pluggedIn.core.initialize();
