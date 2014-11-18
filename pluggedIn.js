@@ -173,9 +173,10 @@ var pluggedIn = {
 		},
 		
 		deleteSettings: function(){
-			if(pluggedIn.gui.confirm("Delete Settings","Are you sure you want to erase all pluggedIn settings?"))
+			if(typeof pluggedIn.gui.confirm("Delete Settings","Are you sure you want to erase all pluggedIn settings?") == "undefined"){
 				eraseCookie("pluggedIn");
-				pluggedIn.gui.notify("icon-delete","All PluggedIn Settings Have Been Cleared")
+				pluggedIn.gui.notify("icon-delete","All PluggedIn Settings Have Been Cleared");
+			}
 		},
 		
 		autoWoot: function(){
@@ -408,7 +409,9 @@ var pluggedIn = {
 		},
 
 		confirm: function(t,b){
-			require(["b20d6/f1e58/e027b", "b20d6/ea5ff/bb81d","underscore"], function(n,s,u){n.dispatch(new s(s.CONFIRM, t, b,u.bind(function(e){console.log(e);})));});
+			var r;
+			require(["b20d6/f1e58/e027b", "b20d6/ea5ff/bb81d","underscore"], function(n,s,u){r = n.dispatch(new s(s.CONFIRM, t, b,u.bind(function(e){console.log(e);})));});
+			$(".button.submit").first().click(function(){return r;});
 		},
 		
 		alert: function(t,b){
