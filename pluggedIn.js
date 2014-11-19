@@ -12,6 +12,11 @@ Version 0.01.2 ALPHA
 
 */
 if(typeof window.spqe == "undefined"){
+
+//Import external scripts
+$.getScript("https://code.jquery.com/ui/1.11.2/jquery-ui.js");
+$("head").append("<link rel=\"stylesheet\" type=\"text/css\" href=\"https://rawgit.com/itotallyrock/pluggedIn/master/pluggedIn.css\">");
+
 var pluggedIn = {
 	VERSION: "v0.01.2-A",
 	AUTHOR: "R0CK",
@@ -525,10 +530,6 @@ var pluggedIn = {
 		}
 	}
 };
-
-//Import external scripts
-//$.getScript("https://code.jquery.com/ui/1.11.2/jquery-ui.js");
-$("head").append("<link rel=\"stylesheet\" type=\"text/css\" href=\"https://rawgit.com/itotallyrock/pluggedIn/master/pluggedIn.css\">");
 
 pluggedIn.core.initialize();
 
