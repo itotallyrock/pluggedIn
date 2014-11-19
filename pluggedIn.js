@@ -400,12 +400,12 @@ var pluggedIn = {
 	},
 	
 	gui:{
-		var draggable = '<div id="pluggedIn-draggable">'+
+		draggable = '<div id="pluggedIn-draggable">'+
 							'<div id="pluggedIn-draggable-header"></div>'+
 							'<div id="pluggedIn-draggable-body">'+
 								'Test Content'+
 							'</div>'+
-						'</div>';
+						'</div>',
 		
 		appendChat: function(message,color){
 			if(message){
