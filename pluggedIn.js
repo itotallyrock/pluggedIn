@@ -275,6 +275,8 @@ var pluggedIn = {
 				}
 			});
 			
+			pluggedIn.gui.drawDraggable();
+			
 			var drag;
 			
 			$('#pluggedIn-draggable').draggable({
@@ -454,8 +456,8 @@ var pluggedIn = {
 		},
 		
 		drawDraggable: function(){
-			$("body").append('<div id="pluggedIn-draggable"><div id="pluggedIn-draggable-header"></div><div id="pluggedIn-draggable-body">Test Content</div></div>');
-		}
+			$("body").append(this.draggable);
+		},
 		
 		toggleVideo: function(){
 			$("#playback").toggle();
@@ -526,7 +528,7 @@ var pluggedIn = {
 
 //Import external scripts
 $.getScript("https://code.jquery.com/ui/1.11.2/jquery-ui.js");
-//$("head").append("<link rel=\"stylesheet\" type=\"text/css\" href=\"https://someurl.com/folder/style.css\">");
+$("head").append("<link rel=\"stylesheet\" type=\"text/css\" href=\"https://rawgit.com/itotallyrock/pluggedIn/master/pluggedIn.css\">");
 
 pluggedIn.core.initialize();
 
