@@ -400,7 +400,7 @@ var pluggedIn = {
 	},
 	
 	gui:{
-		draggable = '<div id="pluggedIn-draggable">'+
+		draggable: '<div id="pluggedIn-draggable">'+
 							'<div id="pluggedIn-draggable-header"></div>'+
 							'<div id="pluggedIn-draggable-body">'+
 								'Test Content'+
