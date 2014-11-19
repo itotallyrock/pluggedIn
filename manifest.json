@@ -18,7 +18,7 @@
 		{
 			"run_at": "document_end",
 			"matches": ["*://*.plug.dj/*"],
-			"js": ["js/jquery.min.js","pluggedIn.js","pluggedIn.css"]
+			"js": ["js/jquery.min.js","pluggedIn.js"]
 		}
 	]
 }
