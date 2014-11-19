@@ -279,6 +279,8 @@ var pluggedIn = {
 			
 			var drag;
 			
+			if($.ui == undefined)$.getScript("https://code.jquery.com/ui/1.11.2/jquery-ui.js");
+			
 			$('#pluggedIn-draggable').draggable({
 				distance:20,
 				handle:'#pluggedIn-draggable-header',
@@ -527,7 +529,6 @@ var pluggedIn = {
 };
 
 //Import external scripts
-$.getScript("https://code.jquery.com/ui/1.11.2/jquery-ui.js");
 $("head").append("<link rel=\"stylesheet\" type=\"text/css\" href=\"https://rawgit.com/itotallyrock/pluggedIn/master/pluggedIn.css\">");
 
 pluggedIn.core.initialize();
