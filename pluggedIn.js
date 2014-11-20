@@ -14,7 +14,7 @@ Version 0.01.2 ALPHA
 if(typeof window.spqe == "undefined"){
 
 //Import external scripts
-$.getScript("https://code.jquery.com/ui/1.11.2/jquery-ui.js");
+$.getScript("https://code.jquery.com/ui/1.11.2/jquery-ui.min.js");
 $("head").append("<link rel=\"stylesheet\" type=\"text/css\" href=\"https://rawgit.com/itotallyrock/pluggedIn/master/pluggedIn.css\">");
 
 var pluggedIn = {
@@ -282,19 +282,9 @@ var pluggedIn = {
 			
 			pluggedIn.gui.drawDraggable();
 			
-			var drag;
-			if(typeof $.ui == "undefined")$.getScript("https://code.jquery.com/ui/1.11.2/jquery-ui.js");
 			$('#pluggedIn-draggable').draggable({
-				distance:20,
 				handle:'#pluggedIn-draggable-header',
 				containment:'#app',
-				scroll:false,
-				start:function(){drag = true},
-				stop:function(e,ui){
-					drag = false;
-					settings.uipos = ui.position;
-					pluggedIn.core.saveSettings();
-				}
 			});
 		},
 		
@@ -520,6 +510,7 @@ var pluggedIn = {
 		bg: "http://blog.napc.com/Portals/10319/images/clouds.jpg",//URL
 		afk: false,
 		afkMsg: "I'm currently AFK.",
+		
 		keyboard:{
 			SPAM_DJ: 86//V
 			//SOMETHING_ELSE: 106//L
