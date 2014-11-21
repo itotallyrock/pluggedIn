@@ -1,18 +1,30 @@
 /*pluggedIn.css*/
 
-#pluggedIn-draggable{
-	width: 200px;
-	height: 350px;
-	border-top-left-radius: 10px;
-	border-top-right-radius: 10px;
-	background-color: #1c1f25;
-	border: 2px solid #0a0a0a;
-	z-index: 100000;
-	position: absolute;
+#pluggedIn-draggable {
+    width:200px;
+    background-color:#1c1f25;
+    color:#fff;
+    font-family: 'Open Sans',sans-serif;
+    font-weight:300;
 }
 
 #pluggedIn-draggable-header{
-	cursor:move;
-	border-bottom:2px solid #0a0a0a;
-	background-color:#0a0a0a;
+    padding:10px 20px;
+    background-color:#0a0a0a;
+}
+
+#pluggedIn-draggable-body{
+    padding:20px;
+    border:2px solid #000;
+}
+
+#pluggedIn-draggable-close{
+    color:#ccc;
+    cursor:pointer;
+    float:right;
+    margin-top:2px;
+}
+
+#pluggedIn-draggable-close:hover{
+    color:#fff;
 }

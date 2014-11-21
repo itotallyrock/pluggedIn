@@ -327,7 +327,12 @@ var pluggedIn = {
 			
 			pluggedIn.gui.drawDraggable();
 			
-			$('#pluggedIn-draggable').drags({ handle: $("#pluggedIn-draggable-header")})
+			$('#pluggedIn-draggable').drags({ handle: $("#pluggedIn-draggable-header")});
+			
+			$("#pluggedIn-draggable-close").on("click",function(e){
+				$("#pluggedIn-draggable-exit").toggleClass("fa-chevron-up",$("#pluggedIn-draggable-exit").hasClass("fa-chevron-down"));
+				$("#pluggedIn-draggable-body").slideToggle();
+			});
 			
 			var drag;
 			if(typeof $.ui == "undefined")$.getScript("https://code.jquery.com/ui/1.11.2/jquery-ui.js");
