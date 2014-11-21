@@ -12,6 +12,56 @@ Version 0.01.2 ALPHA
 
 */
 if(typeof window.spqe == "undefined"){
+
+//Import external scripts
+//$.getScript("https://code.jquery.com/ui/1.11.2/jquery-ui.js");
+$("head").append("<link rel=\"stylesheet\" type=\"text/css\" href=\"https://rawgit.com/itotallyrock/pluggedIn/master/pluggedIn.css\">");
+
+(function ($) {
+    $.fn.drags = function (opt) {
+		/*Drags addon courtesy of Chris Couryier (http://csstricks.com)*/
+        opt = $.extend({
+            handle: "",
+            cursor: "move"
+        }, opt);
+
+        if (opt.handle === "") {
+            var $el = this;
+        } else {
+            var $el = this.find(opt.handle);
+        }
+
+        return $el.css('cursor', opt.cursor).on("mousedown", function (e) {
+            if (opt.handle === "") {
+                var $drag = $(this).addClass('draggable');
+            } else {
+                var $drag = $(this).addClass('active-handle').parent().addClass('draggable');
+            }
+            var z_idx = $drag.css('z-index'),
+                drg_h = $drag.outerHeight(),
+                drg_w = $drag.outerWidth(),
+                pos_y = $drag.offset().top + drg_h - e.pageY,
+                pos_x = $drag.offset().left + drg_w - e.pageX;
+            $drag.css('z-index', 1000).parents().on("mousemove", function (e) {
+                $('.draggable').offset({
+                    top: e.pageY + pos_y - drg_h,
+                    left: e.pageX + pos_x - drg_w
+                }).on("mouseup", function () {
+                    $(this).removeClass('draggable').css('z-index', z_idx);
+                });
+            });
+            e.preventDefault(); // disable selection
+        }).on("mouseup", function () {
+            if (opt.handle === "") {
+                $(this).removeClass('draggable');
+            } else {
+                $(this).removeClass('active-handle').parent().removeClass('draggable');
+            }
+        });
+
+    }
+})(jQuery);
+
 var pluggedIn = {
 	VERSION: "v0.01.2-A",
 	AUTHOR: "R0CK",
@@ -277,10 +327,15 @@ var pluggedIn = {
 			
 			pluggedIn.gui.drawDraggable();
 			
-			var drag;
+			$('#pluggedIn-draggable').drags({ handle: $("#pluggedIn-draggable-header")})
 			
+<<<<<<< HEAD
 			if($.ui == undefined)$.getScript("https://code.jquery.com/ui/1.11.2/jquery-ui.js");
 			
+=======
+			var drag;
+			if(typeof $.ui == "undefined")$.getScript("https://code.jquery.com/ui/1.11.2/jquery-ui.js");
+>>>>>>> origin/master
 			$('#pluggedIn-draggable').draggable({
 				distance:20,
 				handle:'#pluggedIn-draggable-header',
@@ -405,7 +460,7 @@ var pluggedIn = {
 	
 	gui:{
 		draggable: '<div id="pluggedIn-draggable">'+
-							'<div id="pluggedIn-draggable-header"></div>'+
+							'<div id="pluggedIn-draggable-header">Header</div>'+
 							'<div id="pluggedIn-draggable-body">'+
 								'Test Content'+
 							'</div>'+
@@ -528,9 +583,12 @@ var pluggedIn = {
 	}
 };
 
+<<<<<<< HEAD
 //Import external scripts
 $("head").append("<link rel=\"stylesheet\" type=\"text/css\" href=\"https://rawgit.com/itotallyrock/pluggedIn/master/pluggedIn.css\">");
 
+=======
+>>>>>>> origin/master
 pluggedIn.core.initialize();
 
 }else{

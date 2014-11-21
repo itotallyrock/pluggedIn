@@ -7,7 +7,7 @@
 	border-top-right-radius: 10px;
 	background-color: #1c1f25;
 	border: 2px solid #0a0a0a;
-	z-index: 10000;
+	z-index: 100000;
 	position: absolute;
 }
 
