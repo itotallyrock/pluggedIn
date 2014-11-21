@@ -42,7 +42,7 @@ $("head").append("<link rel=\"stylesheet\" type=\"text/css\" href=\"https://rawg
                 drg_w = $drag.outerWidth(),
                 pos_y = $drag.offset().top + drg_h - e.pageY,
                 pos_x = $drag.offset().left + drg_w - e.pageX;
-            $drag.css('z-index', 1000).parents().on("mousemove", function (e) {
+            $drag.css('z-index', 1000000).parents().on("mousemove", function (e) {
                 $('.draggable').offset({
                     top: e.pageY + pos_y - drg_h,
                     left: e.pageX + pos_x - drg_w
