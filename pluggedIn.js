@@ -19,7 +19,7 @@ $("head").append("<link rel=\"stylesheet\" type=\"text/css\" href=\"https://rawg
 
 (function ($) {
     $.fn.drags = function (opt) {
-		/*Drags addon courtesy of Chris Couryier (http://csstricks.com)*/
+
         opt = $.extend({
             handle: "",
             cursor: "move"
@@ -329,13 +329,8 @@ var pluggedIn = {
 			
 			$('#pluggedIn-draggable').drags({ handle: $("#pluggedIn-draggable-header")})
 			
-<<<<<<< HEAD
-			if($.ui == undefined)$.getScript("https://code.jquery.com/ui/1.11.2/jquery-ui.js");
-			
-=======
 			var drag;
 			if(typeof $.ui == "undefined")$.getScript("https://code.jquery.com/ui/1.11.2/jquery-ui.js");
->>>>>>> origin/master
 			$('#pluggedIn-draggable').draggable({
 				distance:20,
 				handle:'#pluggedIn-draggable-header',
@@ -583,12 +578,6 @@ var pluggedIn = {
 	}
 };
 
-<<<<<<< HEAD
-//Import external scripts
-$("head").append("<link rel=\"stylesheet\" type=\"text/css\" href=\"https://rawgit.com/itotallyrock/pluggedIn/master/pluggedIn.css\">");
-
-=======
->>>>>>> origin/master
 pluggedIn.core.initialize();
 
 }else{
