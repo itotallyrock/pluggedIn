@@ -8,63 +8,19 @@ however redistributing of this product modified or not is disallowed.
 
 Some of the features you have from using this addon may be frowned upon by certain communities, use responsibly.
 
-Version 0.01.3 ALPHA
+Version 0.01.4 ALPHA
 
 */
 if(typeof window.spqe == "undefined"){
 
 //Import external scripts
 //$.getScript("https://code.jquery.com/ui/1.11.2/jquery-ui.js");
+$.getScript("https://rawgit.com/itotallyrock/pluggedIn/master/js/drags.js");
 $("head").append("<link rel=\"stylesheet\" type=\"text/css\" href=\"https://rawgit.com/itotallyrock/pluggedIn/master/css/pluggedIn.css\">");
 $("head").append("<link rel=\"stylesheet\" type=\"text/css\" href=\"https://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css\">");
 
-(function ($) {
-    $.fn.drags = function (opt) {
-		/*Drags addon courtesy of Chris Coyier (http://csstricks.com)*/
-        opt = $.extend({
-            handle: "",
-            cursor: "move"
-        }, opt);
-
-        if (opt.handle === "") {
-            var $el = this;
-        } else {
-            var $el = this.find(opt.handle);
-        }
-
-        return $el.css('cursor', opt.cursor).on("mousedown", function (e) {
-            if (opt.handle === "") {
-                var $drag = $(this).addClass('draggable');
-            } else {
-                var $drag = $(this).addClass('active-handle').parent().addClass('draggable');
-            }
-            var z_idx = $drag.css('z-index'),
-                drg_h = $drag.outerHeight(),
-                drg_w = $drag.outerWidth(),
-                pos_y = $drag.offset().top + drg_h - e.pageY,
-                pos_x = $drag.offset().left + drg_w - e.pageX;
-            $drag.css('z-index', 499).parents().on("mousemove", function (e) {
-                $('.draggable').offset({
-                    top: e.pageY + pos_y - drg_h,
-                    left: e.pageX + pos_x - drg_w
-                }).on("mouseup", function () {
-                    $(this).removeClass('draggable').css('z-index', z_idx);
-                });
-            });
-            e.preventDefault(); // disable selection
-        }).on("mouseup", function () {
-            if (opt.handle === "") {
-                $(this).removeClass('draggable');
-            } else {
-                $(this).removeClass('active-handle').parent().removeClass('draggable');
-            }
-        });
-
-    }
-})(jQuery);
-
 var pluggedIn = {
-	VERSION: "v0.01.3-A",
+	VERSION: "v0.01.4-A",
 	AUTHOR: "R0CK",
 	PREFIX: "PluggedIn » ",
 	LANGS: ["en","pt","de"],
