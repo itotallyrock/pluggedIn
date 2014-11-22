@@ -110,7 +110,7 @@ pluggedIn = {
 			}
 		},
 		
-		convertToHex: function(str){
+		/*convertToHex: function(str){
 			var hex = '',i;
 			for(i=0;i<str.length;i++) {
 				hex += str.charCodeAt(i).toString(16);
@@ -124,46 +124,19 @@ pluggedIn = {
 				str += String.fromCharCode(parseInt(hex.toString().substr(i, 2), 16));
 			}
 			return str;
-		},
-
-		createCookie: function(name,value,days){
-			var expires = "";
-			if(days){
-				new Date().setTime(new Date().getTime()+(days*24*60*60*1000));
-				expires = "; expires="+new Date().toGMTString();
-			}
-			document.cookie = name+"="+value+expires+"; path=/";
-		},
-
-		readCookie: function (name){
-			var nameEQ = name + "=",ca = document.cookie.split(';'),i,c;
-			for(i=0;i < ca.length;i++){
-				c = ca[i];
-				while(c.charAt(0) === ' '){
-					c = c.substring(1,c.length);
-				}
-				if(c.indexOf(nameEQ) === 0){
-					return c.substring(nameEQ.length,c.length);
-				}
-			}
-			return null;
-		},
-
-		eraseCookie: function(name){
-			pluggedIn.core.createCookie(name,"",-1);
-		},
+		},*/
 
 		getSettings: function(){
 			var c,s;
 			
-			if(document.cookie.indexOf("pluggedIn")>0){
-				c = JSON.parse(pluggedIn.core.convertFromHex(pluggedIn.core.readCookie("pluggedIn")));
+			if(localStorage.getItem("pluggedIn") != null){
+				c = JSON.parse(localStorage.getItem("pluggedIn"));
 				for(s in c){
 					pluggedIn.core.log("set pluggedIn.settings."+s+" = "+c[s],true);
 					pluggedIn.settings[s] = c[s];
 				}
 				
-				pluggedIn.core.info("Loaded Settings From Cookie",true);
+				pluggedIn.core.info("Loaded Settings From  Local Storage",true);
 				pluggedIn.core.saveSettings();
 			}else{
 				pluggedIn.core.warn("Settings Cookie did not exist.",true);
@@ -174,14 +147,13 @@ pluggedIn = {
 		},
 
 		saveSettings: function(){
-			pluggedIn.core.eraseCookie("pluggedIn");
-			pluggedIn.core.createCookie("pluggedIn",pluggedIn.core.convertToHex(JSON.stringify(pluggedIn.settings)),365);
+			localStorage.setItem("pluggedIn",JSON.stringify(pluggedIn.settings))
 			pluggedIn.core.info("Created Settings Cookie",true);
 		},
 		
 		deleteSettings: function(){
 			if(typeof pluggedIn.gui.confirm("Delete Settings","Are you sure you want to erase all pluggedIn settings?") == "undefined"){
-				eraseCookie("pluggedIn");
+				localStorage.removeItem("pluggedIn")
 				pluggedIn.gui.notify("icon-delete","All PluggedIn Settings Have Been Cleared");
 			}
 		},
@@ -316,11 +288,11 @@ pluggedIn = {
 		update: function(){
 			pluggedIn.core.saveSettings();
 			
-			API.off(API.WAIT_LIST_UPDATE);
-			API.off(API.CHAT_COMMAND);
-			API.off(API.CHAT);
-			API.off(API.USER_JOIN);
-			API.off(API.USER_LEAVE);
+			for(var q in API){
+				if(typeof API[q] == "string"){
+					API.off(q)
+				}
+			}
 			
 			pluggedIn.core.getSettings();
 			
@@ -386,9 +358,11 @@ pluggedIn = {
 		},
 				
 		stop: function(callback){
-			API.off(API.WAIT_LIST_UPDATE);
-			API.off(API.CHAT_COMMAND);
-			API.off(API.CHAT);
+			for(var q in API){
+				if(typeof API[q] == "string"){
+					API.off(q)
+				}
+			}
 			
 			if(!callback){
 				pluggedIn.gui.appendChat("PluggedIn has been sucessfully stopped",pluggedIn.colors.SUCCESS);
