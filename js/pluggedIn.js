@@ -402,7 +402,7 @@ pluggedIn = {
 			
 			pluggedIn = undefined;
 			
-			console.warn("Status of deletion: "+delete pluggedIn);
+			console.warn("Status of deletion: "+delete pluggedIn+" & "+delete spqe);
 		}
 	},
 	
