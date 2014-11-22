@@ -8,62 +8,19 @@ however redistributing of this product modified or not is disallowed.
 
 Some of the features you have from using this addon may be frowned upon by certain communities, use responsibly.
 
-Version 0.01.2 ALPHA
+Version 0.01.4 ALPHA
 
 */
-if(typeof window.spqe == "undefined"){
+if(typeof spqe == "undefined"){
 
 //Import external scripts
 //$.getScript("https://code.jquery.com/ui/1.11.2/jquery-ui.js");
-$("head").append("<link rel=\"stylesheet\" type=\"text/css\" href=\"https://rawgit.com/itotallyrock/pluggedIn/master/pluggedIn.css\">");
+dragsReadyStatus = $.getScript("https://rawgit.com/itotallyrock/pluggedIn/master/js/drags.js").readyStatus;
+$("head").append("<link rel=\"stylesheet\" type=\"text/css\" href=\"https://rawgit.com/itotallyrock/pluggedIn/master/css/pluggedIn.css\">");
+$("head").append("<link rel=\"stylesheet\" type=\"text/css\" href=\"https://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css\">");
 
-(function ($) {
-    $.fn.drags = function (opt) {
-
-        opt = $.extend({
-            handle: "",
-            cursor: "move"
-        }, opt);
-
-        if (opt.handle === "") {
-            var $el = this;
-        } else {
-            var $el = this.find(opt.handle);
-        }
-
-        return $el.css('cursor', opt.cursor).on("mousedown", function (e) {
-            if (opt.handle === "") {
-                var $drag = $(this).addClass('draggable');
-            } else {
-                var $drag = $(this).addClass('active-handle').parent().addClass('draggable');
-            }
-            var z_idx = $drag.css('z-index'),
-                drg_h = $drag.outerHeight(),
-                drg_w = $drag.outerWidth(),
-                pos_y = $drag.offset().top + drg_h - e.pageY,
-                pos_x = $drag.offset().left + drg_w - e.pageX;
-            $drag.css('z-index', 1000).parents().on("mousemove", function (e) {
-                $('.draggable').offset({
-                    top: e.pageY + pos_y - drg_h,
-                    left: e.pageX + pos_x - drg_w
-                }).on("mouseup", function () {
-                    $(this).removeClass('draggable').css('z-index', z_idx);
-                });
-            });
-            e.preventDefault(); // disable selection
-        }).on("mouseup", function () {
-            if (opt.handle === "") {
-                $(this).removeClass('draggable');
-            } else {
-                $(this).removeClass('active-handle').parent().removeClass('draggable');
-            }
-        });
-
-    }
-})(jQuery);
-
-var pluggedIn = {
-	VERSION: "v0.01.2-A",
+pluggedIn = {
+	VERSION: "v0.01.4-A",
 	AUTHOR: "R0CK",
 	PREFIX: "PluggedIn » ",
 	LANGS: ["en","pt","de"],
@@ -270,7 +227,7 @@ var pluggedIn = {
 		},
 		
 		initialize: function(){
-			window.spqe = true;
+			spqe = true;
 			
 			pluggedIn.core.getSettings();
 				
@@ -327,21 +284,15 @@ var pluggedIn = {
 			
 			pluggedIn.gui.drawDraggable();
 			
-			$('#pluggedIn-draggable').drags({ handle: $("#pluggedIn-draggable-header")})
+			pluggedIn.core.log("Drags Ready Status: "+dragsReadyStatus,true);
+			if(dragsReadyStatus == 1){
+				$('#pluggedIn-draggable').drags({ handle: $("#pluggedIn-draggable-header")});
+			}
 			
-			var drag;
-			if(typeof $.ui == "undefined")$.getScript("https://code.jquery.com/ui/1.11.2/jquery-ui.js");
-			$('#pluggedIn-draggable').draggable({
-				distance:20,
-				handle:'#pluggedIn-draggable-header',
-				containment:'#app',
-				scroll:false,
-				start:function(){drag = true},
-				stop:function(e,ui){
-					drag = false;
-					settings.uipos = ui.position;
-					pluggedIn.core.saveSettings();
-				}
+			$("#pluggedIn-draggable-close").on("click",function(e){
+				$("#pluggedIn-draggable-close").toggleClass("fa-chevron-up");
+				$("#pluggedIn-draggable-close").toggleClass("fa-chevron-down");
+				$("#pluggedIn-draggable-body").slideToggle();
 			});
 		},
 		
@@ -450,16 +401,17 @@ var pluggedIn = {
 			$("*[id^='pluggedIn']").remove()
 			
 			pluggedIn = undefined;
+			
+			console.warn("Status of deletion: "+delete pluggedIn);
 		}
 	},
 	
 	gui:{
-		draggable: '<div id="pluggedIn-draggable">'+
-							'<div id="pluggedIn-draggable-header">Header</div>'+
-							'<div id="pluggedIn-draggable-body">'+
-								'Test Content'+
-							'</div>'+
-						'</div>',
+		draggable:  '<div id="pluggedIn-draggable">'+
+						'<div id="pluggedIn-draggable-header">Header <div class="fa fa-chevron-up" id="pluggedIn-draggable-close"></div></div>'+
+						'<div id="pluggedIn-draggable-body">'+
+						'</div>'+
+					'</div>',
 		
 		appendChat: function(message,color){
 			if(message){

@@ -1,0 +1,35 @@
+/*pluggedIn.css*/
+
+#pluggedIn-draggable {
+    width:200px;
+    background-color:#1c1f25;
+    color:#fff;
+    font-family: 'Open Sans',sans-serif;
+    font-weight:300;
+	position:relative;
+	top:200px;
+	left:200px;
+	z-index:499;
+}
+
+#pluggedIn-draggable-header{
+    padding:10px 20px;
+    background-color:#0a0a0a;
+	width: 160px;
+}
+
+#pluggedIn-draggable-body{
+    padding:20px;
+    border:2px solid #000;
+}
+
+#pluggedIn-draggable-close{
+    color:#ccc;
+    cursor:pointer;
+    float:right;
+    margin-top:2px;
+}
+
+#pluggedIn-draggable-close:hover{
+    color:#fff;
+}
