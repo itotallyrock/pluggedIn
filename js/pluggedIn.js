@@ -290,21 +290,6 @@ pluggedIn = {
 				$("#pluggedIn-draggable-exit").toggleClass("fa-chevron-up",$("#pluggedIn-draggable-exit").hasClass("fa-chevron-down"));
 				$("#pluggedIn-draggable-body").slideToggle();
 			});
-			
-			var drag;
-			if(typeof $.ui == "undefined")$.getScript("https://code.jquery.com/ui/1.11.2/jquery-ui.js");
-			$('#pluggedIn-draggable').draggable({
-				distance:20,
-				handle:'#pluggedIn-draggable-header',
-				containment:'#app',
-				scroll:false,
-				start:function(){drag = true},
-				stop:function(e,ui){
-					drag = false;
-					settings.uipos = ui.position;
-					pluggedIn.core.saveSettings();
-				}
-			});
 		},
 		
 		toggleAfk: function(){
