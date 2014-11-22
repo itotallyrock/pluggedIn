@@ -15,7 +15,7 @@ if(typeof window.spqe == "undefined"){
 
 //Import external scripts
 //$.getScript("https://code.jquery.com/ui/1.11.2/jquery-ui.js");
-$("head").append("<link rel=\"stylesheet\" type=\"text/css\" href=\"https://rawgit.com/itotallyrock/pluggedIn/master/pluggedIn.css\">");
+$("head").append("<link rel=\"stylesheet\" type=\"text/css\" href=\"https://rawgit.com/itotallyrock/pluggedIn/master/css/pluggedIn.css\">");
 $("head").append("<link rel=\"stylesheet\" type=\"text/css\" href=\"https://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css\">");
 
 (function ($) {
