@@ -6,11 +6,15 @@
     color:#fff;
     font-family: 'Open Sans',sans-serif;
     font-weight:300;
+	position:relative;
+	top:200px;
+	left:200px;
 }
 
 #pluggedIn-draggable-header{
     padding:10px 20px;
     background-color:#0a0a0a;
+	width: 160px;
 }
 
 #pluggedIn-draggable-body{
