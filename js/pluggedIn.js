@@ -19,7 +19,7 @@ $.getScript("https://rawgit.com/itotallyrock/pluggedIn/master/js/drags.js");
 $("head").append("<link rel=\"stylesheet\" type=\"text/css\" href=\"https://rawgit.com/itotallyrock/pluggedIn/master/css/pluggedIn.css\">");
 $("head").append("<link rel=\"stylesheet\" type=\"text/css\" href=\"https://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css\">");
 
-window.pluggedIn = {
+pluggedIn = {
 	VERSION: "v0.01.4-A",
 	AUTHOR: "R0CK",
 	PREFIX: "PluggedIn » ",
@@ -413,7 +413,7 @@ window.pluggedIn = {
 			
 			pluggedIn = undefined;
 			
-			console.log(delete window.pluggedIn());
+			console.warn("Status of deletion: "+delete pluggedIn());
 		}
 	},
 	
