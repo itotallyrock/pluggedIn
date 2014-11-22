@@ -284,6 +284,7 @@ pluggedIn = {
 			
 			pluggedIn.gui.drawDraggable();
 			
+			pluggedIn.core.log("Drags Ready Status: "+dragsReadyStatus,true);
 			if(dragsReadyStatus == 1){
 				$('#pluggedIn-draggable').drags({ handle: $("#pluggedIn-draggable-header")});
 			}
@@ -401,7 +402,7 @@ pluggedIn = {
 			
 			pluggedIn = undefined;
 			
-			console.warn("Status of deletion: "+delete pluggedIn());
+			console.warn("Status of deletion: "+delete pluggedIn);
 		}
 	},
 	
