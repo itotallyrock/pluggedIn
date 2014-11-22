@@ -11,7 +11,7 @@ Some of the features you have from using this addon may be frowned upon by certa
 Version 0.01.4 ALPHA
 
 */
-if(spqe === "undefined"){
+if(typeof spqe === "undefined"){
 
 //Import external scripts
 //$.getScript("https://code.jquery.com/ui/1.11.2/jquery-ui.js");
@@ -152,7 +152,7 @@ pluggedIn = {
 		},
 		
 		deleteSettings: function(){
-			if(pluggedIn.gui.confirm("Delete Settings","Are you sure you want to erase all pluggedIn settings?") === "undefined"){
+			if(typeof pluggedIn.gui.confirm("Delete Settings","Are you sure you want to erase all pluggedIn settings?") === "undefined"){
 				localStorage.removeItem("pluggedIn");
 				pluggedIn.gui.notify("icon-delete","All PluggedIn Settings Have Been Cleared");
 			}
@@ -291,7 +291,7 @@ pluggedIn = {
 			var q;
 			
 			for(q in API){
-				if(API[q] === "string"){
+				if(typeof API[q] === "string"){
 					API.off(API[q]);
 				}
 			}
@@ -362,7 +362,7 @@ pluggedIn = {
 		stop: function(callback){
 			var q;
 			for(q in API){
-				if(API[q] === "string"){
+				if(typeof API[q] === "string"){
 					API.off(API[q]);
 				}
 			}
@@ -385,8 +385,32 @@ pluggedIn = {
 	
 	gui:{
 		draggable:  '<div id="pluggedIn-draggable">'+
-						'<div id="pluggedIn-draggable-header">Header <div class="fa fa-chevron-up" id="pluggedIn-draggable-close"></div></div>'+
+						'<div id="pluggedIn-draggable-header">Header <span style="color:rgba(255,255,255,0.6);">'+/*pluggedIn.VERSION*/+'</span><div class="fa fa-chevron-up" id="pluggedIn-draggable-close"></div></div>'+
 						'<div id="pluggedIn-draggable-body">'+
+							'<div id="pluggedIn-draggable-form-group">'+
+								'<label>'+
+									'<div class="left">AutoWoot</div>'+
+									'<div class="right"><input type="checkbox"/></div>'+
+								'</label>'+
+							'</div>'+
+							'<div id="pluggedIn-draggable-form-group">'+
+								'<label>'+
+									'<div class="left">AutoDJ</div>'+
+									'<div class="right"><input type="checkbox"/></div>'+
+								'</label>'+
+							'</div>'+
+							'<div id="pluggedIn-draggable-form-group">'+
+								'<label>'+
+									'<div class="left">23</div>'+
+									'<div class="right"><input type="checkbox"/></div>'+
+								'</label>'+
+							'</div>'+
+							'<div id="pluggedIn-draggable-form-group">'+
+								'<label>'+
+									'<div class="left">23</div>'+
+									'<div class="right"><input type="checkbox"/></div>'+
+								'</label>'+
+							'</div>'+
 						'</div>'+
 					'</div>',
 		
