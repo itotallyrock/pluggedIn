@@ -11,11 +11,11 @@ Some of the features you have from using this addon may be frowned upon by certa
 Version 0.01.4 ALPHA
 
 */
-if(typeof window.spqe == "undefined"){
+if(typeof spqe == "undefined"){
 
 //Import external scripts
 //$.getScript("https://code.jquery.com/ui/1.11.2/jquery-ui.js");
-$.getScript("https://rawgit.com/itotallyrock/pluggedIn/master/js/drags.js");
+dragsReadyStatus = $.getScript("https://rawgit.com/itotallyrock/pluggedIn/master/js/drags.js").readyStatus;
 $("head").append("<link rel=\"stylesheet\" type=\"text/css\" href=\"https://rawgit.com/itotallyrock/pluggedIn/master/css/pluggedIn.css\">");
 $("head").append("<link rel=\"stylesheet\" type=\"text/css\" href=\"https://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css\">");
 
@@ -227,7 +227,7 @@ pluggedIn = {
 		},
 		
 		initialize: function(){
-			window.spqe = true;
+			spqe = true;
 			
 			pluggedIn.core.getSettings();
 				
@@ -284,10 +284,13 @@ pluggedIn = {
 			
 			pluggedIn.gui.drawDraggable();
 			
-			$('#pluggedIn-draggable').drags({ handle: $("#pluggedIn-draggable-header")});
+			if(dragsReadyStatus == 1){
+				$('#pluggedIn-draggable').drags({ handle: $("#pluggedIn-draggable-header")});
+			}
 			
 			$("#pluggedIn-draggable-close").on("click",function(e){
-				$("#pluggedIn-draggable-exit").toggleClass("fa-chevron-up",$("#pluggedIn-draggable-exit").hasClass("fa-chevron-down"));
+				$("#pluggedIn-draggable-close").toggleClass("fa-chevron-up");
+				$("#pluggedIn-draggable-close").toggleClass("fa-chevron-down");
 				$("#pluggedIn-draggable-body").slideToggle();
 			});
 		},
