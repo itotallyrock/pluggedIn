@@ -11,11 +11,11 @@ Some of the features you have from using this addon may be frowned upon by certa
 Version 0.01.4 ALPHA
 
 */
-if(typeof spqe == "undefined"){
+if(spqe === "undefined"){
 
 //Import external scripts
 //$.getScript("https://code.jquery.com/ui/1.11.2/jquery-ui.js");
-dragsReadyStatus = $.getScript("https://rawgit.com/itotallyrock/pluggedIn/master/js/drags.js").readyStatus;
+dragsReadyState = $.getScript("https://rawgit.com/itotallyrock/pluggedIn/master/js/drags.js").readyState;
 $("head").append("<link rel=\"stylesheet\" type=\"text/css\" href=\"https://rawgit.com/itotallyrock/pluggedIn/master/css/pluggedIn.css\">");
 $("head").append("<link rel=\"stylesheet\" type=\"text/css\" href=\"https://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css\">");
 
@@ -129,7 +129,7 @@ pluggedIn = {
 		getSettings: function(){
 			var c,s;
 			
-			if(localStorage.getItem("pluggedIn") != null){
+			if(localStorage.getItem("pluggedIn") !== null){
 				c = JSON.parse(localStorage.getItem("pluggedIn"));
 				for(s in c){
 					pluggedIn.core.log("set pluggedIn.settings."+s+" = "+c[s],true);
@@ -147,13 +147,13 @@ pluggedIn = {
 		},
 
 		saveSettings: function(){
-			localStorage.setItem("pluggedIn",JSON.stringify(pluggedIn.settings))
+			localStorage.setItem("pluggedIn",JSON.stringify(pluggedIn.settings));
 			pluggedIn.core.info("Created Settings Cookie",true);
 		},
 		
 		deleteSettings: function(){
-			if(typeof pluggedIn.gui.confirm("Delete Settings","Are you sure you want to erase all pluggedIn settings?") == "undefined"){
-				localStorage.removeItem("pluggedIn")
+			if(pluggedIn.gui.confirm("Delete Settings","Are you sure you want to erase all pluggedIn settings?") === "undefined"){
+				localStorage.removeItem("pluggedIn");
 				pluggedIn.gui.notify("icon-delete","All PluggedIn Settings Have Been Cleared");
 			}
 		},
@@ -231,7 +231,7 @@ pluggedIn = {
 				});
 			}
 				
-			API.on(API.WAIT_LIST_UPDATE,function(e){
+			API.on(API.WAIT_LIST_UPDATE,function(){
 				pluggedIn.gui.showSongPopup();
 			});
 				
@@ -243,7 +243,7 @@ pluggedIn = {
 						$("#chat-input-field").val("");
 						pluggedIn.commands[i].callback(args);
 					}else{
-						for(o = 0;o<pluggedIn.commands[i].alias.length;o++){
+						for(o = 0; o<pluggedIn.commands[i].alias.length; o++){
 							if(c === pluggedIn.commands[i].alias[o]){
 								pluggedIn.commands[i].callback(args);
 							}else{
@@ -256,9 +256,9 @@ pluggedIn = {
 			
 			pluggedIn.gui.drawDraggable();
 			
-			pluggedIn.core.log("Drags Ready Status: "+dragsReadyStatus,true);
-			if(dragsReadyStatus == 1){
-				$('#pluggedIn-draggable').drags({ handle: $("#pluggedIn-draggable-header")});
+			pluggedIn.core.log("Drags Ready Status: "+dragsReadyState,true);
+			if(dragsReadyState === 1){
+				$('#pluggedIn-draggable').drags({handle: $("#pluggedIn-draggable-header")});
 			}
 			
 			$("#pluggedIn-draggable-close").on("click",function(e){
@@ -288,9 +288,11 @@ pluggedIn = {
 		update: function(){
 			pluggedIn.core.saveSettings();
 			
-			for(var q in API){
-				if(typeof API[q] == "string"){
-					API.off(q)
+			var q;
+			
+			for(q in API){
+				if(API[q] === "string"){
+					API.off(API[q]);
 				}
 			}
 			
@@ -358,9 +360,10 @@ pluggedIn = {
 		},
 				
 		stop: function(callback){
-			for(var q in API){
-				if(typeof API[q] == "string"){
-					API.off(q)
+			var q;
+			for(q in API){
+				if(API[q] === "string"){
+					API.off(API[q]);
 				}
 			}
 			
@@ -372,7 +375,7 @@ pluggedIn = {
 				pluggedIn.core.alert("PluggedIn has stopped unexpectedly with crash code "+callback);
 			}
 			
-			$("*[id^='pluggedIn']").remove()
+			$("*[id^='pluggedIn']").remove();
 			
 			pluggedIn = undefined;
 			
