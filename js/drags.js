@@ -2,7 +2,7 @@
 (function ($) {
     $.fn.drags = function (opt) {
 		/*
-			Drags addon courtesy of Chris Coyier (http://csstricks.com)
+			Drags addon courtesy of Chris Coyier (http://css-tricks.com)
 			Dased off jQueryUI Draggable
 			Modified by R0CK
 		*/
