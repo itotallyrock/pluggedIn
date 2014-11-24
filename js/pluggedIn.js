@@ -71,7 +71,7 @@ pluggedIn = {
 	
 	core:{
 		log: function(msg,debug){
-			if(debug){//Will only display if debug enabled
+			if(debug){
 				if(pluggedIn.settings.debug){
 					console.log("%c"+pluggedIn.PREFIX+msg,'color: #'+pluggedIn.colors.DEFAULT+'; font-weight:700;');
 				}
@@ -81,7 +81,7 @@ pluggedIn = {
 		},
 
 		warn: function(msg,debug){
-			if(debug){//Will only display if debug enabled
+			if(debug){
 				if(pluggedIn.settings.debug){
 					console.warn("%c"+pluggedIn.PREFIX+msg,'color: #'+pluggedIn.colors.ALERT+'; font-weight:700;');
 				}
@@ -91,7 +91,7 @@ pluggedIn = {
 		},
 
 		error: function(msg,debug){
-			if(debug){//Will only display if debug enabled
+			if(debug){
 				if(pluggedIn.settings.debug){
 					console.error("%c"+pluggedIn.PREFIX+msg,'color: #'+pluggedIn.colors.WARN+'; font-weight:700;');
 				}
@@ -101,7 +101,7 @@ pluggedIn = {
 		},
 
 		info: function(msg,debug){
-			if(debug){//Will only display if debug enabled
+			if(debug){
 				if(pluggedIn.settings.debug){
 					console.info("%c"+pluggedIn.PREFIX+msg,'color: #'+pluggedIn.colors.INFO+'; font-weight:700;');
 				}
