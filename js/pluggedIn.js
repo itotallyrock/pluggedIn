@@ -8,7 +8,7 @@ however redistributing of this product modified or not is disallowed.
 
 Some of the features you have from using this addon may be frowned upon by certain communities, use responsibly.
 
-Version 0.01.4 ALPHA
+Version 0.01.5 ALPHA
 
 */
 if(typeof spqe === "undefined"){
@@ -20,7 +20,7 @@ $("head").append("<link rel=\"stylesheet\" type=\"text/css\" href=\"https://rawg
 $("head").append("<link rel=\"stylesheet\" type=\"text/css\" href=\"https://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css\">");
 
 pluggedIn = {
-	VERSION: "v0.01.4-A",
+	VERSION: "v0.01.5-A",
 	AUTHOR: "R0CK",
 	PREFIX: "PluggedIn » ",
 	LANGS: ["en","pt","de"],
