@@ -148,7 +148,7 @@ pluggedIn = {
 
 		saveSettings: function(){
 			localStorage.setItem("pluggedIn",JSON.stringify(pluggedIn.settings));
-			pluggedIn.core.info("Created Settings Cookie",true);
+			pluggedIn.core.info("Created Settings Storage Location",true);
 		},
 		
 		deleteSettings: function(){
@@ -198,6 +198,23 @@ pluggedIn = {
 			});
 		},
 		
+		toggleAfk: function(){
+			API.off(API.CHAT);
+			if($(".description.panel>.value")[0].innerText.toLowerCase().search(pluggedIn.rooms.rules.afk.toLowerCase()) === -1){
+				pluggedIn.settings.afk = false;
+				if(pluggedIn.settings.afk){
+					pluggedIn.settings.afk = false;
+					pluggedIn.gui.appendChat("You are no longer AFK",pluggedIn.colors.SUCCESS);
+				}else{
+					pluggedIn.settings.afk = true;
+					pluggedIn.gui.appendChat("You are now AFK",pluggedIn.colors.SUCCESS);
+					pluggedIn.core.afkMessage();
+				}
+			}else{
+				pluggedIn.gui.appendChat("This room has AFK disabled",pluggedIn.colors.ALERT);
+			}
+		},
+		
 		initialize: function(){
 			spqe = true;
 			
@@ -228,6 +245,13 @@ pluggedIn = {
 				API.on(API.USER_JOIN,function(e){
 					$("#chat-messages").append('<div style="color: #2fcf56;" class="message"><span class="text" style="font-weight:300;"><a style="color: inherit;" href="#'+e.username+'">'+e.username+'</a> has joined the room.</span></div>');
 					$('#chat-messages').scrollTop($('#chat-messages')[0].scrollHeight);
+				});
+			}
+			
+			if(pluggedIn.settings.notifications.songStats){
+				API.on(API.WAIT_LIST_UPDATE,function(e){
+					//$("#chat-messages").append('<div style="color: #2fcf56;" class="message"><span class="text" style="font-weight:300;"><a style="color: inherit;" href="#'+e.username+'">'+e.username+'</a> has left the room.</span></div>');
+					//$('#chat-messages').scrollTop($('#chat-messages')[0].scrollHeight);
 				});
 			}
 				
@@ -266,23 +290,6 @@ pluggedIn = {
 				$("#pluggedIn-draggable-close").toggleClass("fa-chevron-down");
 				$("#pluggedIn-draggable-body").slideToggle();
 			});
-		},
-		
-		toggleAfk: function(){
-			API.off(API.CHAT);
-			if($(".description.panel>.value")[0].innerText.toLowerCase().search(pluggedIn.rooms.rules.afk.toLowerCase()) === -1){
-				pluggedIn.settings.afk = false;
-				if(pluggedIn.settings.afk){
-					pluggedIn.settings.afk = false;
-					pluggedIn.gui.appendChat("You are no longer AFK",pluggedIn.colors.SUCCESS);
-				}else{
-					pluggedIn.settings.afk = true;
-					pluggedIn.gui.appendChat("You are now AFK",pluggedIn.colors.SUCCESS);
-					pluggedIn.core.afkMessage();
-				}
-			}else{
-				pluggedIn.gui.appendChat("This room has AFK disabled",pluggedIn.colors.ALERT);
-			}
 		},
 		
 		update: function(){
