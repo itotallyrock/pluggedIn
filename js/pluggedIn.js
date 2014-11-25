@@ -249,9 +249,9 @@ pluggedIn = {
 			}
 			
 			if(pluggedIn.settings.notifications.songStats){
-				API.on(API.WAIT_LIST_UPDATE,function(e){
-					//$("#chat-messages").append('<div style="color: #2fcf56;" class="message"><span class="text" style="font-weight:300;"><a style="color: inherit;" href="#'+e.username+'">'+e.username+'</a> has left the room.</span></div>');
-					//$('#chat-messages').scrollTop($('#chat-messages')[0].scrollHeight);
+				API.on(API.HISTORY_UPDATE, function(e){
+					$("#chat-messages").append('<div style="color: #d800cd;" class="message"><span class="text" style="font-weight:300;">'+e.score.positive+' Woots<br/>'+e.score.grabs+' Grabs<br/>'+e.score.negative+' Mehs</span></div>');
+					$('#chat-messages').scrollTop($('#chat-messages')[0].scrollHeight);
 				});
 			}
 				
@@ -338,6 +338,13 @@ pluggedIn = {
 				});
 				API.on(API.USER_JOIN,function(e){
 					$("#chat-messages").append('<div style="color: #2fcf56;" class="message"><span class="text" style="font-weight:300;"><a style="color: inherit;" href="#'+e.username+'">'+e.username+'</a> has joined the room.</span></div>');
+					$('#chat-messages').scrollTop($('#chat-messages')[0].scrollHeight);
+				});
+			}
+			
+			if(pluggedIn.settings.notifications.songStats){
+				API.on(API.HISTORY_UPDATE, function(e){
+					$("#chat-messages").append('<div style="color: #d800cd;" class="message"><span class="text" style="font-weight:300;">'+e.score.positive+' Woots<br/>'+e.score.grabs+' Grabs<br/>'+e.score.negative+' Mehs</span></div>');
 					$('#chat-messages').scrollTop($('#chat-messages')[0].scrollHeight);
 				});
 			}
