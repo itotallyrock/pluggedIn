@@ -371,6 +371,11 @@ pluggedIn = {
 					}
 				}
 			});
+			
+			pluggedIn.core.log("Drags Ready Status: "+dragsReadyState,true);
+			if(dragsReadyState === 1){
+				$('#pluggedIn-draggable').drags({handle: $("#pluggedIn-draggable-header")});
+			}
 		},
 				
 		stop: function(callback){
