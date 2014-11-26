@@ -345,7 +345,7 @@ pluggedIn = {
 			
 			if(pluggedIn.settings.notifications.songStats){
 				API.on(API.HISTORY_UPDATE, function(e){
-					$("#chat-messages").append('<div style="color: #d800cd;" class="message"><span class="text" style="font-weight:300;">'+e[0].score.positive+' Woots<br/>'+e[0].score.grabs+' Grabs<br/>'+e[0].score.negative+' Mehs</span></div>');
+					$("#chat-messages").append('<div style="color: #d800cd;" class="message"><span class="text" style="font-weight:300;"><strong>'e[0].media.title+'</strong><br/>'+e[0].score.positive+' Woots<br/>'+e[0].score.grabs+' Grabs<br/>'+e[0].score.negative+' Mehs</span></div>');
 					$('#chat-messages').scrollTop($('#chat-messages')[0].scrollHeight);
 				});
 			}
