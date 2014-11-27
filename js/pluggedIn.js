@@ -8,19 +8,19 @@ however redistributing of this product modified or not is disallowed.
 
 Some of the features you have from using this addon may be frowned upon by certain communities, use responsibly.
 
-Version 0.01.4 ALPHA
+Version 0.01.5 ALPHA
 
 */
-if(typeof spqe == "undefined"){
+if(typeof spqe === "undefined"){
 
 //Import external scripts
 //$.getScript("https://code.jquery.com/ui/1.11.2/jquery-ui.js");
-dragsReadyStatus = $.getScript("https://rawgit.com/itotallyrock/pluggedIn/master/js/drags.js").readyStatus;
+dragsReadyState = $.getScript("https://rawgit.com/itotallyrock/pluggedIn/master/js/drags.js").readyState;
 $("head").append("<link rel=\"stylesheet\" type=\"text/css\" href=\"https://rawgit.com/itotallyrock/pluggedIn/master/css/pluggedIn.css\">");
 $("head").append("<link rel=\"stylesheet\" type=\"text/css\" href=\"https://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css\">");
 
 pluggedIn = {
-	VERSION: "v0.01.4-A",
+	VERSION: "v0.01.5-A",
 	AUTHOR: "R0CK",
 	PREFIX: "PluggedIn » ",
 	LANGS: ["en","pt","de"],
@@ -71,7 +71,7 @@ pluggedIn = {
 	
 	core:{
 		log: function(msg,debug){
-			if(debug){//Will only display if debug enabled
+			if(debug){
 				if(pluggedIn.settings.debug){
 					console.log("%c"+pluggedIn.PREFIX+msg,'color: #'+pluggedIn.colors.DEFAULT+'; font-weight:700;');
 				}
@@ -81,7 +81,7 @@ pluggedIn = {
 		},
 
 		warn: function(msg,debug){
-			if(debug){//Will only display if debug enabled
+			if(debug){
 				if(pluggedIn.settings.debug){
 					console.warn("%c"+pluggedIn.PREFIX+msg,'color: #'+pluggedIn.colors.ALERT+'; font-weight:700;');
 				}
@@ -91,7 +91,7 @@ pluggedIn = {
 		},
 
 		error: function(msg,debug){
-			if(debug){//Will only display if debug enabled
+			if(debug){
 				if(pluggedIn.settings.debug){
 					console.error("%c"+pluggedIn.PREFIX+msg,'color: #'+pluggedIn.colors.WARN+'; font-weight:700;');
 				}
@@ -101,7 +101,7 @@ pluggedIn = {
 		},
 
 		info: function(msg,debug){
-			if(debug){//Will only display if debug enabled
+			if(debug){
 				if(pluggedIn.settings.debug){
 					console.info("%c"+pluggedIn.PREFIX+msg,'color: #'+pluggedIn.colors.INFO+'; font-weight:700;');
 				}
@@ -110,7 +110,7 @@ pluggedIn = {
 			}
 		},
 		
-		convertToHex: function(str){
+		/*convertToHex: function(str){
 			var hex = '',i;
 			for(i=0;i<str.length;i++) {
 				hex += str.charCodeAt(i).toString(16);
@@ -124,46 +124,19 @@ pluggedIn = {
 				str += String.fromCharCode(parseInt(hex.toString().substr(i, 2), 16));
 			}
 			return str;
-		},
-
-		createCookie: function(name,value,days){
-			var expires = "";
-			if(days){
-				new Date().setTime(new Date().getTime()+(days*24*60*60*1000));
-				expires = "; expires="+new Date().toGMTString();
-			}
-			document.cookie = name+"="+value+expires+"; path=/";
-		},
-
-		readCookie: function (name){
-			var nameEQ = name + "=",ca = document.cookie.split(';'),i,c;
-			for(i=0;i < ca.length;i++){
-				c = ca[i];
-				while(c.charAt(0) === ' '){
-					c = c.substring(1,c.length);
-				}
-				if(c.indexOf(nameEQ) === 0){
-					return c.substring(nameEQ.length,c.length);
-				}
-			}
-			return null;
-		},
-
-		eraseCookie: function(name){
-			pluggedIn.core.createCookie(name,"",-1);
-		},
+		},*/
 
 		getSettings: function(){
 			var c,s;
 			
-			if(document.cookie.indexOf("pluggedIn")>0){
-				c = JSON.parse(pluggedIn.core.convertFromHex(pluggedIn.core.readCookie("pluggedIn")));
+			if(localStorage.getItem("pluggedIn") !== null){
+				c = JSON.parse(localStorage.getItem("pluggedIn"));
 				for(s in c){
 					pluggedIn.core.log("set pluggedIn.settings."+s+" = "+c[s],true);
 					pluggedIn.settings[s] = c[s];
 				}
 				
-				pluggedIn.core.info("Loaded Settings From Cookie",true);
+				pluggedIn.core.info("Loaded Settings From  Local Storage",true);
 				pluggedIn.core.saveSettings();
 			}else{
 				pluggedIn.core.warn("Settings Cookie did not exist.",true);
@@ -174,14 +147,13 @@ pluggedIn = {
 		},
 
 		saveSettings: function(){
-			pluggedIn.core.eraseCookie("pluggedIn");
-			pluggedIn.core.createCookie("pluggedIn",pluggedIn.core.convertToHex(JSON.stringify(pluggedIn.settings)),365);
-			pluggedIn.core.info("Created Settings Cookie",true);
+			localStorage.setItem("pluggedIn",JSON.stringify(pluggedIn.settings));
+			pluggedIn.core.info("Created Settings Storage Location",true);
 		},
 		
 		deleteSettings: function(){
-			if(typeof pluggedIn.gui.confirm("Delete Settings","Are you sure you want to erase all pluggedIn settings?") == "undefined"){
-				eraseCookie("pluggedIn");
+			if(typeof pluggedIn.gui.confirm("Delete Settings","Are you sure you want to erase all pluggedIn settings?") === "undefined"){
+				localStorage.removeItem("pluggedIn");
 				pluggedIn.gui.notify("icon-delete","All PluggedIn Settings Have Been Cleared");
 			}
 		},
@@ -226,6 +198,23 @@ pluggedIn = {
 			});
 		},
 		
+		toggleAfk: function(){
+			API.off(API.CHAT);
+			if($(".description.panel>.value")[0].innerText.toLowerCase().search(pluggedIn.rooms.rules.afk.toLowerCase()) === -1){
+				pluggedIn.settings.afk = false;
+				if(pluggedIn.settings.afk){
+					pluggedIn.settings.afk = false;
+					pluggedIn.gui.appendChat("You are no longer AFK",pluggedIn.colors.SUCCESS);
+				}else{
+					pluggedIn.settings.afk = true;
+					pluggedIn.gui.appendChat("You are now AFK",pluggedIn.colors.SUCCESS);
+					pluggedIn.core.afkMessage();
+				}
+			}else{
+				pluggedIn.gui.appendChat("This room has AFK disabled",pluggedIn.colors.ALERT);
+			}
+		},
+		
 		initialize: function(){
 			spqe = true;
 			
@@ -258,8 +247,17 @@ pluggedIn = {
 					$('#chat-messages').scrollTop($('#chat-messages')[0].scrollHeight);
 				});
 			}
+			
+			if(pluggedIn.settings.notifications.songStats){
+				API.on(API.HISTORY_UPDATE, function(e){
+					pluggedIn.core.info(JSON.stringify(e[1]),true);
+					pluggedIn.core.log(e[1].media.title+'\n'+e[1].score.positive+' Woots\n'+e[1].score.grabs+' Grabs\n'+e[1].score.negative+' Mehs');
+					$("#chat-messages").append('<div style="color: #d800cd;" class="message"><span class="text" style="font-weight:300;"><strong>'+e[1].media.title+'</strong><br/>'+e[1].score.positive+' Woots<br/>'+e[1].score.grabs+' Grabs<br/>'+e[1].score.negative+' Mehs</span></div>');
+					$('#chat-messages').scrollTop($('#chat-messages')[0].scrollHeight);
+				});
+			}
 				
-			API.on(API.WAIT_LIST_UPDATE,function(e){
+			API.on(API.WAIT_LIST_UPDATE,function(){
 				pluggedIn.gui.showSongPopup();
 			});
 				
@@ -271,7 +269,7 @@ pluggedIn = {
 						$("#chat-input-field").val("");
 						pluggedIn.commands[i].callback(args);
 					}else{
-						for(o = 0;o<pluggedIn.commands[i].alias.length;o++){
+						for(o = 0; o<pluggedIn.commands[i].alias.length; o++){
 							if(c === pluggedIn.commands[i].alias[o]){
 								pluggedIn.commands[i].callback(args);
 							}else{
@@ -284,9 +282,9 @@ pluggedIn = {
 			
 			pluggedIn.gui.drawDraggable();
 			
-			pluggedIn.core.log("Drags Ready Status: "+dragsReadyStatus,true);
-			if(dragsReadyStatus == 1){
-				$('#pluggedIn-draggable').drags({ handle: $("#pluggedIn-draggable-header")});
+			pluggedIn.core.log("Drags Ready Status: "+dragsReadyState,true);
+			if(dragsReadyState === 1){
+				$('#pluggedIn-draggable').drags({handle: $("#pluggedIn-draggable-header")});
 			}
 			
 			$("#pluggedIn-draggable-close").on("click",function(e){
@@ -296,31 +294,16 @@ pluggedIn = {
 			});
 		},
 		
-		toggleAfk: function(){
-			API.off(API.CHAT);
-			if($(".description.panel>.value")[0].innerText.toLowerCase().search(pluggedIn.rooms.rules.afk.toLowerCase()) === -1){
-				pluggedIn.settings.afk = false;
-				if(pluggedIn.settings.afk){
-					pluggedIn.settings.afk = false;
-					pluggedIn.gui.appendChat("You are no longer AFK",pluggedIn.colors.SUCCESS);
-				}else{
-					pluggedIn.settings.afk = true;
-					pluggedIn.gui.appendChat("You are now AFK",pluggedIn.colors.SUCCESS);
-					pluggedIn.core.afkMessage();
-				}
-			}else{
-				pluggedIn.gui.appendChat("This room has AFK disabled",pluggedIn.colors.ALERT);
-			}
-		},
-		
 		update: function(){
 			pluggedIn.core.saveSettings();
 			
-			API.off(API.WAIT_LIST_UPDATE);
-			API.off(API.CHAT_COMMAND);
-			API.off(API.CHAT);
-			API.off(API.USER_JOIN);
-			API.off(API.USER_LEAVE);
+			var q;
+			
+			for(q in API){
+				if(typeof API[q] === "string"){
+					API.off(API[q]);
+				}
+			}
 			
 			pluggedIn.core.getSettings();
 			
@@ -361,6 +344,15 @@ pluggedIn = {
 				});
 			}
 			
+			if(pluggedIn.settings.notifications.songStats){
+				API.on(API.HISTORY_UPDATE, function(e){
+					pluggedIn.core.info(JSON.stringify(e[1]),true);
+					pluggedIn.core.log(e[1].media.title+'\n'+e[1].score.positive+' Woots\n'+e[1].score.grabs+' Grabs\n'+e[1].score.negative+' Mehs');
+					$("#chat-messages").append('<div style="color: #d800cd;" class="message"><span class="text" style="font-weight:300;"><strong>'+e[1].media.title+'</strong><br/>'+e[1].score.positive+' Woots<br/>'+e[1].score.grabs+' Grabs<br/>'+e[1].score.negative+' Mehs</span></div>');
+					$('#chat-messages').scrollTop($('#chat-messages')[0].scrollHeight);
+				});
+			}
+			
 			API.on(API.WAIT_LIST_UPDATE,function(e){
 				pluggedIn.gui.showSongPopup();
 			});
@@ -383,12 +375,20 @@ pluggedIn = {
 					}
 				}
 			});
+			
+			pluggedIn.core.log("Drags Ready Status: "+dragsReadyState,true);
+			if(dragsReadyState === 1){
+				$('#pluggedIn-draggable').drags({handle: $("#pluggedIn-draggable-header")});
+			}
 		},
 				
 		stop: function(callback){
-			API.off(API.WAIT_LIST_UPDATE);
-			API.off(API.CHAT_COMMAND);
-			API.off(API.CHAT);
+			var q;
+			for(q in API){
+				if(typeof API[q] === "string"){
+					API.off(API[q]);
+				}
+			}
 			
 			if(!callback){
 				pluggedIn.gui.appendChat("PluggedIn has been sucessfully stopped",pluggedIn.colors.SUCCESS);
@@ -398,7 +398,7 @@ pluggedIn = {
 				pluggedIn.core.alert("PluggedIn has stopped unexpectedly with crash code "+callback);
 			}
 			
-			$("*[id^='pluggedIn']").remove()
+			$("*[id^='pluggedIn']").remove();
 			
 			pluggedIn = undefined;
 			
@@ -408,8 +408,32 @@ pluggedIn = {
 	
 	gui:{
 		draggable:  '<div id="pluggedIn-draggable">'+
-						'<div id="pluggedIn-draggable-header">Header <div class="fa fa-chevron-up" id="pluggedIn-draggable-close"></div></div>'+
+						'<div id="pluggedIn-draggable-header">Header <span style="color:rgba(255,255,255,0.6);">'+/*pluggedIn.VERSION*/+'</span><div class="fa fa-chevron-up" id="pluggedIn-draggable-close"></div></div>'+
 						'<div id="pluggedIn-draggable-body">'+
+							'<div id="pluggedIn-draggable-form-group">'+
+								'<label>'+
+									'<div class="left">AutoWoot</div>'+
+									'<div class="right"><input type="checkbox"/></div>'+
+								'</label>'+
+							'</div>'+
+							'<div id="pluggedIn-draggable-form-group">'+
+								'<label>'+
+									'<div class="left">AutoDJ</div>'+
+									'<div class="right"><input type="checkbox"/></div>'+
+								'</label>'+
+							'</div>'+
+							'<div id="pluggedIn-draggable-form-group">'+
+								'<label>'+
+									'<div class="left">23</div>'+
+									'<div class="right"><input type="checkbox"/></div>'+
+								'</label>'+
+							'</div>'+
+							'<div id="pluggedIn-draggable-form-group">'+
+								'<label>'+
+									'<div class="left">23</div>'+
+									'<div class="right"><input type="checkbox"/></div>'+
+								'</label>'+
+							'</div>'+
 						'</div>'+
 					'</div>',
 		
