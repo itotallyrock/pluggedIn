@@ -309,7 +309,7 @@ pluggedIn = {
 				pluggedIn.settings[s] = !pluggedIn.settings[s];
 				pluggedIn.gui.setDraggableOptions();
 				pluggedIn.core.saveSettings();
-			})
+			});
 		},
 		
 		update: function(){
@@ -398,6 +398,14 @@ pluggedIn = {
 			if(dragsReadyState === 1){
 				$('#pluggedIn-draggable').drags({handle: $("#pluggedIn-draggable-header")});
 			}
+			
+			$("[id^=pluggedIn-settings]").on("click",function(e){
+				var s = e.target.id.toString().split("-")[2];
+				pluggedIn.core.log("Checkbox: "+s+" clicked",true);
+				pluggedIn.settings[s] = !pluggedIn.settings[s];
+				pluggedIn.gui.setDraggableOptions();
+				pluggedIn.core.saveSettings();
+			});
 		},
 				
 		stop: function(callback){
