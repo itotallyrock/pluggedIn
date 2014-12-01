@@ -402,7 +402,7 @@ pluggedIn = {
 				pluggedIn.gui.appendChat("PluggedIn has been sucessfully stopped",pluggedIn.colors.SUCCESS);
 				pluggedIn.core.info("PluggedIn has been sucessfully stopped");
 			}else{
-				pluggedIn.gui.appendChat("PluggedIn has been sucessfully stopped",pluggedIn.colors.ALERT);
+				pluggedIn.gui.appendChat("PluggedIn has stopped: "+callback,pluggedIn.colors.ALERT);
 				pluggedIn.core.warn("PluggedIn has stopped unexpectedly: "+callback)
 			}
 			
