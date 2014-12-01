@@ -295,11 +295,20 @@ pluggedIn = {
 				}
 			});
 			
+			pluggedIn.gui.setDraggableOptions();
+			
 			$("#pluggedIn-draggable-close").on("click",function(e){
 				$("#pluggedIn-draggable-close").toggleClass("fa-chevron-up");
 				$("#pluggedIn-draggable-close").toggleClass("fa-chevron-down");
 				$("#pluggedIn-draggable-body").slideToggle();
 			});
+			
+			$("[id^=pluggedIn-settings]").on("click",function(e){
+				var s = e.target.id.toString().split("-")[2];
+				pluggedIn.core.log("Checkbox: "+s+" clicked",true);
+				pluggedIn.settings[s] = !pluggedIn.settings[s];
+				pluggedIn.gui.setDraggableOptions();
+			})
 		},
 		
 		update: function(){
@@ -391,12 +400,15 @@ pluggedIn = {
 		},
 				
 		stop: function(callback){
+			
 			var q;
 			for(q in API){
 				if(typeof API[q] === "string"){
 					API.off(API[q]);
 				}
 			}
+			
+			pluggedIn.core.saveSettings();
 			
 			if(!callback){
 				pluggedIn.gui.appendChat("PluggedIn has been sucessfully stopped",pluggedIn.colors.SUCCESS);
@@ -415,7 +427,7 @@ pluggedIn = {
 	},
 	
 	gui:{
-		draggable:  '<div id=\"pluggedIn-containment\"><\/div>\r\n<div id=\"pluggedIn-draggable\">\r\n    <div id=\"pluggedIn-draggable-header\">PluggedIn <span style=\"color:rgba(255, 255, 255, 0.5);font-weight:400;\">1.6-Beta</span>\r\n        <div class=\"fa fa-chevron-up\" id=\"pluggedIn-draggable-close\"><\/div>\r\n    <\/div>\r\n    <div id=\"pluggedIn-draggable-body\">\r\n        <div id=\"pluggedIn-draggable-form-group\">\r\n            <div>\r\n                <input id=\"pluggedIn-settings-autowoot\" type=\"checkbox\" \/>\r\n                <label for=\"pluggedIn-settings-autowoot\">AutoWoot<\/label>\r\n            <\/div>\r\n        <\/div>\r\n        <div id=\"pluggedIn-draggable-form-group\">\r\n            <div>\r\n                <input id=\"pluggedIn-settings-autodj\" type=\"checkbox\" \/>\r\n                <label for=\"pluggedIn-settings-autodj\">AutoDJ<\/label>\r\n            <\/div>\r\n        <\/div>\r\n        <div id=\"pluggedIn-draggable-form-group\">\r\n            <div>\r\n                <input id=\"pluggedIn-settings-notifications-userupdate\" type=\"checkbox\" \/>\r\n                <label for=\"pluggedIn-settings-notifications-userupdate\">User Updates<\/label>\r\n            <\/div>\r\n        <\/div>\r\n    <\/div>\r\n<\/div>',
+		draggable:  '<div id=\"pluggedIn-containment\"><\/div>\r\n<div id=\"pluggedIn-draggable\">\r\n    <div id=\"pluggedIn-draggable-header\">PluggedIn <span style=\"color:rgba(255, 255, 255, 0.5);font-weight:400;\">1.6-Beta</span>\r\n        <div class=\"fa fa-chevron-up\" id=\"pluggedIn-draggable-close\"><\/div>\r\n    <\/div>\r\n    <div id=\"pluggedIn-draggable-body\">\r\n        <div id=\"pluggedIn-draggable-form-group\">\r\n            <div>\r\n                <input id=\"pluggedIn-settings-autoWoot\" type=\"checkbox\" \/>\r\n                <label for=\"pluggedIn-settings-autoWoot\">AutoWoot<\/label>\r\n            <\/div>\r\n        <\/div>\r\n        <div id=\"pluggedIn-draggable-form-group\">\r\n            <div>\r\n                <input id=\"pluggedIn-settings-autoDJ\" type=\"checkbox\" \/>\r\n                <label for=\"pluggedIn-settings-autoDJ\">AutoDJ<\/label>\r\n            <\/div>\r\n        <\/div>\r\n        <div id=\"pluggedIn-draggable-form-group\">\r\n            <div>\r\n                <input id=\"pluggedIn-settings-notifications-userupdate\" type=\"checkbox\" \/>\r\n                <label for=\"pluggedIn-settings-notifications-userupdate\">User Updates<\/label>\r\n            <\/div>\r\n        <\/div>\r\n    <\/div>\r\n<\/div>',
 		
 		appendChat: function(message,color){
 			if(message){
@@ -465,6 +477,13 @@ pluggedIn = {
 		
 		drawDraggable: function(){
 			$("body").append(this.draggable);
+		},
+		
+		setDraggableOptions: function(){
+			var s;
+			for(s in pluggedIn.settings){
+				$("#pluggedIn-settings-"+s).prop("checked", pluggedIn.settings[s]);
+			}
 		},
 		
 		toggleVideo: function(){

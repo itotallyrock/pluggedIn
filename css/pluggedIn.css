@@ -23,6 +23,7 @@
 	position:relative;
 	left:100px;
 	top:200px;
+	z-index:60002;
 }
 #pluggedIn-draggable-header {
     padding:10px 20px;
