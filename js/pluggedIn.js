@@ -8,7 +8,7 @@ however redistributing of this product modified or not is disallowed.
 
 Some of the features you have from using this addon may be frowned upon by certain communities, use responsibly.
 
-Version 0.01.5 ALPHA
+Version 0.01.7 ALPHA
 
 */
 if(typeof spqe === "undefined"){
@@ -20,7 +20,7 @@ $("head").append("<link rel=\"stylesheet\" type=\"text/css\" href=\"https://rawg
 $("head").append("<link rel=\"stylesheet\" type=\"text/css\" href=\"https://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css\">");
 
 pluggedIn = {
-	VERSION: "v0.01.5-A",
+	VERSION: "v0.01.7-A",
 	AUTHOR: "R0CK",
 	PREFIX: "PluggedIn » ",
 	LANGS: ["en","pt","de"],
@@ -436,7 +436,7 @@ pluggedIn = {
 	},
 	
 	gui:{
-		draggable:  '<div id=\"pluggedIn-containment\"><\/div>\r\n<div id=\"pluggedIn-draggable\">\r\n    <div id=\"pluggedIn-draggable-header\">PluggedIn <span style=\"color:rgba(255, 255, 255, 0.5);font-weight:400;\">1.6-Beta</span>\r\n        <div class=\"fa fa-chevron-up\" id=\"pluggedIn-draggable-close\"><\/div>\r\n    <\/div>\r\n    <div id=\"pluggedIn-draggable-body\">\r\n        <div id=\"pluggedIn-draggable-form-group\">\r\n            <div>\r\n                <input id=\"pluggedIn-settings-autoWoot\" type=\"checkbox\" \/>\r\n                <label for=\"pluggedIn-settings-autoWoot\">AutoWoot<\/label>\r\n            <\/div>\r\n        <\/div>\r\n        <div id=\"pluggedIn-draggable-form-group\">\r\n            <div>\r\n                <input id=\"pluggedIn-settings-autoDJ\" type=\"checkbox\" \/>\r\n                <label for=\"pluggedIn-settings-autoDJ\">AutoDJ<\/label>\r\n            <\/div>\r\n        <\/div>\r\n        <div id=\"pluggedIn-draggable-form-group\">\r\n            <div>\r\n                <input id=\"pluggedIn-settings-notifications-userupdate\" type=\"checkbox\" \/>\r\n                <label for=\"pluggedIn-settings-notifications-userupdate\">User Updates<\/label>\r\n            <\/div>\r\n        <\/div>\r\n    <\/div>\r\n<\/div>',
+		draggable:  '<div id=\"pluggedIn-containment\"><\/div>\r\n<div id=\"pluggedIn-draggable\">\r\n    <div id=\"pluggedIn-draggable-header\">PluggedIn <span style=\"color:rgba(255, 255, 255, 0.5);font-weight:400;\">1.7-Alpha</span>\r\n        <div class=\"fa fa-chevron-up\" id=\"pluggedIn-draggable-close\"><\/div>\r\n    <\/div>\r\n    <div id=\"pluggedIn-draggable-body\">\r\n        <div id=\"pluggedIn-draggable-form-group\">\r\n            <div>\r\n                <input id=\"pluggedIn-settings-autoWoot\" type=\"checkbox\" \/>\r\n                <label for=\"pluggedIn-settings-autoWoot\">AutoWoot<\/label>\r\n            <\/div>\r\n        <\/div>\r\n        <div id=\"pluggedIn-draggable-form-group\">\r\n            <div>\r\n                <input id=\"pluggedIn-settings-autoDJ\" type=\"checkbox\" \/>\r\n                <label for=\"pluggedIn-settings-autoDJ\">AutoDJ<\/label>\r\n            <\/div>\r\n        <\/div>\r\n        <div id=\"pluggedIn-draggable-form-group\">\r\n            <div>\r\n                <input id=\"pluggedIn-settings-notifications-userupdate\" type=\"checkbox\" \/>\r\n                <label for=\"pluggedIn-settings-notifications-userupdate\">User Updates<\/label>\r\n            <\/div>\r\n        <\/div>\r\n    <\/div>\r\n<\/div>',
 		
 		appendChat: function(message,color){
 			if(message){
