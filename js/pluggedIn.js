@@ -287,6 +287,14 @@ pluggedIn = {
 				$('#pluggedIn-draggable').drags({handle: $("#pluggedIn-draggable-header")});
 			}
 			
+			$.ajax({
+				url:"https://rawgit.com/itotallyrock/pluggedIn/master/data.json",
+				async:false,
+				success:function(e){
+					$("#pluggedIn-draggable-current-version").text(e.version);
+				}
+			});
+			
 			$("#pluggedIn-draggable-close").on("click",function(e){
 				$("#pluggedIn-draggable-close").toggleClass("fa-chevron-up");
 				$("#pluggedIn-draggable-close").toggleClass("fa-chevron-down");
@@ -408,7 +416,11 @@ pluggedIn = {
 	
 	gui:{
 		draggable:  '<div id="pluggedIn-draggable">'+
-						'<div id="pluggedIn-draggable-header">Header <span style="color:rgba(255,255,255,0.6);">'+/*pluggedIn.VERSION*/+'</span><div class="fa fa-chevron-up" id="pluggedIn-draggable-close"></div></div>'+
+						'<div id="pluggedIn-draggable-header">'+
+							'Header '+
+							'<span style="color:rgba(255,255,255,0.6);" id="pluggedIn-draggable-current-version"></span>'+
+							'<div class="fa fa-chevron-up" id="pluggedIn-draggable-close"></div>'+
+						'</div>'+
 						'<div id="pluggedIn-draggable-body">'+
 							'<div id="pluggedIn-draggable-form-group">'+
 								'<label>'+
