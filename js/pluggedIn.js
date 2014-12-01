@@ -403,7 +403,7 @@ pluggedIn = {
 				pluggedIn.core.info("PluggedIn has been sucessfully stopped");
 			}else{
 				pluggedIn.gui.appendChat("PluggedIn has been sucessfully stopped",pluggedIn.colors.ALERT);
-				pluggedIn.core.alert("PluggedIn has stopped unexpectedly with crash code "+callback);
+				pluggedIn.core.warn("PluggedIn has stopped unexpectedly: "+callback)
 			}
 			
 			$("*[id^='pluggedIn']").remove();
@@ -415,39 +415,7 @@ pluggedIn = {
 	},
 	
 	gui:{
-		draggable:  '<div id="pluggedIn-draggable">'+
-						'<div id="pluggedIn-draggable-header">'+
-							'Header '+
-							'<span style="color:rgba(255,255,255,0.6);" id="pluggedIn-draggable-current-version"></span>'+
-							'<div class="fa fa-chevron-up" id="pluggedIn-draggable-close"></div>'+
-						'</div>'+
-						'<div id="pluggedIn-draggable-body">'+
-							'<div id="pluggedIn-draggable-form-group">'+
-								'<label>'+
-									'<div class="left">AutoWoot</div>'+
-									'<div class="right"><input type="checkbox"/></div>'+
-								'</label>'+
-							'</div>'+
-							'<div id="pluggedIn-draggable-form-group">'+
-								'<label>'+
-									'<div class="left">AutoDJ</div>'+
-									'<div class="right"><input type="checkbox"/></div>'+
-								'</label>'+
-							'</div>'+
-							'<div id="pluggedIn-draggable-form-group">'+
-								'<label>'+
-									'<div class="left">23</div>'+
-									'<div class="right"><input type="checkbox"/></div>'+
-								'</label>'+
-							'</div>'+
-							'<div id="pluggedIn-draggable-form-group">'+
-								'<label>'+
-									'<div class="left">23</div>'+
-									'<div class="right"><input type="checkbox"/></div>'+
-								'</label>'+
-							'</div>'+
-						'</div>'+
-					'</div>',
+		draggable:  '<div id=\"pluggedIn-containment\"><\/div>\r\n<div id=\"pluggedIn-draggable\">\r\n    <div id=\"pluggedIn-draggable-header\">PluggedIn <span style=\"color:rgba(0,0,0,0.2);font-weight:400;\">1.6-Beta</span>\r\n        <div class=\"fa fa-chevron-up\" id=\"pluggedIn-draggable-close\"><\/div>\r\n    <\/div>\r\n    <div id=\"pluggedIn-draggable-body\">\r\n        <div id=\"pluggedIn-draggable-form-group\">\r\n            <div>\r\n                <input id=\"pluggedIn-settings-autowoot\" type=\"checkbox\" \/>\r\n                <label for=\"pluggedIn-settings-autowoot\">AutoWoot<\/label>\r\n            <\/div>\r\n        <\/div>\r\n        <div id=\"pluggedIn-draggable-form-group\">\r\n            <div>\r\n                <input id=\"pluggedIn-settings-autodj\" type=\"checkbox\" \/>\r\n                <label for=\"pluggedIn-settings-autodj\">AutoDJ<\/label>\r\n            <\/div>\r\n        <\/div>\r\n        <div id=\"pluggedIn-draggable-form-group\">\r\n            <div>\r\n                <input id=\"pluggedIn-settings-notifications-userupdate\" type=\"checkbox\" \/>\r\n                <label for=\"pluggedIn-settings-notifications-userupdate\">User Updates<\/label>\r\n            <\/div>\r\n        <\/div>\r\n    <\/div>\r\n<\/div>',
 		
 		appendChat: function(message,color){
 			if(message){
@@ -569,5 +537,6 @@ pluggedIn = {
 pluggedIn.core.initialize();
 
 }else{
-	pluggedIn.gui.appendChat("PluggedIn is already running, skipping initialization",pluggedIn.colors.WARN);
+	//pluggedIn.gui.appendChat("PluggedIn is already running, shutting down.",pluggedIn.colors.WARN);
+	pluggedIn.core.stop("PluggedIn is already running, shutting down.");
 }
