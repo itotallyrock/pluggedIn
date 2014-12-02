@@ -308,7 +308,8 @@ pluggedIn = {
 				pluggedIn.core.log("Checkbox: "+s+" clicked",true);
 				pluggedIn.settings[s] = !pluggedIn.settings[s];
 				pluggedIn.gui.setDraggableOptions();
-				pluggedIn.core.update();
+				//pluggedIn.core.update();//VERY LAGGY LOOK FOR NEW OPTIONS
+				window["pluggedIn"]["core"][s]();
 			});
 		},
 		
