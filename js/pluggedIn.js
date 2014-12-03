@@ -516,7 +516,7 @@ pluggedIn = {
 	
 	keyboard:{
 		main: $(this).keydown(function (e){
-			pluggedIn.core.info("Running Keyboard Shortcut (User Pressed "+String.fromCharCode(e.which)+")",true);
+			pluggedIn.core.info("Running Keyboard Shortcut (User Pressed "+String.fromCharCode(e.which)+" ["+e.which+"])",true);
 			switch(e.which){
 				case pluggedIn.settings.keyboard.SPAM_DJ:
 					if($(".description.panel>.value")[0].innerText.toLowerCase().search(pluggedIn.rooms.rules.spamDJ.toLowerCase()) > -1){
@@ -527,7 +527,28 @@ pluggedIn = {
 						}
 					}
 					break;
-				//case pluggedIn.settings.keyboard.DERP:
+				case pluggedIn.settings.keyboard.WOOT:
+					$("#woot").click();
+					break;
+				case pluggedIn.settings.keyboard.MEH:
+					$("#meh").click();
+					console.log("Meh'd");
+					break;
+				case pluggedIn.settings.keyboard.VOLUP:
+					API.setVolume(API.getVolume()+5);
+					break;
+				case pluggedIn.settings.keyboard.VOLDOWN:
+					API.setVolume(API.getVolume()-5);
+					break;
+				case pluggedIn.settings.keyboard.TOGGLEAUDIO:
+					console.log("Toggling sound");
+					pluggedIn.settings.lastVolume = API.getVolume();
+					if(API.getVolume() === 0){
+						API.setVolume(pluggedIn.settings.lastVolume);
+					}else{
+						API.setVolume(0);
+					}
+					break;
 			}
 		})
 	},
@@ -560,9 +581,14 @@ pluggedIn = {
 		bg: "http://blog.napc.com/Portals/10319/images/clouds.jpg",//URL
 		afk: false,
 		afkMsg: "I'm currently AFK.",
+		lastVolume: API.getVolume(),
 		keyboard:{
-			SPAM_DJ: 86//V
-			//SOMETHING_ELSE: 106//L
+			SPAM_DJ: 86,//V
+			WOOT: 87,//W
+			MEH: 77,//M
+			VOLUP: 43,//107,//+ (Numpad)
+			VOLDOWN: 45,//109,//- (Numpad)
+			TOGGLEAUDIO: 32//Space
 		},
 		notifications:{
 			songStats: false,
