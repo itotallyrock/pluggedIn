@@ -2,7 +2,7 @@
 	"name": "PluggedIn Chrome Addon",
 	"manifest_version": 2,
 	"version": "1",
-	"web_accessible_resources": ["js/pluggedIn.js","js/pluggedIn.css"],
+	"web_accessible_resources": ["js/pluggedIn.js","js/pluggedIn.css","js/jquery.js"],
 	"description": "Adds Extra Features to Plug.dj",
 	"permissions": ["tabs", "*://*.plug.dj/*"],
 	"background": {
