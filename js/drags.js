@@ -1,5 +1,5 @@
 //Drags.js
-(function ($) {
+;(function ($) {
     $.fn.drags = function(opt){
 		/*
 			Drags addon courtesy of Chris Coyier (http://css-tricks.com)
@@ -62,4 +62,4 @@
         });
 
     }
-})(
+});
