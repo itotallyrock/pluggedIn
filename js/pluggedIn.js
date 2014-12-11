@@ -307,6 +307,7 @@ pluggedIn = {
 				var s = e.target.id.toString().split("-")[2],q;
 				pluggedIn.core.log("Checkbox: "+s+" clicked",true);
 				pluggedIn.settings[s] = !pluggedIn.settings[s];
+				pluggedIn.core.saveSettings();
 				pluggedIn.gui.setDraggableOptions();
 				pluggedIn.core.update();//VERY LAGGY LOOK FOR NEW OPTIONS
 				//if(pluggedIn.settings[s]){
@@ -414,6 +415,7 @@ pluggedIn = {
 				var s = e.target.id.toString().split("-")[2],q;
 				pluggedIn.core.log("Checkbox: "+s+" clicked",true);
 				pluggedIn.settings[s] = !pluggedIn.settings[s];
+				pluggedIn.core.saveSettings();
 				pluggedIn.gui.setDraggableOptions();
 				pluggedIn.core.update();//VERY LAGGY LOOK FOR NEW OPTIONS
 				//if(pluggedIn.settings[s]){
