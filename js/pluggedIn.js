@@ -219,6 +219,7 @@ pluggedIn = {
 			spqe = true;
 			
 			pluggedIn.core.getSettings();
+			pluggedIn.gui.setDraggableOptions();
 				
 			pluggedIn.core.log(pluggedIn.VERSION+" by "+pluggedIn.AUTHOR+" has loaded.");
 			pluggedIn.core.info("Visit https://github.com/itotallyrock/pluggedIn/wiki/Console-Usage for usage.");
@@ -336,6 +337,8 @@ pluggedIn = {
 			$("[id^=pluggedIn-settings]").off("click");
 			
 			pluggedIn.core.getSettings();
+			
+			pluggedIn.gui.setDraggableOptions();
 			
 			pluggedIn.gui.showSongPopup();
 			
