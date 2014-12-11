@@ -308,23 +308,23 @@ pluggedIn = {
 				pluggedIn.core.log("Checkbox: "+s+" clicked",true);
 				pluggedIn.settings[s] = !pluggedIn.settings[s];
 				pluggedIn.gui.setDraggableOptions();
-				//pluggedIn.core.update();//VERY LAGGY LOOK FOR NEW OPTIONS
-				if(pluggedIn.settings[s]){
-					window["pluggedIn"]["core"][s]();
-				}else{
-					for(q in API){
-						if(typeof API[q] === "string"){
-							API.off(API[q]);
-						}
-					}
-				}
+				pluggedIn.core.update();//VERY LAGGY LOOK FOR NEW OPTIONS
+				//if(pluggedIn.settings[s]){
+				//	window["pluggedIn"]["core"][s]();
+				//}else{
+				//	for(q in API){
+				//		if(typeof API[q] === "string"){
+				//			API.off(API[q]);
+				//		}
+				//	}
+				//}
 			});
 		},
 		
 		update: function(){
 			pluggedIn.core.saveSettings();
 			
-			var q;
+			var q,start = new Date().getMilliseconds(),end;
 			
 			for(q in API){
 				if(typeof API[q] === "string"){
@@ -415,17 +415,19 @@ pluggedIn = {
 				pluggedIn.core.log("Checkbox: "+s+" clicked",true);
 				pluggedIn.settings[s] = !pluggedIn.settings[s];
 				pluggedIn.gui.setDraggableOptions();
-				//pluggedIn.core.update();//VERY LAGGY LOOK FOR NEW OPTIONS
-				if(pluggedIn.settings[s]){
-					window["pluggedIn"]["core"][s]();
-				}else{
-					for(q in API){
-						if(typeof API[q] === "string"){
-							API.off(API[q]);
-						}
-					}
-				}
+				pluggedIn.core.update();//VERY LAGGY LOOK FOR NEW OPTIONS
+				//if(pluggedIn.settings[s]){
+				//	window["pluggedIn"]["core"][s]();
+				//}else{
+				//	for(q in API){
+				//		if(typeof API[q] === "string"){
+				//			API.off(API[q]);
+				//		}
+				//	}
+				//}
 			});
+			
+			pluggedIn.core.info("Ran update in "+(new Date().getMilliseconds() - start)+"ms",true);
 		},
 				
 		stop: function(callback){
