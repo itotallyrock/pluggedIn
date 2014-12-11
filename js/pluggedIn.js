@@ -332,6 +332,8 @@ pluggedIn = {
 				}
 			}
 			
+			$("[id^=pluggedIn-settings]").off("click");
+			
 			pluggedIn.core.getSettings();
 			
 			pluggedIn.gui.showSongPopup();
@@ -409,11 +411,20 @@ pluggedIn = {
 			}
 			
 			$("[id^=pluggedIn-settings]").on("click",function(e){
-				var s = e.target.id.toString().split("-")[2];
+				var s = e.target.id.toString().split("-")[2],q;
 				pluggedIn.core.log("Checkbox: "+s+" clicked",true);
 				pluggedIn.settings[s] = !pluggedIn.settings[s];
 				pluggedIn.gui.setDraggableOptions();
-				pluggedIn.core.update();
+				//pluggedIn.core.update();//VERY LAGGY LOOK FOR NEW OPTIONS
+				if(pluggedIn.settings[s]){
+					window["pluggedIn"]["core"][s]();
+				}else{
+					for(q in API){
+						if(typeof API[q] === "string"){
+							API.off(API[q]);
+						}
+					}
+				}
 			});
 		},
 				
