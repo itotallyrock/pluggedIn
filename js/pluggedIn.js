@@ -324,7 +324,7 @@ pluggedIn = {
 		update: function(){
 			pluggedIn.core.saveSettings();
 			
-			var q;
+			var q,start = new Date().getMilliseconds(),end;
 			
 			for(q in API){
 				if(typeof API[q] === "string"){
@@ -426,6 +426,8 @@ pluggedIn = {
 				//	}
 				//}
 			});
+			
+			pluggedIn.core.info("Ran update in "+(new Date().getMilliseconds() - start)+"ms",true);
 		},
 				
 		stop: function(callback){
