@@ -9,7 +9,7 @@
         opt = $.extend({
             handle: "",
             cursor: "move"
-			container: $(document);
+			//container: $(document);
         }, opt);
 
         if(opt.handle === "") {
@@ -18,9 +18,9 @@
             var $el = this.find(opt.handle);
         }
 		
-		if(typeof opt.container !== $ || typeof opt.container !== HTMLElement){
-			opt.container = $(document);
-		}
+		//if(typeof opt.container !== $ || typeof opt.container !== HTMLElement){
+		//	opt.container = $(document);
+		//}
 		
 		//var ce = $(o.containment)[0]; if(!ce) return;
         //var co = $(o.containment).offset();
