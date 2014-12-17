@@ -293,6 +293,21 @@ pluggedIn = {
 					//	saveSettings();
 					//}
 				});
+			}else{
+				dragsReadyState = $.getScript("https://rawgit.com/itotallyrock/pluggedIn/master/js/jquery-ui-1.10.4.custom.min.js",function(){
+					$('#pluggedIn-draggable').draggable({
+						distance:20,
+						handle:'#pluggedIn-draggable-header',
+						containment:'#app',
+						scroll:false
+						//start:function(){drag = true},
+						//stop:function(e,ui){
+						//	drag = false;
+						//	settings.uipos = ui.position;
+						//	saveSettings();
+						//}
+					});
+				}).readyState;
 			}
 			
 			$.ajax({
@@ -425,6 +440,21 @@ pluggedIn = {
 					//	saveSettings();
 					//}
 				});
+			}else{
+				dragsReadyState = $.getScript("https://rawgit.com/itotallyrock/pluggedIn/master/js/jquery-ui-1.10.4.custom.min.js",function(){
+					$('#pluggedIn-draggable').draggable({
+						distance:20,
+						handle:'#pluggedIn-draggable-header',
+						containment:'#app',
+						scroll:false
+						//start:function(){drag = true},
+						//stop:function(e,ui){
+						//	drag = false;
+						//	settings.uipos = ui.position;
+						//	saveSettings();
+						//}
+					});
+				}).readyState;
 			}
 			
 			$("[id^=pluggedIn-settings]").on("click",function(e){
