@@ -8,19 +8,19 @@ however redistributing of this product modified or not is disallowed.
 
 Some of the features you have from using this addon may be frowned upon by certain communities, use responsibly.
 
-Version 0.01.9 ALPHA
+Version 0.02.0 ALPHA
 
 */
 if(typeof spqe === "undefined"){
 
 //Import external scripts
 //$.getScript("https://code.jquery.com/ui/1.11.2/jquery-ui.js");
-dragsReadyState = $.getScript("https://rawgit.com/itotallyrock/pluggedIn/master/js/drags.js").readyState;
+dragsReadyState = $.getScript("https://rawgit.com/itotallyrock/pluggedIn/master/js/jquery-ui-1.10.4.custom.min.js").readyState;
 $("head").append("<link rel=\"stylesheet\" type=\"text/css\" href=\"https://rawgit.com/itotallyrock/pluggedIn/master/css/pluggedIn.css\">");
 $("head").append("<link rel=\"stylesheet\" type=\"text/css\" href=\"https://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css\">");
 
 pluggedIn = {
-	VERSION: "v0.01.9-A",
+	VERSION: "v0.02.0-A",
 	AUTHOR: "R0CK",
 	PREFIX: "PluggedIn » ",
 	LANGS: ["en","pt","de"],
@@ -41,7 +41,7 @@ pluggedIn = {
 							try{
 								API.setStatus(API.STATUS[e[0].toUpperCase()]);
 							}catch(err){
-								pluggedIn.appendChat("Usage:<br/>/status [avail,away,gaming,working]",pluggedIn.colors.WARN);
+								pluggedIn.chatLog("Usage:<br/>/status [avail,away,gaming,working]",pluggedIn.colors.WARN);
 							}
 						}
 		},
@@ -54,10 +54,10 @@ pluggedIn = {
 							var c;
 							for(c in pluggedIn.commands){
 								c = pluggedIn.commands[c];
-								pluggedIn.gui.appendChat(c.name+" "+c.args,pluggedIn.colors.DEFAULT);
+								pluggedIn.gui.chatLog(c.name+" "+c.args,pluggedIn.colors.DEFAULT);
 							}
 						}
-		},
+		}/*,
 
 		afk: {
 			name:		"afk",
@@ -66,10 +66,10 @@ pluggedIn = {
 			callback:	function(){
 							pluggedIn.core.toggleAfk();
 						}
-		}
+		}*/
 	},
 	
-	core:{
+	logging:{
 		log: function(msg,debug){
 			if(debug){
 				if(pluggedIn.settings.debug){
@@ -108,60 +108,46 @@ pluggedIn = {
 			}else{
 				console.info("%c"+pluggedIn.PREFIX+msg,'color: #'+pluggedIn.colors.INFO+'; font-weight:700;');
 			}
-		},
+		}
+	},
 		
-		/*convertToHex: function(str){
-			var hex = '',i;
-			for(i=0;i<str.length;i++) {
-				hex += str.charCodeAt(i).toString(16);
-			}
-			return hex;
-		},
-
-		convertFromHex: function(hex){
-			var str = '',i;
-			for (i = 0; i < hex.toString().length; i += 2){
-				str += String.fromCharCode(parseInt(hex.toString().substr(i, 2), 16));
-			}
-			return str;
-		},*/
-
+	core:{
 		getSettings: function(){
 			var c,s;
 			
 			if(localStorage.getItem("pluggedIn") !== null){
 				c = JSON.parse(localStorage.getItem("pluggedIn"));
 				for(s in c){
-					pluggedIn.core.log("set pluggedIn.settings."+s+" = "+c[s],true);
+					pluggedIn.logging.log("set pluggedIn.settings."+s+" = "+c[s],true);
 					pluggedIn.settings[s] = c[s];
 				}
 				
-				pluggedIn.core.info("Loaded Settings From  Local Storage",true);
+				pluggedIn.logging.info("Loaded Settings From  Local Storage",true);
 				pluggedIn.core.saveSettings();
 			}else{
-				pluggedIn.core.warn("Settings Cookie did not exist.",true);
+				pluggedIn.logging.error("Settings Cookie did not exist.",true);
 				pluggedIn.core.saveSettings();
 			}
 			
-			pluggedIn.settings.afk = false; //A Little Messy but it gets rid of AFK on load (Doesn't save it.)
+			pluggedIn.settings.afk = false;
 		},
 
 		saveSettings: function(){
 			localStorage.setItem("pluggedIn",JSON.stringify(pluggedIn.settings));
-			pluggedIn.core.info("Created Settings Storage Location",true);
+			pluggedIn.logging.info("Created Settings Storage Location",true);
 		},
 		
 		deleteSettings: function(){
-			if(typeof pluggedIn.gui.confirm("Delete Settings","Are you sure you want to erase all pluggedIn settings?") === "undefined"){
+			//if(typeof pluggedIn.gui.confirm("Delete Settings","Are you sure you want to erase all pluggedIn settings?") === "undefined"){
 				localStorage.removeItem("pluggedIn");
 				pluggedIn.gui.notify("icon-delete","All PluggedIn Settings Have Been Cleared");
-			}
+			//}
 		},
 		
 		autoWoot: function(){
 			$("#woot").click();
 			API.on(API.ADVANCE,function(){
-				pluggedIn.core.info("Ran autoWoot",true);
+				pluggedIn.logging.info("Ran autoWoot",true);
 				$("#woot").click();
 			});
 		},
@@ -169,25 +155,33 @@ pluggedIn = {
 		autoDJ: function(){
 			API.on(API.ADVANCE,function(){
 				if(API.getWaitListPosition() === -1 && API.getDJ().id !== API.getUser().id){
-					pluggedIn.core.info("Ran autoDJ",true);
+					pluggedIn.logging.info("Ran autoDJ",true);
 					$("#dj-button").click();
 				}
 			});
 		},
 
-		replaceChatImg: function(){
+		/*replaceChatImg: function(){  //GOING TO REDO
 			API.on(API.CHAT,function(){
 				if($(".message").last().children().last().children().length > 0){
 					if($(".message").last().children().last().children()[0].toString().search(/^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)(.png|.jpg|.gif|.jpeg)$/g) > -1){
 						var inner = $(".message").last().children().last().children()[0].toString();
 						$(".message").last().children().last().children()[0].innerHTML = "<a href=\""+inner+"\" target=\"_blank\"><img src=\""+inner+"\" alt=\""+inner+"\" style=\"display: block; max-width: 100%; height: auto; margin: 0px auto;\"></a>";
 						$('#chat-messages').scrollTop($('#chat-messages')[0].scrollHeight);
+					}else if($(".message").last().children().last().children()[0].toString().search(/^(http(s|):\/\/)prntscrn.com\//)){
+						path = $(".message").last().children().last().children()[0].toString().indexOf(($(".message").last().children().last().children()[0].toString().search(/^(http(s|):\/\/)prntscrn.com\//)).split('/');
+						if (path.length > 3){
+							path = path[3];
+							if (path.trim().length !== 0){
+								imageURL = 'https://api.plugCubed.net/redirect/prntscr/' + path;
+							}
+						}
 					}
 				}
 			});
-		},
+		},*/
 
-		afkMessage: function(){
+		/*afkMessage: function(){  //GOING TO REDO
 			var mentionBy = "^@("+API.getUser().username.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, "\\$&")+")";
 			API.on(API.CHAT,function(e){
 				if(e.message.search(new RegExp(mentionBy)) > -1){
@@ -196,35 +190,37 @@ pluggedIn = {
 					}
 				}
 			});
-		},
+		},*/
 		
-		toggleAfk: function(){
+		/*toggleAfk: function(){  //GOING TO REDO
 			API.off(API.CHAT);
 			if($(".description.panel>.value")[0].innerText.toLowerCase().search(pluggedIn.rooms.rules.afk.toLowerCase()) === -1){
 				pluggedIn.settings.afk = false;
 				if(pluggedIn.settings.afk){
 					pluggedIn.settings.afk = false;
-					pluggedIn.gui.appendChat("You are no longer AFK",pluggedIn.colors.SUCCESS);
+					pluggedIn.gui.chatLog("You are no longer AFK",pluggedIn.colors.SUCCESS);
 				}else{
 					pluggedIn.settings.afk = true;
-					pluggedIn.gui.appendChat("You are now AFK",pluggedIn.colors.SUCCESS);
+					pluggedIn.gui.chatLog("You are now AFK",pluggedIn.colors.SUCCESS);
 					pluggedIn.core.afkMessage();
 				}
 			}else{
-				pluggedIn.gui.appendChat("This room has AFK disabled",pluggedIn.colors.ALERT);
+				pluggedIn.gui.chatLog("This room has AFK disabled",pluggedIn.colors.ALERT);
 			}
-		},
+		},*/
 		
 		initialize: function(){
 			spqe = true;
 			
 			pluggedIn.core.getSettings();
+			
 			pluggedIn.gui.setDraggableOptions();
-				
-			pluggedIn.core.log(pluggedIn.VERSION+" by "+pluggedIn.AUTHOR+" has loaded.");
-			pluggedIn.core.info("Visit https://github.com/itotallyrock/pluggedIn/wiki/Console-Usage for usage.");
-			pluggedIn.gui.appendChat("pluggedIn "+pluggedIn.VERSION+" by "+pluggedIn.AUTHOR+" has loaded.<br/>Visit <a href='https://github.com/itotallyrock/pluggedIn/wiki/Console-Usage'>the wiki</a> for usage",pluggedIn.colors.INFO);
-				
+			
+			pluggedIn.logging.log(pluggedIn.VERSION+" by "+pluggedIn.AUTHOR+" has loaded.");
+			//pluggedIn.logging.info("Visit https://github.com/itotallyrock/pluggedIn/wiki/Console-Usage for usage.");
+			//pluggedIn.gui.chatLog("pluggedIn "+pluggedIn.VERSION+" by "+pluggedIn.AUTHOR+" has loaded.<br/>Visit <a href='https://github.com/itotallyrock/pluggedIn/wiki/Console-Usage'>the wiki</a> for usage",pluggedIn.colors.INFO);
+			pluggedIn.gui.chatLog("PluggedIn "+pluggedIn.VERSION+" has loaded.")
+			
 			pluggedIn.gui.showSongPopup();
 			
 			if(pluggedIn.settings.autoDJ){
@@ -234,9 +230,9 @@ pluggedIn = {
 				pluggedIn.core.autoWoot();
 			}
 				
-			if(pluggedIn.settings.chatimg){
+			/*if(pluggedIn.settings.chatimg){
 				pluggedIn.core.replaceChatImg();
-			}
+			}*/
 				
 			if(pluggedIn.settings.notifications.userUpdate){
 				API.on(API.USER_LEAVE,function(e){
@@ -251,8 +247,8 @@ pluggedIn = {
 			
 			if(pluggedIn.settings.notifications.songStats){
 				API.on(API.HISTORY_UPDATE, function(e){
-					pluggedIn.core.info(JSON.stringify(e[1]),true);
-					pluggedIn.core.log(e[1].media.title+'\n'+e[1].score.positive+' Woots\n'+e[1].score.grabs+' Grabs\n'+e[1].score.negative+' Mehs');
+					pluggedIn.logging.info(JSON.stringify(e[1]),true);
+					pluggedIn.logging.log(e[1].media.title+'\n'+e[1].score.positive+' Woots\n'+e[1].score.grabs+' Grabs\n'+e[1].score.negative+' Mehs');
 					$("#chat-messages").append('<div style="color: #d800cd;" class="message"><span class="text" style="font-weight:300;"><strong>'+e[1].media.title+'</strong><br/>'+e[1].score.positive+' Woots<br/>'+e[1].score.grabs+' Grabs<br/>'+e[1].score.negative+' Mehs</span></div>');
 					$('#chat-messages').scrollTop($('#chat-messages')[0].scrollHeight);
 				});
@@ -264,7 +260,7 @@ pluggedIn = {
 				
 			API.on(API.CHAT_COMMAND,function(e){
 				var c = e.substring(1).split(" ")[0],args = e.substring(1).split(" ").slice(1),o,i;
-				pluggedIn.core.info("User typed command /"+c+" ["+args.toString()+"]");
+				pluggedIn.logging.info("User typed command /"+c+" ["+args.toString()+"]");
 				for(i in pluggedIn.commands){
 					if(c === i){
 						$("#chat-input-field").val("");
@@ -274,7 +270,7 @@ pluggedIn = {
 							if(c === pluggedIn.commands[i].alias[o]){
 								pluggedIn.commands[i].callback(args);
 							}else{
-								pluggedIn.core.warn("No command or alias matched "+c,true);
+								pluggedIn.logging.error("No command or alias matched "+c,true);
 							}
 						}
 					}
@@ -283,9 +279,20 @@ pluggedIn = {
 			
 			pluggedIn.gui.drawDraggable();
 			
-			pluggedIn.core.log("Drags Ready Status: "+dragsReadyState,true);
+			pluggedIn.logging.log("Drags Ready Status: "+dragsReadyState,true);
 			if(dragsReadyState === 1){
-				$('#pluggedIn-draggable').drags({handle: $("#pluggedIn-draggable-header")});
+				$('#pluggedIn-draggable').draggable({
+					distance:20,
+					handle:'#pluggedIn-draggable-header',
+					containment:'#app',
+					scroll:false
+					//start:function(){drag = true},
+					//stop:function(e,ui){
+					//	drag = false;
+					//	settings.uipos = ui.position;
+					//	saveSettings();
+					//}
+				});
 			}
 			
 			$.ajax({
@@ -306,9 +313,8 @@ pluggedIn = {
 			
 			$("[id^=pluggedIn-settings]").on("click",function(e){
 				var s = e.target.id.toString().split("-")[2],q;
-				pluggedIn.core.log("Checkbox: "+s+" clicked",true);
+				pluggedIn.logging.log("Checkbox: "+s+" clicked",true);
 				pluggedIn.settings[s] = !pluggedIn.settings[s];
-				pluggedIn.core.saveSettings();
 				pluggedIn.gui.setDraggableOptions();
 				pluggedIn.core.update();//VERY LAGGY LOOK FOR NEW OPTIONS
 				//if(pluggedIn.settings[s]){
@@ -326,7 +332,7 @@ pluggedIn = {
 		update: function(){
 			pluggedIn.core.saveSettings();
 			
-			var q,start = new Date().getMilliseconds(),end;
+			var q;
 			
 			for(q in API){
 				if(typeof API[q] === "string"){
@@ -334,37 +340,33 @@ pluggedIn = {
 				}
 			}
 			
-			$("[id^=pluggedIn-settings]").off("click");
-			
 			pluggedIn.core.getSettings();
-			
 			pluggedIn.gui.setDraggableOptions();
-			
 			pluggedIn.gui.showSongPopup();
 			
 			if(pluggedIn.settings.autoDJ){
 				if($(".description.panel>.value")[0].innerText.toLowerCase().search(pluggedIn.rooms.rules.autoDJ.toLowerCase()) === -1){
 					pluggedIn.core.autoDJ();
 				}else{
-					pluggedIn.gui.appendChat("This room has AutoDJ disabled",pluggedIn.colors.ALERT);
+					pluggedIn.gui.chatLog("This room has AutoDJ disabled",pluggedIn.colors.ALERT);
 				}
 			}
-			if(pluggedIn.settings.autoWoot){
+			/*if(pluggedIn.settings.autoWoot){
 				pluggedIn.core.autoWoot();
 				if($(".description.panel>.value")[0].innerText.toLowerCase().search(pluggedIn.rooms.rules.autoWoot.toLowerCase()) === -1){
 					pluggedIn.core.afkMessage();
 				}else{
-					pluggedIn.gui.appendChat("This room has AutoWoot disabled",pluggedIn.colors.ALERT);
+					pluggedIn.gui.chatLog("This room has AutoWoot disabled",pluggedIn.colors.ALERT);
 				}
-			}
+			}*/
 				
-			if(pluggedIn.settings.chatimg){
+			/*if(pluggedIn.settings.chatimg){
 				pluggedIn.core.replaceChatImg();
-			}
+			}*/
 			
-			if(pluggedIn.settings.afk){
+			/*if(pluggedIn.settings.afk){
 				pluggedIn.core.toggleAfk();
-			}
+			}*/
 			
 			if(pluggedIn.settings.notifications.userUpdate){
 				API.on(API.USER_LEAVE,function(e){
@@ -379,8 +381,8 @@ pluggedIn = {
 			
 			if(pluggedIn.settings.notifications.songStats){
 				API.on(API.HISTORY_UPDATE, function(e){
-					pluggedIn.core.info(JSON.stringify(e[1]),true);
-					pluggedIn.core.log(e[1].media.title+'\n'+e[1].score.positive+' Woots\n'+e[1].score.grabs+' Grabs\n'+e[1].score.negative+' Mehs');
+					pluggedIn.logging.info(JSON.stringify(e[1]),true);
+					pluggedIn.logging.log(e[1].media.title+'\n'+e[1].score.positive+' Woots\n'+e[1].score.grabs+' Grabs\n'+e[1].score.negative+' Mehs');
 					$("#chat-messages").append('<div style="color: #d800cd;" class="message"><span class="text" style="font-weight:300;"><strong>'+e[1].media.title+'</strong><br/>'+e[1].score.positive+' Woots<br/>'+e[1].score.grabs+' Grabs<br/>'+e[1].score.negative+' Mehs</span></div>');
 					$('#chat-messages').scrollTop($('#chat-messages')[0].scrollHeight);
 				});
@@ -392,7 +394,7 @@ pluggedIn = {
 			
 			API.on(API.CHAT_COMMAND,function(e){
 				var c = e.substring(1).split(" ")[0],args = e.substring(1).split(" ").slice(1),i,o;
-				pluggedIn.core.info("User typed command /"+c+" ["+args.toString()+"]");
+				pluggedIn.logging.info("User typed command /"+c+" ["+args.toString()+"]");
 				for(i in pluggedIn.commands){
 					if(c === i){
 						$("#chat-input-field").val("");
@@ -402,41 +404,39 @@ pluggedIn = {
 							if(c === pluggedIn.commands[i].alias[o]){
 								pluggedIn.commands[i].callback(args);
 							}else{
-								pluggedIn.core.warn("No command or alias matched "+c,true);
+								pluggedIn.logging.error("No command or alias matched "+c,true);
 							}
 						}
 					}
 				}
 			});
 			
-			pluggedIn.core.log("Drags Ready Status: "+dragsReadyState,true);
+			pluggedIn.logging.log("Drags Ready Status: "+dragsReadyState,true);
 			if(dragsReadyState === 1){
-				$('#pluggedIn-draggable').drags({handle: $("#pluggedIn-draggable-header")});
+				$('#pluggedIn-draggable').draggable({
+					distance:20,
+					handle:'#pluggedIn-draggable-header',
+					containment:'#app',
+					scroll:false
+					//start:function(){drag = true},
+					//stop:function(e,ui){
+					//	drag = false;
+					//	settings.uipos = ui.position;
+					//	saveSettings();
+					//}
+				});
 			}
 			
 			$("[id^=pluggedIn-settings]").on("click",function(e){
-				var s = e.target.id.toString().split("-")[2],q;
-				pluggedIn.core.log("Checkbox: "+s+" clicked",true);
+				var s = e.target.id.toString().split("-")[2];
+				pluggedIn.logging.log("Checkbox: "+s+" clicked",true);
 				pluggedIn.settings[s] = !pluggedIn.settings[s];
-				pluggedIn.core.saveSettings();
 				pluggedIn.gui.setDraggableOptions();
-				pluggedIn.core.update();//VERY LAGGY LOOK FOR NEW OPTIONS
-				//if(pluggedIn.settings[s]){
-				//	window["pluggedIn"]["core"][s]();
-				//}else{
-				//	for(q in API){
-				//		if(typeof API[q] === "string"){
-				//			API.off(API[q]);
-				//		}
-				//	}
-				//}
+				pluggedIn.core.update();
 			});
-			
-			pluggedIn.core.info("Ran update in "+(new Date().getMilliseconds() - start)+"ms",true);
 		},
 				
 		stop: function(callback){
-			
 			var q;
 			for(q in API){
 				if(typeof API[q] === "string"){
@@ -447,14 +447,15 @@ pluggedIn = {
 			pluggedIn.core.saveSettings();
 			
 			if(!callback){
-				pluggedIn.gui.appendChat("PluggedIn has been sucessfully stopped",pluggedIn.colors.SUCCESS);
-				pluggedIn.core.info("PluggedIn has been sucessfully stopped");
+				pluggedIn.gui.chatLog("PluggedIn has been sucessfully stopped",pluggedIn.colors.SUCCESS);
+				pluggedIn.logging.info("PluggedIn has been sucessfully stopped");
 			}else{
-				pluggedIn.gui.appendChat("PluggedIn has stopped: "+callback,pluggedIn.colors.ALERT);
-				pluggedIn.core.warn("PluggedIn has stopped unexpectedly: "+callback)
+				pluggedIn.gui.chatLog("PluggedIn has stopped: "+callback,pluggedIn.colors.ALERT);
+				pluggedIn.logging.error("PluggedIn has stopped unexpectedly: "+callback)
 			}
 			
 			$("*[id^='pluggedIn']").remove();
+			$(this).unbind('keydown');
 			
 			pluggedIn = undefined;
 			
@@ -463,19 +464,15 @@ pluggedIn = {
 	},
 	
 	gui:{
-		draggable:  '<div id=\"pluggedIn-containment\"><\/div>\r\n<div id=\"pluggedIn-draggable\">\r\n    <div id=\"pluggedIn-draggable-header\">PluggedIn <span style=\"color:rgba(255, 255, 255, 0.5);font-weight:400;\">1.9-Alpha</span>\r\n        <div class=\"fa fa-chevron-up\" id=\"pluggedIn-draggable-close\"><\/div>\r\n    <\/div>\r\n    <div id=\"pluggedIn-draggable-body\">\r\n        <div id=\"pluggedIn-draggable-form-group\">\r\n            <div>\r\n                <input id=\"pluggedIn-settings-autoWoot\" type=\"checkbox\" \/>\r\n                <label for=\"pluggedIn-settings-autoWoot\">AutoWoot<\/label>\r\n            <\/div>\r\n        <\/div>\r\n        <div id=\"pluggedIn-draggable-form-group\">\r\n            <div>\r\n                <input id=\"pluggedIn-settings-autoDJ\" type=\"checkbox\" \/>\r\n                <label for=\"pluggedIn-settings-autoDJ\">AutoDJ<\/label>\r\n            <\/div>\r\n        <\/div>\r\n        <div id=\"pluggedIn-draggable-form-group\">\r\n            <div>\r\n                <input id=\"pluggedIn-settings-notifications-userupdate\" type=\"checkbox\" \/>\r\n                <label for=\"pluggedIn-settings-notifications-userupdate\">User Updates<\/label>\r\n            <\/div>\r\n        <\/div>\r\n    <\/div>\r\n<\/div>',
+		draggable: '<div id=\"pluggedIn-containment\"><\/div>\r\n<div id=\"pluggedIn-draggable\">\r\n    <div id=\"pluggedIn-draggable-header\">PluggedIn <span style=\"color:rgba(255, 255, 255, 0.5);font-weight:400;\">2.0-Alpha</span>\r\n        <div class=\"fa fa-chevron-up\" id=\"pluggedIn-draggable-close\"><\/div>\r\n    <\/div>\r\n    <div id=\"pluggedIn-draggable-body\">\r\n        <div id=\"pluggedIn-draggable-form-group\">\r\n            <div>\r\n                <input id=\"pluggedIn-settings-autoWoot\" type=\"checkbox\" \/>\r\n                <label for=\"pluggedIn-settings-autoWoot\">AutoWoot<\/label>\r\n            <\/div>\r\n        <\/div>\r\n        <div id=\"pluggedIn-draggable-form-group\">\r\n            <div>\r\n                <input id=\"pluggedIn-settings-autoDJ\" type=\"checkbox\" \/>\r\n                <label for=\"pluggedIn-settings-autoDJ\">AutoDJ<\/label>\r\n            <\/div>\r\n        <\/div>\r\n        <div id=\"pluggedIn-draggable-form-group\">\r\n            <div>\r\n                <input id=\"pluggedIn-settings-notifications-userupdate\" type=\"checkbox\" \/>\r\n                <label for=\"pluggedIn-settings-notifications-userupdate\">User Updates<\/label>\r\n            <\/div>\r\n        <\/div>\r\n    <\/div>\r\n<\/div>',
 		
-		appendChat: function(message,color){
+		chatLog: function(message,from,color,bdg){
 			if(message){
-				if(color){
-					$("#chat-messages").append('<div class="welcome" style="border-left: #'+color+' 3px solid;color: #'+color+';"><span class="text" style="font-weight:800;">' + message + '</span></div>');
-				}else{
-					$("#chat-messages").append('<div class="welcome"><span class="text" style="font-weight:800;">' + message + '</span></div>');
-				}
+				$("#chat-messages").append('<div class="cm message"><div class="badge-box '+ (bdg ? ("no-badge") : ("bdg-"+bdg)) +' clickable"><i></i></div><div class="msg"><div class="from"><span class="un clickable" '+(color ? "style=\"color:"+color+";\"":"")+'">'+(from ? (from):("PluggedIn"))+'</span><span class="timestamp" style="display: inline;">'+(new Date().getHours()%12+":"+new Date().getMinutes())+'</span></div><div class="text">'+message+'<br></div></div></div>');
 				
 				$('#chat-messages').scrollTop($('#chat-messages')[0].scrollHeight);
 			}else{
-				console.error("pluggedIn.gui.appendChat() missing argument 'Message' correct usage pluggedIn.gui.appendChat(Message,[Color])");
+				console.error("pluggedIn.gui.chatLog() missing argument 'Message' correct usage pluggedIn.gui.chatLog(Message,[Color])");
 			}
 		},
 		
@@ -534,7 +531,7 @@ pluggedIn = {
 	
 	keyboard:{
 		main: $(this).keydown(function (e){
-			pluggedIn.core.info("Running Keyboard Shortcut (User Pressed "+String.fromCharCode(e.which)+" ["+e.which+"])",true);
+			pluggedIn.logging.info("Running Keyboard Shortcut (User Pressed "+String.fromCharCode(e.which)+" ["+e.which+"])",true);
 			switch(e.which){
 				case pluggedIn.settings.keyboard.SPAM_DJ:
 					if($(".description.panel>.value")[0].innerText.toLowerCase().search(pluggedIn.rooms.rules.spamDJ.toLowerCase()) > -1){
@@ -560,12 +557,10 @@ pluggedIn = {
 					break;
 				case pluggedIn.settings.keyboard.TOGGLEAUDIO:
 					console.log("Toggling sound");
-					pluggedIn.settings.lastVolume = API.getVolume();
-					if(API.getVolume() === 0){
-						API.setVolume(pluggedIn.settings.lastVolume);
-					}else{
-						API.setVolume(0);
-					}
+					$("#volume > .button").click();
+					break;
+				case pluggedIn.settings.keyboard.OPENCHAT:
+					$("#chat-input-field").focus();
 					break;
 			}
 		})
@@ -599,14 +594,14 @@ pluggedIn = {
 		bg: "http://blog.napc.com/Portals/10319/images/clouds.jpg",//URL
 		afk: false,
 		afkMsg: "I'm currently AFK.",
-		lastVolume: API.getVolume(),
 		keyboard:{
 			SPAM_DJ: 86,//V
 			WOOT: 87,//W
 			MEH: 77,//M
 			VOLUP: 43,//107,//+ (Numpad)
 			VOLDOWN: 45,//109,//- (Numpad)
-			TOGGLEAUDIO: 32//Space
+			TOGGLEAUDIO: 32,//Space
+			OPENCHAT: 116//Space
 		},
 		notifications:{
 			songStats: false,
@@ -618,6 +613,6 @@ pluggedIn = {
 pluggedIn.core.initialize();
 
 }else{
-	//pluggedIn.gui.appendChat("PluggedIn is already running, shutting down.",pluggedIn.colors.WARN);
+	//pluggedIn.gui.chatLog("PluggedIn is already running, shutting down.",pluggedIn.colors.WARN);
 	pluggedIn.core.stop("PluggedIn is already running, shutting down.");
 }
