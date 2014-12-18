@@ -30,6 +30,7 @@
     background-color:
     /*#0a0a0a*/
     #aa74ff;
+	cursor: move;
 }
 #pluggedIn-draggable-body {
     padding:20px;
